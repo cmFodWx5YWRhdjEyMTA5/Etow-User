@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ * Copyright Ⓒ 2018. All rights reserved
+  ~ * Author DangTin. Create on 2018/05/13
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/define_dimen_30"
+        android:src="@drawable/ic_logo_splash" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical"
+        android:padding="@dimen/define_dimen_16">
+
+        <com.user.etow.ui.widget.textview.TahomaRegularTextView
+            android:id="@+id/tv_sign_in"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_black_corner_border_white"
+            android:gravity="center"
+            android:paddingBottom="@dimen/define_dimen_14"
+            android:paddingTop="@dimen/define_dimen_14"
+            android:text="@string/sign_in"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_normal" />
+
+        <com.user.etow.ui.widget.textview.TahomaRegularTextView
+            android:id="@+id/tv_join_now"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/define_dimen_16"
+            android:layout_marginTop="@dimen/define_dimen_8"
+            android:background="@drawable/bg_black_corner_border_white"
+            android:gravity="center"
+            android:paddingBottom="@dimen/define_dimen_14"
+            android:paddingTop="@dimen/define_dimen_14"
+            android:text="@string/join_now"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_normal" />
+    </LinearLayout>
+
+</RelativeLayout>

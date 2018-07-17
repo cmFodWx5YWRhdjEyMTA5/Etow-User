@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ * Copyright Ⓒ 2018. All rights reserved
+  ~ * Author DangTin. Create on 2018/05/13
+  -->
+
+<resources>
+    <string name="app_name">eTow User</string>
+    <string name="google_key_map">AIzaSyCPvjIdgwye9PkpctRONhsb_9x1R9Ztx80</string>
+
+    // Navigation
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
+    // Menu
+    <string name="home">Home</string>
+    <string name="my_account">My account</string>
+    <string name="my_bookings">My bookings</string>
+    <string name="get_in_touch">Get in touch</string>
+    <string name="terms_and_conditions">Terms &amp; Conditions</string>
+    <string name="social_links">Social links</string>
+    <string name="logout">Logout</string>
+    <string name="menu">Menu</string>
+
+    // action
+    <string name="action_ok">OK</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_yes">Yes</string>
+    <string name="action_no">No</string>
+    <string name="action_close">Close</string>
+    <string name="action_done">Done</string>
+
+    // dialog
+    <string name="waiting_message">Please wait...</string>
+
+    // msg
+    <string name="error_not_connect_to_internet">You are not connect to internet</string>
+    <string name="msg_exit_app">Do you want to exit?</string>
+
+    // Get in touch
+    <string name="call_us">Call us</string>
+    <string name="feedback">Feedback</string>
+    <string name="or">Or</string>
+    <string name="comments">Comments</string>
+    <string name="get_in_touch_with_us_on">Or get in touch with us on</string>
+    <string name="email_us">info@etow.com</string>
+    <string name="send">Send</string>
+    <string name="your_message_sent_successfully">Your message sent successfully</string>
+
+    // Social links
+    <string name="instagram">Instagram</string>
+    <string name="facebook">Facebook</string>
+    <string name="twitter">Twitter</string>
+
+    // Auth User
+    <string name="join_now">Join now</string>
+    <string name="forgot_password">Forgot password</string>
+    <string name="do_not_have_account">Don\'t have an account?</string>
+    <string name="sign_up">Sign up</string>
+    <string name="request_password">Request password</string>
+    <string name="password">Password</string>
+    <string name="email_id">Email ID</string>
+    <string name="enter_email_id">Enter email ID</string>
+    <string name="agree_terms_and_conditions">I agree the Terms &amp; Conditions</string>
+    <string name="sign_in">Sign in</string>
+    <string name="message_request_password">Please check email for instructions to reset password</string>
+    <string name="enter_your_mobile_number">Enter your mobile number</string>
+    <string name="message_enter_your_mobile_number">Please enter your mobile number to send OTP Code</string>
+    <string name="get_code">Get code</string>
+    <string name="please_enter_your_mobile_number">Please enter your mobile number</string>
+    <string name="please_agree_the_terms_and_conditions">Please agree the terms and conditions</string>
+    <string name="did_not_get_the_code">I didn\'t not get the code</string>
+    <string name="enter_otp_code">Enter OTP code</string>
+    <string name="have_sent_sms">We have sent an SMS with the code to</string>
+    <string name="name">Name</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="have_account">Have an account ?</string>
+    <string name="email_invalid">Email invalid</string>
+    <string name="password_not_match">Password and Confirm password not match</string>
+    <string name="update">Update</string>
+    <string name="edit">Edit</string>
+
+    // Main screen
+    <string name="select_vehicle_type">Select vehicle type</string>
+    <string name="vehicle_normal">Normal</string>
+    <string name="vehicle_flatbed">Flatbed</string>
+    <string name="completed">Completed</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="pick_up_location">Pick up location:</string>
+    <string name="pick_up_location_2">Pick up location</string>
+    <string name="drop_off_location">Drop off location:</string>
+    <string name="drop_off_location_2">Drop off location</string>
+    <string name="pending">Pending</string>
+    <string name="confirmed">Confirmed</string>
+    <string name="no_driver_available">No driver available</string>
+    <string name="completed_trips">Completed trips</string>
+    <string name="upcoming_trips">Upcoming trips</string>
+    <string name="trip_no">Trip no:</string>
+    <string name="trip_amount">Trip amount:</string>
+    <string name="date_and_time">Date &amp; Time</string>
+    <string name="scheduled_date_and_time">Scheduled Date &amp; Time</string>
+    <string name="type_of_recovery">Type of recovery:</string>
+    <string name="driver">Driver:</string>
+    <string name="vehicle_number">Vehicle number:</string>
+    <string name="payment_type">Payment type:</string>
+    <string name="cash">Cash</string>
+    <string name="call_driver">Call driver</string>
+    <string name="call">Call</string>
+    <string name="booking_status">Booking status:</string>
+    <string name="where_to_go">Where to go ?</string>
+    <string name="current_location">Current Location</string>
+    <string name="use_current_location">Use current location</string>
+    <string name="confirm_booking">Confirm booking</string>
+    <string name="booking_date_and_time">Booking date &amp; time</string>
+    <string name="scheduled_booking_date_and_time">Scheduled booking date &amp; time</string>
+    <string name="estimated_time">Estimated time</string>
+    <string name="to_arrive">to arrive</string>
+    <string name="to_reach_destination">to reach destination</string>
+    <string name="estimated_cost">Estimated cost</string>
+    <string name="payment_method">Payment method</string>
+    <string name="to">to</string>
+
+    // Trip process
+    <string name="drivers_are_away">Hey, it seems drivers are away !</string>
+    <string name="current_estimated_time">Current estimated time</string>
+    <string name="confirm">Confirm</string>
+    <string name="please_wait">Please wait !</string>
+    <string name="please_wait_driver">Please wait while we look for available Drivers...</string>
+    <string name="message_confirm_cancel_trip">Are you sure you want to cancel this order ?</string>
+</resources>
