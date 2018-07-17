@@ -91,6 +91,16 @@
             android:name=".ui.trip_process.TripProcessActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
+
+        <activity
+            android:name=".ui.trip_completed.TripCompletedActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity
+            android:name=".ui.rate_trip.RateTripActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
 </manifest>

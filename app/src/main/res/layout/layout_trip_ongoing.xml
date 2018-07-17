@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ * Copyright Ⓒ 2018. All rights reserved
+  ~ * Author DangTin. Create on 2018/05/20
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="@dimen/define_dimen_20">
+
+    <com.user.etow.ui.widget.textview.TahomaRegularTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/trip_ongoing"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/text_size_xnormal" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/define_dimen_10"
+        android:layout_marginTop="@dimen/define_dimen_20"
+        android:src="@drawable/ic_trip_ongoing" />
+</LinearLayout>

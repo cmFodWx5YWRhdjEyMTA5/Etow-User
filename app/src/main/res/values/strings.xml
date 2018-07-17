@@ -105,6 +105,7 @@
     <string name="vehicle_number">Vehicle number:</string>
     <string name="payment_type">Payment type:</string>
     <string name="cash">Cash</string>
+    <string name="card">Card</string>
     <string name="call_driver">Call driver</string>
     <string name="call">Call</string>
     <string name="booking_status">Booking status:</string>
@@ -112,6 +113,7 @@
     <string name="current_location">Current Location</string>
     <string name="use_current_location">Use current location</string>
     <string name="confirm_booking">Confirm booking</string>
+    <string name="label_booking_date_and_time">Booking date &amp; time:</string>
     <string name="booking_date_and_time">Booking date &amp; time</string>
     <string name="scheduled_booking_date_and_time">Scheduled booking date &amp; time</string>
     <string name="estimated_time">Estimated time</string>
@@ -128,4 +130,14 @@
     <string name="please_wait">Please wait !</string>
     <string name="please_wait_driver">Please wait while we look for available Drivers...</string>
     <string name="message_confirm_cancel_trip">Are you sure you want to cancel this order ?</string>
+    <string name="your_booking_accepted">Your booking accepted !</string>
+    <string name="message_driver_will_reach">The driver will reach you within</string>
+    <string name="approximately">(Approximately)</string>
+    <string name="your_recovery_has_arrived">Your recovery has arrived !</string>
+    <string name="need_any_assistance">Need any assistance?</string>
+    <string name="trip_ongoing">Trip ongoing !</string>
+    <string name="trip_completed">Trip completed</string>
+    <string name="total_incl_vat">Total Incl of VAT</string>
+    <string name="please_pay_cash_driver">Please pay cash to driver</string>
+    <string name="pay_now">Pay Now</string>
 </resources>
