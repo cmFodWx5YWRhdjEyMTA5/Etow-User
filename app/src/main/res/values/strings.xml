@@ -146,4 +146,18 @@
     <string name="rate_your_trip">Rate your trip</string>
     <string name="skip">Skip</string>
     <string name="label_continue">Continue</string>
+    <string name="card_number">Card number</string>
+    <string name="exp_date">Exp.date</string>
+    <string name="cvv">CVV</string>
+    <string name="country">Country</string>
+    <string name="waiting_driver_confirmation">Waiting for driver confirmation</string>
+    <string name="sorry">Sorry !</string>
+    <string name="message_pay_card_fail">Your payment Declined. Please retry or pay cash to driver</string>
+    <string name="retry">Retry</string>
+    <string name="pay_cash">Pay cash</string>
+    <string name="thank_you_for_booking">Thank you for booking !</string>
+    <string name="driver_will_confirm">A driver will confirm in 10 minutes.</string>
+    <string name="check_status_your_booking">Check status of your booking</string>
+    <string name="label_in">in</string>
+    <string name="i_understand">I understand</string>
 </resources>

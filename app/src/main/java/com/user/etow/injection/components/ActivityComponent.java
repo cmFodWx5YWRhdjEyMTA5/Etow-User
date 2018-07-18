@@ -13,6 +13,7 @@ import com.user.etow.ui.auth.sign_up.SignUpActivity;
 import com.user.etow.ui.auth.term_and_condition.TermAndConditionActivity;
 import com.user.etow.ui.auth.user_start.UserStartActivity;
 import com.user.etow.ui.auth.verify_mobile_number.VerifyMobileNumberActivity;
+import com.user.etow.ui.booking_completed.BookingCompletedActivity;
 import com.user.etow.ui.confirm_booking.ConfirmBookingActivity;
 import com.user.etow.ui.feedback.FeedbackActivity;
 import com.user.etow.ui.main.MainActivity;
@@ -23,6 +24,7 @@ import com.user.etow.ui.main.my_bookings.MyBookingsFragment;
 import com.user.etow.ui.main.social_links.SocialLinksFragment;
 import com.user.etow.ui.main.term_and_condition.TermAndConditionFragment;
 import com.user.etow.ui.pay_card.PayCardActivity;
+import com.user.etow.ui.pay_card_result.PayCardResultActivity;
 import com.user.etow.ui.rate_trip.RateTripActivity;
 import com.user.etow.ui.splash.SplashActivity;
 import com.user.etow.ui.trip_completed.TripCompletedActivity;
@@ -66,6 +68,10 @@ public interface ActivityComponent {
     void inject(RateTripActivity rateTripActivity);
 
     void inject(PayCardActivity payCardActivity);
+
+    void inject(PayCardResultActivity payCardResultActivity);
+
+    void inject(BookingCompletedActivity bookingCompletedActivity);
 
     /*inject fragment*/
     void inject(HomeFragment myTaskFragment);

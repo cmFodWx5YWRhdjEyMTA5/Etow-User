@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ * Copyright Ⓒ 2018. All rights reserved
+  ~ * Author DangTin. Create on 2018/05/13
+  -->
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/layout_pay_success"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/layout_bottom"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_booking_waiting_black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.2dp"
+                android:layout_marginBottom="@dimen/define_dimen_30"
+                android:background="@color/dividerColor" />
+
+            <com.user.etow.ui.widget.textview.TahomaRegularTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/please_wait"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="@dimen/text_size_xnormal" />
+
+            <com.user.etow.ui.widget.textview.TahomaRegularTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/define_dimen_40"
+                android:layout_marginTop="@dimen/define_dimen_10"
+                android:text="@string/waiting_driver_confirmation"
+                android:textColor="@color/textColorSecondary"
+                android:textSize="@dimen/text_size_normal" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layout_pay_fail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/layout_bottom_2"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_close_circle_black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layout_bottom_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.2dp"
+                android:layout_marginBottom="@dimen/define_dimen_20"
+                android:background="@color/dividerColor" />
+
+            <com.user.etow.ui.widget.textview.TahomaRegularTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/please_wait"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="@dimen/text_size_xnormal" />
+
+            <com.user.etow.ui.widget.textview.TahomaRegularTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/define_dimen_14"
+                android:layout_marginStart="@dimen/define_dimen_14"
+                android:layout_marginTop="@dimen/define_dimen_10"
+                android:gravity="center"
+                android:text="@string/message_pay_card_fail"
+                android:textColor="@color/textColorSecondary"
+                android:textSize="@dimen/text_size_normal" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/define_dimen_26"
+                android:layout_marginEnd="@dimen/define_dimen_14"
+                android:layout_marginStart="@dimen/define_dimen_14"
+                android:layout_marginTop="@dimen/define_dimen_20"
+                android:orientation="horizontal">
+
+                <com.user.etow.ui.widget.textview.TahomaRegularTextView
+                    android:id="@+id/tv_retry"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_grey_corner_left_bottom"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/define_dimen_14"
+                    android:paddingTop="@dimen/define_dimen_14"
+                    android:text="@string/retry"
+                    android:textColor="@color/textColorPrimary"
+                    android:textSize="@dimen/text_size_normal" />
+
+                <com.user.etow.ui.widget.textview.TahomaRegularTextView
+                    android:id="@+id/tv_pay_cash"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_black_corner_right_bottom"
+                    android:gravity="center"
+                    android:paddingBottom="@dimen/define_dimen_14"
+                    android:paddingTop="@dimen/define_dimen_14"
+                    android:text="@string/pay_cash"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_normal" />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

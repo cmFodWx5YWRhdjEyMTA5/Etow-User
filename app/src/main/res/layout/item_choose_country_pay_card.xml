@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/define_dimen_300"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <com.user.etow.ui.widget.textview.TahomaRegularTextView
+        android:id="@+id/tv_country"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/image_drop_down"
+        android:paddingTop="@dimen/define_dimen_10"
+        android:paddingBottom="@dimen/define_dimen_10"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/text_size_normal" />
+
+    <ImageView
+        android:id="@+id/image_drop_down"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_drop_down_black" />
+</RelativeLayout>

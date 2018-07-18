@@ -13,12 +13,140 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_centerInParent="true"
+        android:orientation="vertical"
+        android:padding="@dimen/define_dimen_14">
 
+        <com.user.etow.ui.widget.textview.TahomaRegularTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/card_number"
+            android:textColor="@color/textColorSecondary"
+            android:textSize="@dimen/text_size_small" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_card_black" />
+
+            <com.user.etow.ui.widget.textview.TahomaRegularTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/define_dimen_5"
+                android:text="@string/card"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="@dimen/text_size_normal" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:imeOptions="actionNext"
+                android:inputType="number"
+                android:padding="@dimen/define_dimen_10"
+                android:textColor="@color/textColorPrimary"
+                android:textSize="@dimen/text_size_normal" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.2dp"
+            android:background="@color/dividerColor" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/define_dimen_10"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:hint="@string/exp_date"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:paddingBottom="@dimen/define_dimen_10"
+                    android:paddingTop="@dimen/define_dimen_10"
+                    android:textColor="@color/textColorPrimary"
+                    android:textColorHint="@color/textColorAccent"
+                    android:textSize="@dimen/text_size_normal" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.2dp"
+                    android:background="@color/dividerColor" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/define_dimen_12"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:hint="@string/cvv"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:paddingBottom="@dimen/define_dimen_10"
+                    android:paddingTop="@dimen/define_dimen_10"
+                    android:textColor="@color/textColorPrimary"
+                    android:textColorHint="@color/textColorAccent"
+                    android:textSize="@dimen/text_size_normal" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.2dp"
+                    android:background="@color/dividerColor" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/define_dimen_10"
+            android:orientation="vertical">
+
+            <com.user.etow.ui.widget.textview.TahomaRegularTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/country"
+                android:textColor="@color/textColorSecondary"
+                android:textSize="@dimen/text_size_small" />
+
+            <Spinner
+                android:id="@+id/spinner_country"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:scrollbars="none" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.2dp"
+                android:background="@color/dividerColor" />
+        </LinearLayout>
 
     </LinearLayout>
 
     <com.user.etow.ui.widget.textview.TahomaRegularTextView
+        android:id="@+id/tv_continue"
         android:layout_width="@dimen/define_dimen_180"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

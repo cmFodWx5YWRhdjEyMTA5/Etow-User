@@ -13,6 +13,13 @@ public class CountryCode {
     private String dialCode;
     private String code;
 
+    public CountryCode() {
+    }
+
+    public CountryCode(String name) {
+        this.name = name;
+    }
+
     public CountryCode(String name, String dialCode, String code) {
         this.name = name;
         this.dialCode = dialCode;
