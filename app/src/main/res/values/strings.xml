@@ -140,4 +140,10 @@
     <string name="total_incl_vat">Total Incl of VAT</string>
     <string name="please_pay_cash_driver">Please pay cash to driver</string>
     <string name="pay_now">Pay Now</string>
+    <string name="thank_you">Thank you !</string>
+    <string name="thank_you_for_using_our_service">Thank you for using our service. Will be always at your service.</string>
+    <string name="how_was_your_trip">How was your trip ?</string>
+    <string name="rate_your_trip">Rate your trip</string>
+    <string name="skip">Skip</string>
+    <string name="label_continue">Continue</string>
 </resources>

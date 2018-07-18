@@ -5,8 +5,13 @@ package com.user.etow.ui.trip_completed;
  *  Author DangTin. Create on 2018/05/13
  */
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,12 +19,14 @@ import com.user.etow.R;
 import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
+import com.user.etow.ui.pay_card.PayCardActivity;
 import com.user.etow.ui.rate_trip.RateTripActivity;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class TripCompletedActivity extends BaseMVPDialogActivity implements TripCompletedMVPView {
 
@@ -107,11 +114,41 @@ public class TripCompletedActivity extends BaseMVPDialogActivity implements Trip
         }
     }
 
+    @OnClick(R.id.tv_action)
     public void onClickAction() {
         if (Constant.TYPE_PAYMENT_CASH.equals(mTypePayment)) {
             GlobalFuntion.startActivity(this, RateTripActivity.class);
         } else {
-
+            GlobalFuntion.startActivity(this, PayCardActivity.class);
         }
+    }
+
+    @OnClick(R.id.img_call_phone)
+    public void onClickCallDriver() {
+        showDialogCallDriver();
+    }
+
+    public void showDialogCallDriver() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.layout_dialog_call_driver);
+        Window window = dialog.getWindow();
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        dialog.setCancelable(false);
+
+        // Get view
+        final TextView tvCancel = dialog.findViewById(R.id.tv_cancel);
+        final TextView tvCall = dialog.findViewById(R.id.tv_call);
+
+        // Get listener
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 }

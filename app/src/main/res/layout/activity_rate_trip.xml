@@ -25,33 +25,13 @@
         android:orientation="vertical">
 
         <include
-            android:id="@+id/layout_driver_are_away"
-            layout="@layout/layout_driver_are_away"
-            android:visibility="gone" />
+            android:id="@+id/layout_thanks_service"
+            layout="@layout/layout_thanks_service"/>
 
         <include
-            android:id="@+id/layout_wait_driver"
-            layout="@layout/layout_wait_driver"
-            android:visibility="gone" />
-
-        <include
-            android:id="@+id/layout_cancel_trip"
-            layout="@layout/layout_cancel_trip"
-            android:visibility="gone" />
-
-        <include
-            android:id="@+id/layout_booking_accepted"
-            layout="@layout/layout_booking_accepted"
-            android:visibility="gone" />
-
-        <include
-            android:id="@+id/layout_driver_arrived"
-            layout="@layout/layout_driver_arrived"
-            android:visibility="gone" />
-
-        <include
-            android:id="@+id/layout_trip_ongoing"
-            layout="@layout/layout_trip_ongoing" />
+            android:id="@+id/layout_rate_service"
+            android:visibility="gone"
+            layout="@layout/layout_rate_service"/>
     </LinearLayout>
 
 </RelativeLayout>

@@ -274,6 +274,7 @@
                     <com.user.etow.ui.widget.textview.TahomaRegularTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/define_dimen_5"
                         android:text="@string/total_incl_vat"
                         android:textColor="@color/textColorSecondary"
                         android:textSize="@dimen/text_size_small" />
@@ -282,8 +283,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="377.00 ADE"
-                        android:layout_marginTop="@dimen/define_dimen_2"
-                        android:layout_marginBottom="@dimen/define_dimen_2"
+                        android:layout_marginTop="@dimen/define_dimen_5"
+                        android:layout_marginBottom="@dimen/define_dimen_5"
                         android:textColor="@color/textColorPrimary"
                         android:textSize="@dimen/text_size_xxnormal" />
 
@@ -292,6 +293,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/please_pay_cash_driver"
+                        android:layout_marginBottom="@dimen/define_dimen_5"
                         android:textColor="@color/textColorPrimary"
                         android:textSize="@dimen/text_size_normal" />
                 </LinearLayout>

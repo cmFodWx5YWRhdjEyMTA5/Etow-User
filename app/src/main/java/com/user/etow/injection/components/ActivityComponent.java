@@ -22,6 +22,7 @@ import com.user.etow.ui.main.my_account.MyAccountFragment;
 import com.user.etow.ui.main.my_bookings.MyBookingsFragment;
 import com.user.etow.ui.main.social_links.SocialLinksFragment;
 import com.user.etow.ui.main.term_and_condition.TermAndConditionFragment;
+import com.user.etow.ui.pay_card.PayCardActivity;
 import com.user.etow.ui.rate_trip.RateTripActivity;
 import com.user.etow.ui.splash.SplashActivity;
 import com.user.etow.ui.trip_completed.TripCompletedActivity;
@@ -63,6 +64,8 @@ public interface ActivityComponent {
     void inject(TripCompletedActivity tripCompletedActivity);
 
     void inject(RateTripActivity rateTripActivity);
+
+    void inject(PayCardActivity payCardActivity);
 
     /*inject fragment*/
     void inject(HomeFragment myTaskFragment);

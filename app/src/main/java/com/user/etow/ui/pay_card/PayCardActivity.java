@@ -1,4 +1,4 @@
-package com.user.etow.ui.trip_process;
+package com.user.etow.ui.pay_card;
 
 /*
  *  Copyright Ⓒ 2018. All rights reserved
@@ -6,31 +6,19 @@ package com.user.etow.ui.trip_process;
  */
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.LinearLayout;
 
 import com.user.etow.R;
-import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
-import com.user.etow.ui.trip_completed.TripCompletedActivity;
 
 import javax.inject.Inject;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
-public class TripProcessActivity extends BaseMVPDialogActivity implements TripProcessMVPView {
+public class PayCardActivity extends BaseMVPDialogActivity implements PayCardMVPView {
 
     @Inject
-    TripProcessPresenter presenter;
-
-    @BindView(R.id.layout_driver_are_away)
-    LinearLayout layoutDriverAreAway;
-
-    @BindView(R.id.layout_wait_driver)
-    LinearLayout layoutWaitDriver;
+    PayCardPresenter presenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +36,7 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
 
     @Override
     protected int addContextView() {
-        return R.layout.activity_trip_process;
+        return R.layout.activity_pay_card;
     }
 
     @Override
@@ -65,18 +53,5 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
     @Override
     public void onErrorCallApi(int code) {
         GlobalFuntion.showMessageError(this, code);
-    }
-
-    @OnClick(R.id.tv_confirm)
-    public void onClickConfirm() {
-        layoutDriverAreAway.setVisibility(View.GONE);
-        layoutWaitDriver.setVisibility(View.VISIBLE);
-    }
-
-    @OnClick(R.id.layout_trip_ongoing)
-    public void onClickFakeClick() {
-        Bundle bundle = new Bundle();
-        bundle.putString(Constant.TYPE_PAYMENT, Constant.TYPE_PAYMENT_CARD);
-        GlobalFuntion.startActivity(this, TripCompletedActivity.class, bundle);
     }
 }
