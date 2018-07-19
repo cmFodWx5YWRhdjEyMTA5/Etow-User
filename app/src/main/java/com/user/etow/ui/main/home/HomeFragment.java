@@ -7,6 +7,7 @@ package com.user.etow.ui.main.home;
  * ******************************************************************************
  */
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -41,8 +42,10 @@ import com.user.etow.constant.GlobalFuntion;
 import com.user.etow.listener.IMaps;
 import com.user.etow.ui.base.BaseMVPFragmentWithDialog;
 import com.user.etow.ui.confirm_booking.ConfirmBookingActivity;
+import com.user.etow.ui.date_booking.DateBookingActivity;
 import com.user.etow.ui.main.MainActivity;
 import com.user.etow.utils.MapsUtil;
+import com.user.etow.utils.StringUtil;
 
 import java.util.ArrayList;
 
@@ -55,6 +58,8 @@ import butterknife.OnClick;
 public class HomeFragment extends BaseMVPFragmentWithDialog implements HomeMVPView, OnMapReadyCallback {
 
     private final String TAG = HomeFragment.class.getName();
+
+    private MainActivity mMainActivity;
 
     @Inject
     HomePresenter presenter;
@@ -98,6 +103,12 @@ public class HomeFragment extends BaseMVPFragmentWithDialog implements HomeMVPVi
     @BindView(R.id.tv_current_location)
     TextView tvCurrentLocation;
 
+    @BindView(R.id.layout_date_time_booking)
+    LinearLayout layoutDateTimeBooking;
+
+    @BindView(R.id.tv_date_time_booking)
+    TextView tvDateTimeBooking;
+
     private boolean mIsVehicleNormal = true;
     private int countClick = 1;
     private GoogleMap mMap;
@@ -114,7 +125,7 @@ public class HomeFragment extends BaseMVPFragmentWithDialog implements HomeMVPVi
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        mMainActivity = (MainActivity) getActivity();
         getActivityComponent().inject(this);
         viewUnbind = ButterKnife.bind(this, view);
         presenter.initialView(this);
@@ -124,6 +135,18 @@ public class HomeFragment extends BaseMVPFragmentWithDialog implements HomeMVPVi
         this.getChildFragmentManager().beginTransaction()
                 .add(R.id.fragment_view_map, mMapFragment).commit();
         mMapFragment.getMapAsync(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (!StringUtil.isEmpty(mMainActivity.getDateBooking())) {
+            layoutDateTimeBooking.setVisibility(View.VISIBLE);
+            tvDateTimeBooking.setText(mMainActivity.getDateBooking());
+            onClickLayoutWhereToGo();
+        } else {
+            layoutDateTimeBooking.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -396,5 +419,11 @@ public class HomeFragment extends BaseMVPFragmentWithDialog implements HomeMVPVi
     @OnClick(R.id.img_clear_drop_off)
     public void onClickClearDropOff() {
         tvDropOff.setText("");
+    }
+
+    @OnClick(R.id.img_date)
+    public void onClickDateBooking() {
+        Intent intent = new Intent(getActivity(), DateBookingActivity.class);
+        startActivityForResult(intent, 1);
     }
 }

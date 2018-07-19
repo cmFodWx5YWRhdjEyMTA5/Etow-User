@@ -160,4 +160,10 @@
     <string name="check_status_your_booking">Check status of your booking</string>
     <string name="label_in">in</string>
     <string name="i_understand">I understand</string>
+    <string name="schedule_booking">Schedule booking</string>
+    <string name="select_date">Select date</string>
+    <string name="select_time">Select time</string>
+    <string name="set_pickup_date">Set Pickup Date</string>
+    <string name="please_select_date">Please select date booking</string>
+    <string name="please_select_time">Please select time booking</string>
 </resources>

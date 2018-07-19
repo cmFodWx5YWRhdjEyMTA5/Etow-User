@@ -34,4 +34,5 @@ public interface Constant {
     String IS_TRIP_COMPLETED = "IS_TRIP_COMPLETED";
     String OBJECT_TRIP = "OBJECT_TRIP";
     String IS_DATE_SCHEDULED = "IS_DATE_SCHEDULED";
+    String DATE_BOOKING = "DATE_BOOKING";
 }

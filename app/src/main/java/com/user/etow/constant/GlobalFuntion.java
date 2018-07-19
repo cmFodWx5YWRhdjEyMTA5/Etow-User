@@ -6,7 +6,9 @@ package com.user.etow.constant;
  */
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
@@ -16,11 +18,16 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.user.etow.R;
+import com.user.etow.listener.IGetDateListener;
+import com.user.etow.listener.IGetTimeListener;
 import com.user.etow.models.CountryCode;
+import com.user.etow.utils.StringUtil;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,6 +36,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class GlobalFuntion {
 
@@ -157,4 +165,41 @@ public class GlobalFuntion {
         }
         return isValid;
     }*/
+
+    public static void showDatePicker(Context context, final IGetDateListener getDateListener) {
+        Calendar mCalendar = Calendar.getInstance();
+        DatePickerDialog.OnDateSetListener callBack = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                String date = new StringBuilder().append(year).append("-")
+                        .append(StringUtil.getDoubleNumber(monthOfYear + 1)).append("-")
+                        .append(StringUtil.getDoubleNumber(dayOfMonth)).toString();
+                getDateListener.getDate(date);
+            }
+
+        };
+        DatePickerDialog datePicker = new DatePickerDialog(context,
+                callBack, mCalendar.get(Calendar.YEAR), mCalendar.get(Calendar.MONTH),
+                mCalendar.get(Calendar.DATE));
+        datePicker.show();
+    }
+
+    public static void showTimePicker(Context context, final IGetTimeListener getDateListener) {
+        Calendar mCalendar = Calendar.getInstance();
+        TimePickerDialog.OnTimeSetListener callBack = new TimePickerDialog.OnTimeSetListener() {
+
+            @Override
+            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                String time = "";
+                time = new StringBuilder().append(StringUtil.getDoubleNumber(hourOfDay)).append(":")
+                        .append(StringUtil.getDoubleNumber(minute)).toString();
+                getDateListener.getTime(time);
+            }
+        };
+        TimePickerDialog timePicker = new TimePickerDialog(context,
+                callBack, mCalendar.get(Calendar.HOUR_OF_DAY), mCalendar.get(Calendar.MINUTE),
+                true);
+        timePicker.show();
+    }
 }

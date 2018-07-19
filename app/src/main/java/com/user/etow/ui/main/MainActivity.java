@@ -5,6 +5,7 @@ package com.user.etow.ui.main;
  *  Author DangTin. Create on 2018/05/13
  */
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.user.etow.R;
+import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
 import com.user.etow.ui.main.get_in_touch.GetInTouchFragment;
@@ -49,6 +51,8 @@ public class MainActivity extends BaseMVPDialogActivity implements MainMVPView {
 
     @BindView(R.id.tv_title_header)
     TextView tvTitleHeader;
+
+    private String mDateBooking;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -194,5 +198,18 @@ public class MainActivity extends BaseMVPDialogActivity implements MainMVPView {
                 replaceFragment(new SocialLinksFragment(), SocialLinksFragment.class.getName());
                 break;
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) { // Activity.RESULT_OK
+            // get String data from Intent
+            mDateBooking = data.getStringExtra(Constant.DATE_BOOKING);
+        }
+    }
+
+    public String getDateBooking() {
+        return mDateBooking;
     }
 }
