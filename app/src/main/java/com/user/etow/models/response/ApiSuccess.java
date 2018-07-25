@@ -7,16 +7,16 @@ package com.user.etow.models.response;
 
 public class ApiSuccess {
 
-    private boolean success;
+    private String status;
 
     private String message;
 
-    public boolean isSuccess() {
-        return success;
+    public String getStatus() {
+        return status;
     }
 
-    public void setSuccess(boolean success) {
-        this.success = success;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public String getMessage() {

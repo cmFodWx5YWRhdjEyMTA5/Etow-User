@@ -7,7 +7,7 @@ package com.user.etow.ui.main.my_bookings;
  * ******************************************************************************
  */
 
-import com.user.etow.data.DataManager;
+import com.user.etow.data.NetworkManager;
 import com.user.etow.injection.PerActivity;
 import com.user.etow.models.Trip;
 import com.user.etow.ui.base.BasePresenter;
@@ -23,8 +23,8 @@ import retrofit2.Retrofit;
 public class MyBookingsPresenter extends BasePresenter<MyBookingsMVPView> {
 
     @Inject
-    public MyBookingsPresenter(Retrofit mRetrofit, DataManager mDataManager) {
-        super(mRetrofit, mDataManager);
+    public MyBookingsPresenter(Retrofit mRetrofit, NetworkManager mNetworkManager) {
+        super(mRetrofit, mNetworkManager);
     }
 
     @Override

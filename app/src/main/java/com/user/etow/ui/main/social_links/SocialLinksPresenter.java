@@ -7,7 +7,7 @@ package com.user.etow.ui.main.social_links;
  * ******************************************************************************
  */
 
-import com.user.etow.data.DataManager;
+import com.user.etow.data.NetworkManager;
 import com.user.etow.injection.PerActivity;
 import com.user.etow.ui.base.BasePresenter;
 
@@ -19,8 +19,8 @@ import retrofit2.Retrofit;
 public class SocialLinksPresenter extends BasePresenter<SocialLinksMVPView> {
 
     @Inject
-    public SocialLinksPresenter(Retrofit mRetrofit, DataManager mDataManager) {
-        super(mRetrofit, mDataManager);
+    public SocialLinksPresenter(Retrofit mRetrofit, NetworkManager mNetworkManager) {
+        super(mRetrofit, mNetworkManager);
     }
 
     @Override

@@ -8,7 +8,7 @@ package com.user.etow.ui.base;
 import android.support.annotation.CallSuper;
 
 import com.user.etow.common.HttpUtil;
-import com.user.etow.data.DataManager;
+import com.user.etow.data.NetworkManager;
 import com.user.etow.models.response.ApiError;
 
 import retrofit2.Retrofit;
@@ -18,11 +18,11 @@ public abstract class BasePresenter<V extends MvpView> implements Presenter<V> {
     private V mMvpView;
 
     protected final Retrofit mRetrofit;
-    protected final DataManager mDataManager;
+    protected final NetworkManager mNetworkManager;
 
-    public BasePresenter(Retrofit mRetrofit, DataManager mDataManager) {
+    public BasePresenter(Retrofit mRetrofit, NetworkManager networkManager) {
         this.mRetrofit = mRetrofit;
-        this.mDataManager = mDataManager;
+        this.mNetworkManager = networkManager;
     }
 
     @CallSuper

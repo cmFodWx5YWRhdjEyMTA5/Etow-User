@@ -5,15 +5,14 @@ package com.user.etow.data.networking;
  *  Author DangTin. Create on 2018/05/13
  */
 
-import com.user.etow.BuildConfig;
-import com.user.etow.constant.Constant;
-import com.user.etow.constant.KeyAPI;
-import com.user.etow.models.response.ApiSuccess;
-import com.user.etow.models.response.CategoryResponse;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.user.etow.BuildConfig;
+import com.user.etow.constant.Constant;
+import com.user.etow.constant.KeyAPI;
+import com.user.etow.models.response.ApiSuccess;
 
 import java.util.concurrent.TimeUnit;
 
@@ -26,10 +25,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.POST;
-import retrofit2.http.Query;
 import rx.Observable;
 
 public interface ThinkFitService {
@@ -77,11 +73,7 @@ public interface ThinkFitService {
         }
     }
 
-    @GET("keisuke/shops_list.json")
-    Observable<CategoryResponse> getListCategory();
-
     @FormUrlEncoded
-    @POST("auth/fbconnect.json")
-    Observable<ApiSuccess> postLikeFood(@Header(KeyAPI.KEY_HTTP_X_API_TOKEN) String token,
-                                        @Field("id") int id);
+    @POST("user/get-otp")
+    Observable<ApiSuccess> getOTP(@Field(KeyAPI.KEY_PHONE) String phone);
 }

@@ -5,7 +5,7 @@ package com.user.etow.ui.splash;
  *  Author DangTin. Create on 2018/05/13
  */
 
-import com.user.etow.data.DataManager;
+import com.user.etow.data.NetworkManager;
 import com.user.etow.ui.base.BasePresenter;
 
 import javax.inject.Inject;
@@ -15,8 +15,8 @@ import retrofit2.Retrofit;
 public class SplashPresenter extends BasePresenter<SplashMVPView> {
 
     @Inject
-    public SplashPresenter(Retrofit mRetrofit, DataManager mDataManager) {
-        super(mRetrofit, mDataManager);
+    public SplashPresenter(Retrofit mRetrofit, NetworkManager mNetworkManager) {
+        super(mRetrofit, mNetworkManager);
     }
 
     @Override

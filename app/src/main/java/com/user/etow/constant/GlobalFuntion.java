@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -37,6 +38,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import io.michaelrocks.libphonenumber.android.NumberParseException;
+import io.michaelrocks.libphonenumber.android.PhoneNumberUtil;
+import io.michaelrocks.libphonenumber.android.Phonenumber;
 
 public class GlobalFuntion {
 
@@ -153,18 +158,17 @@ public class GlobalFuntion {
         return list;
     }
 
-    /*public static boolean checkMobileNumber(Context context, String mobileNumber, String code) {
+    public static boolean checkMobileNumber(Context context, String mobileNumber, String code) {
         boolean isValid = false;
         PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.createInstance(context);
         try {
-            Log.d("Mobile number:", mobileNumber + " code: " + code);
             final Phonenumber.PhoneNumber phoneNumber = phoneNumberUtil.parse(mobileNumber, code);
             isValid = phoneNumberUtil.isValidNumber(phoneNumber);
         } catch (NumberParseException e) {
             e.printStackTrace();
         }
         return isValid;
-    }*/
+    }
 
     public static void showDatePicker(Context context, final IGetDateListener getDateListener) {
         Calendar mCalendar = Calendar.getInstance();

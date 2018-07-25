@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.user.etow.R;
+import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
 import com.user.etow.ui.auth.sign_up.SignUpActivity;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
@@ -38,6 +39,7 @@ public class EnterOTPActivity extends BaseMVPDialogActivity implements EnterOTPM
     EditText edtOtp;
 
     private boolean mIsActiveDone;
+    private String mPhoneNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +49,17 @@ public class EnterOTPActivity extends BaseMVPDialogActivity implements EnterOTPM
         viewUnbind = ButterKnife.bind(this);
         presenter.initialView(this);
 
-        tvMessage.setText(getString(R.string.have_sent_sms) + " " + "+84 87564656");
+        getDataIntent();
+
+        tvMessage.setText(getString(R.string.have_sent_sms) + " " + mPhoneNumber);
         setListener();
+    }
+
+    private void getDataIntent() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            mPhoneNumber = bundle.getString(Constant.PHONE_NUMBER);
+        }
     }
 
     @Override

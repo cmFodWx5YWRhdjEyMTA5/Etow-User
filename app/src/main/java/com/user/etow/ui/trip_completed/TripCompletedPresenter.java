@@ -5,7 +5,7 @@ package com.user.etow.ui.trip_completed;
  *  Author DangTin. Create on 2018/05/13
  */
 
-import com.user.etow.data.DataManager;
+import com.user.etow.data.NetworkManager;
 import com.user.etow.ui.base.BasePresenter;
 
 import javax.inject.Inject;
@@ -15,8 +15,8 @@ import retrofit2.Retrofit;
 public class TripCompletedPresenter extends BasePresenter<TripCompletedMVPView> {
 
     @Inject
-    public TripCompletedPresenter(Retrofit mRetrofit, DataManager mDataManager) {
-        super(mRetrofit, mDataManager);
+    public TripCompletedPresenter(Retrofit mRetrofit, NetworkManager mNetworkManager) {
+        super(mRetrofit, mNetworkManager);
     }
 
     @Override

@@ -69,6 +69,7 @@
     <string name="message_enter_your_mobile_number">Please enter your mobile number to send OTP Code</string>
     <string name="get_code">Get code</string>
     <string name="please_enter_your_mobile_number">Please enter your mobile number</string>
+    <string name="msg_mobile_number_invalid">Your mobile number invalid</string>
     <string name="please_agree_the_terms_and_conditions">Please agree the terms and conditions</string>
     <string name="did_not_get_the_code">I didn\'t not get the code</string>
     <string name="enter_otp_code">Enter OTP code</string>

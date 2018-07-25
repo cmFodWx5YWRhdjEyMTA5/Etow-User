@@ -7,7 +7,7 @@ package com.user.etow.ui.main.home;
  * ******************************************************************************
  */
 
-import com.user.etow.data.DataManager;
+import com.user.etow.data.NetworkManager;
 import com.user.etow.injection.PerActivity;
 import com.user.etow.ui.base.BasePresenter;
 
@@ -19,8 +19,8 @@ import retrofit2.Retrofit;
 public class HomePresenter extends BasePresenter<HomeMVPView> {
 
     @Inject
-    public HomePresenter(Retrofit mRetrofit, DataManager mDataManager) {
-        super(mRetrofit, mDataManager);
+    public HomePresenter(Retrofit mRetrofit, NetworkManager mNetworkManager) {
+        super(mRetrofit, mNetworkManager);
     }
 
     @Override

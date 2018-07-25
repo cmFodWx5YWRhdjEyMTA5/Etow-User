@@ -9,7 +9,7 @@ import android.app.Application;
 import android.content.Context;
 import android.widget.Toast;
 
-import com.user.etow.data.DataManager;
+import com.user.etow.data.NetworkManager;
 import com.user.etow.injection.ApplicationContext;
 import com.user.etow.injection.modules.ApplicationModule;
 import com.user.etow.ui.base.BaseActivity;
@@ -31,7 +31,7 @@ public interface ApplicationComponent {
 
     Retrofit retrofit();
 
-    DataManager dataManager();
+    NetworkManager networkManager();
 
     Toast toast();
 

@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.user.etow.R;
 import com.user.etow.adapter.CountryCodeAdapter;
+import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
 import com.user.etow.models.CountryCode;
 import com.user.etow.ui.auth.enter_otp.EnterOTPActivity;
@@ -51,6 +52,7 @@ public class VerifyMobileNumberActivity extends BaseMVPDialogActivity implements
     CheckBox chbTermsConditions;
 
     private CountryCodeAdapter countryCodeAdapter;
+    private CountryCode mCountryCode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +99,7 @@ public class VerifyMobileNumberActivity extends BaseMVPDialogActivity implements
         spinnerCountryCode.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                CountryCode countryCode = countryCodeAdapter.getItem(position);
+                mCountryCode = countryCodeAdapter.getItem(position);
             }
 
             @Override
@@ -155,17 +157,27 @@ public class VerifyMobileNumberActivity extends BaseMVPDialogActivity implements
 
     @OnClick(R.id.tv_get_code)
     public void onClickGetCode() {
+        String strMobileNumber = edtMobileNumber.getText().toString().trim();
         if (StringUtil.isEmpty(edtMobileNumber.getText().toString().trim())) {
             showAlert(getString(R.string.please_enter_your_mobile_number));
         } else if (!chbTermsConditions.isChecked()) {
             showAlert(getString(R.string.please_agree_the_terms_and_conditions));
+        } else if (!GlobalFuntion.checkMobileNumber(this, strMobileNumber, mCountryCode.getCode())) {
+                showAlert(getString(R.string.msg_mobile_number_invalid));
         } else {
-            GlobalFuntion.startActivity(this, EnterOTPActivity.class);
+            presenter.getOTP(mCountryCode.getDialCode() + strMobileNumber);
         }
     }
 
     @OnClick(R.id.tv_terms_and_conditions)
     public void onClickTermsAndConditions() {
         GlobalFuntion.startActivity(this, TermAndConditionActivity.class);
+    }
+
+    @Override
+    public void getStatusCodeOTP(String phone) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Constant.PHONE_NUMBER, phone);
+        GlobalFuntion.startActivity(this, EnterOTPActivity.class, bundle);
     }
 }
