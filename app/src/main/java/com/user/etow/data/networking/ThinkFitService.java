@@ -76,4 +76,8 @@ public interface ThinkFitService {
     @FormUrlEncoded
     @POST("user/get-otp")
     Observable<ApiSuccess> getOTP(@Field(KeyAPI.KEY_PHONE) String phone);
+
+    @FormUrlEncoded
+    @POST("user/verify-otp")
+    Observable<ApiSuccess> verifyOTP(@Field(KeyAPI.KEY_OTP) String otp);
 }

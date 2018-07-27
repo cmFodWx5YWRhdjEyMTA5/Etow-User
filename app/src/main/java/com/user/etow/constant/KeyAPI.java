@@ -20,4 +20,5 @@ public class KeyAPI {
 
     // key param
     public static final String KEY_PHONE = "phone";
+    public static final String KEY_OTP = "otp";
 }

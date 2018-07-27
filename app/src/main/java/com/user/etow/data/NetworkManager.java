@@ -26,4 +26,8 @@ public class NetworkManager {
     public Observable<ApiSuccess> getOTP(String phone) {
         return mThinkFitService.getOTP(phone);
     }
+
+    public Observable<ApiSuccess> verifyOTP(String otp) {
+        return mThinkFitService.verifyOTP(otp);
+    }
 }

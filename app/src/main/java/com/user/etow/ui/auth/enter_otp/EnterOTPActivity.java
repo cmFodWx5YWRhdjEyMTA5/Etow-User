@@ -118,12 +118,21 @@ public class EnterOTPActivity extends BaseMVPDialogActivity implements EnterOTPM
     @OnClick(R.id.tv_done)
     public void onClickDone() {
         if (mIsActiveDone) {
-            GlobalFuntion.startActivity(this, SignUpActivity.class);
+            // presenter.verifyOTP(edtOtp.getText().toString().trim(), mPhoneNumber);
+            //Todo fake next page
+            getStatusVerifyOTP(mPhoneNumber);
         }
     }
 
     @OnClick(R.id.tv_not_get_code)
     public void onClickDidNotGetTheCode() {
+        onBackPressed();
+    }
 
+    @Override
+    public void getStatusVerifyOTP(String phone) {
+        Bundle bundle = new Bundle();
+        bundle.putString(Constant.PHONE_NUMBER, mPhoneNumber);
+        GlobalFuntion.startActivity(this, SignUpActivity.class, bundle);
     }
 }

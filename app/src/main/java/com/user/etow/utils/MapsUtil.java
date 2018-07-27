@@ -100,7 +100,6 @@ public class MapsUtil {
 
         @Override
         protected void onPostExecute(LatLng result) {
-            // TODO Auto-generated method stub
             super.onPostExecute(result);
             try {
                 imap.processFinished(result);
@@ -166,7 +165,6 @@ public class MapsUtil {
 
         @Override
         protected void onPostExecute(String result) {
-            // TODO Auto-generated method stub
             super.onPostExecute(result);
             try {
                 imap.processFinished(result);
@@ -200,12 +198,10 @@ public class MapsUtil {
 
         @Override
         protected void onPostExecute(Void result) {
-            // TODO Auto-generated method stub
             super.onPostExecute(result);
 
             if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
                 // here to request the missing permissions, and then overriding
                 //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
@@ -246,19 +242,16 @@ public class MapsUtil {
 
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
-            // TODO Auto-generated method stub
 
         }
 
         @Override
         public void onProviderEnabled(String provider) {
-            // TODO Auto-generated method stub
 
         }
 
         @Override
         public void onProviderDisabled(String provider) {
-            // TODO Auto-generated method stub
 
         }
     }
@@ -277,7 +270,6 @@ public class MapsUtil {
 
         @Override
         protected Address doInBackground(LatLng... params) {
-            // TODO Auto-generated method stub
             LatLng latLng = params[0];
 
             Geocoder geocoder;
@@ -290,7 +282,6 @@ public class MapsUtil {
                 addresses = geocoder.getFromLocation(latLng.latitude,
                         latLng.longitude, 1);
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
 
@@ -303,7 +294,6 @@ public class MapsUtil {
 
         @Override
         protected void onPostExecute(Address result) {
-            // TODO Auto-generated method stub
             super.onPostExecute(result);
             imap.processFinished(result);
         }

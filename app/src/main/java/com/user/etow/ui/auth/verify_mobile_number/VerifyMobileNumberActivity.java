@@ -165,7 +165,9 @@ public class VerifyMobileNumberActivity extends BaseMVPDialogActivity implements
         } else if (!GlobalFuntion.checkMobileNumber(this, strMobileNumber, mCountryCode.getCode())) {
                 showAlert(getString(R.string.msg_mobile_number_invalid));
         } else {
-            presenter.getOTP(mCountryCode.getDialCode() + strMobileNumber);
+            // presenter.getOTP(mCountryCode.getDialCode() + strMobileNumber);
+            //Todo fake next page
+            getStatusCodeOTP(mCountryCode.getDialCode() + strMobileNumber);
         }
     }
 
