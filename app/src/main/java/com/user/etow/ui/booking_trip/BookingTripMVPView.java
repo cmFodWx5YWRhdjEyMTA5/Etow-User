@@ -1,4 +1,4 @@
-package com.user.etow.ui.date_booking;
+package com.user.etow.ui.booking_trip;
 
 /*
  *  Copyright Ⓒ 2018. All rights reserved
@@ -7,6 +7,6 @@ package com.user.etow.ui.date_booking;
 
 import com.user.etow.ui.base.BaseScreenMvpView;
 
-interface DateBookingMVPView extends BaseScreenMvpView {
+interface BookingTripMVPView extends BaseScreenMvpView {
 
 }

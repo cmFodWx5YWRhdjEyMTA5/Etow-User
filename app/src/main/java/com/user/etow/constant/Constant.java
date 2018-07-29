@@ -37,14 +37,13 @@ public interface Constant {
     String TYPE_PAYMENT_CASH = "type_payment_cash";
     String TYPE_PAYMENT_CARD = "type_payment_card";
 
-    String CURRENT_LOCATION = "CURRENT_LOCATION";
-
     // Key Intent
     String TYPE_PAYMENT = "TYPE_PAYMENT";
     String IS_TRIP_COMPLETED = "IS_TRIP_COMPLETED";
     String OBJECT_TRIP = "OBJECT_TRIP";
     String IS_DATE_SCHEDULED = "IS_DATE_SCHEDULED";
-    String DATE_BOOKING = "DATE_BOOKING";
     String PHONE_NUMBER = "PHONE_NUMBER";
     String IS_UPDATE = "IS_UPDATE";
+    String SCHEDULE_DATE = "SCHEDULE_DATE";
+    String IS_VEHICLE_NORMAL = "IS_VEHICLE_NORMAL";
 }

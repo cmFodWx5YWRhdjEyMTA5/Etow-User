@@ -97,7 +97,7 @@ public class TripUpcomingAdapter extends RecyclerView.Adapter<TripUpcomingAdapte
         @Override
         public void bindData(Context context, Trip trip, int position) {
             if (trip != null) {
-                if (trip.getStatus() == 1) {
+                /*if (trip.getStatus() == 1) {
                     tvStatus.setText(context.getString(R.string.pending));
                     tvStatus.setTextColor(context.getResources().getColor(R.color.orange));
                 } else if (trip.getStatus() == 2) {
@@ -106,7 +106,7 @@ public class TripUpcomingAdapter extends RecyclerView.Adapter<TripUpcomingAdapte
                 } else {
                     tvStatus.setText(context.getString(R.string.no_driver_available));
                     tvStatus.setTextColor(context.getResources().getColor(R.color.button_red));
-                }
+                }*/
 
                 layoutItem.setOnClickListener(new View.OnClickListener() {
                     @Override

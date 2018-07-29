@@ -1,4 +1,4 @@
-package com.user.etow.ui.date_booking;
+package com.user.etow.ui.booking_trip;
 
 /*
  *  Copyright Ⓒ 2018. All rights reserved
@@ -12,15 +12,15 @@ import javax.inject.Inject;
 
 import retrofit2.Retrofit;
 
-public class DateBookingPresenter extends BasePresenter<DateBookingMVPView> {
+public class BookingTripPresenter extends BasePresenter<BookingTripMVPView> {
 
     @Inject
-    public DateBookingPresenter(Retrofit mRetrofit, NetworkManager mNetworkManager) {
+    public BookingTripPresenter(Retrofit mRetrofit, NetworkManager mNetworkManager) {
         super(mRetrofit, mNetworkManager);
     }
 
     @Override
-    public void initialView(DateBookingMVPView mvpView) {
+    public void initialView(BookingTripMVPView mvpView) {
         super.initialView(mvpView);
     }
 }

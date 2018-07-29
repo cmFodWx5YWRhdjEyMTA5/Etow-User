@@ -23,7 +23,6 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.user.etow.R;
-import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
 import com.user.etow.messages.SelectAvatarSuccess;
 import com.user.etow.models.Image;
@@ -62,8 +61,6 @@ public class MainActivity extends BaseMVPDialogActivity implements MainMVPView {
 
     @BindView(R.id.tv_title_header)
     TextView tvTitleHeader;
-
-    private String mDateBooking;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -224,17 +221,10 @@ public class MainActivity extends BaseMVPDialogActivity implements MainMVPView {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == GlobalFuntion.PICK_SCHEDULE_DATE) {
-            mDateBooking = data.getStringExtra(Constant.DATE_BOOKING);
-        }
         if (requestCode == GlobalFuntion.PICK_IMAGE_AVATAR) {
             Image image = ImagePicker.getImageFromResult(this, resultCode, data);
             EventBus.getDefault().post(new SelectAvatarSuccess(image));
         }
-    }
-
-    public String getDateBooking() {
-        return mDateBooking;
     }
 
     @Override

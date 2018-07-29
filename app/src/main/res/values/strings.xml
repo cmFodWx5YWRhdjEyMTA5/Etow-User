@@ -174,6 +174,9 @@
     <string name="unble_trace_location">Unble to trace your location</string>
     <string name="message_turn_on_gps">Please turn on your GPS</string>
     <string name="choose_image">Please choose image</string>
+    <string name="schedule_booking_invalid">Schedule booking invalid</string>
+    <string name="error_select_drop_off_location">Error ! Please select drop off location again.</string>
+    <string name="error_select_pick_up_location">Error ! Please select pick up location again.</string>
 
     // msg request api
     <string name="msg_otp_incorrect">Otp incorrect.</string>

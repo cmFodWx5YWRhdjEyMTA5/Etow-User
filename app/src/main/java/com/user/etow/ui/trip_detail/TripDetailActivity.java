@@ -106,7 +106,7 @@ public class TripDetailActivity extends BaseMVPDialogActivity implements TripDet
             tvLabelDateTime.setText(getString(R.string.scheduled_date_and_time));
             layoutBookingStatus.setVisibility(View.VISIBLE);
             if (mTrip != null) {
-                if (mTrip.getStatus() == 1) {
+                /*if (mTrip.getStatus() == 1) {
                     tvStatus.setText(getString(R.string.pending));
                     tvStatus.setTextColor(getResources().getColor(R.color.orange));
                 } else if (mTrip.getStatus() == 2) {
@@ -115,7 +115,7 @@ public class TripDetailActivity extends BaseMVPDialogActivity implements TripDet
                 } else {
                     tvStatus.setText(getString(R.string.no_driver_available));
                     tvStatus.setTextColor(getResources().getColor(R.color.button_red));
-                }
+                }*/
             }
         }
     }

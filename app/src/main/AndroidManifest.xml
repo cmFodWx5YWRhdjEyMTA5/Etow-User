@@ -122,7 +122,7 @@
             android:windowSoftInputMode="stateHidden" />
 
         <activity
-            android:name=".ui.date_booking.DateBookingActivity"
+            android:name=".ui.booking_trip.BookingTripActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
     </application>

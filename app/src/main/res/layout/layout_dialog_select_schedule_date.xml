@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ * Copyright Ⓒ 2018. All rights reserved
+  ~ * Author DangTin. Create on 2018/05/20
+  -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_bottom"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:background="@color/white"
+    android:orientation="vertical"
+    android:padding="@dimen/define_dimen_20">
+
+    <com.user.etow.ui.widget.textview.TahomaRegularTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/schedule_booking"
+        android:textColor="@color/textColorPrimary"
+        android:textSize="@dimen/text_size_xnormal" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/define_dimen_30"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/define_dimen_16"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <com.user.etow.ui.widget.textview.TahomaRegularTextView
+                android:id="@+id/tv_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="@string/select_date"
+                android:paddingBottom="@dimen/define_dimen_10"
+                android:paddingTop="@dimen/define_dimen_10"
+                android:textColor="@color/textColorPrimary"
+                android:textColorHint="@color/textColorAccent"
+                android:textSize="@dimen/text_size_normal" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.2dp"
+                android:background="@color/dividerColor" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <com.user.etow.ui.widget.textview.TahomaRegularTextView
+                android:id="@+id/tv_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:hint="@string/select_time"
+                android:paddingBottom="@dimen/define_dimen_10"
+                android:paddingTop="@dimen/define_dimen_10"
+                android:textColor="@color/textColorPrimary"
+                android:textColorHint="@color/textColorAccent"
+                android:textSize="@dimen/text_size_normal" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.2dp"
+                android:background="@color/dividerColor" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.user.etow.ui.widget.textview.TahomaRegularTextView
+        android:id="@+id/tv_set_pickup_date"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/define_dimen_30"
+        android:background="@drawable/bg_black_corner"
+        android:gravity="center"
+        android:paddingBottom="@dimen/define_dimen_14"
+        android:paddingTop="@dimen/define_dimen_14"
+        android:text="@string/set_pickup_date"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_normal" />
+</LinearLayout>

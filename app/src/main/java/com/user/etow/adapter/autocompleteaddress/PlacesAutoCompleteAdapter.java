@@ -65,7 +65,7 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements
 		}
 
 		String strPlace = resultList.get(position);
-		if (Constant.CURRENT_LOCATION.equals(strPlace)) {
+		if (mContext.getString(R.string.current_location).equals(strPlace)) {
 			holder.layoutUseCurrentLocation.setVisibility(View.VISIBLE);
 			holder.lblPlace.setVisibility(View.GONE);
 		} else {
@@ -92,7 +92,7 @@ public class PlacesAutoCompleteAdapter extends ArrayAdapter<String> implements
 					filterResults.count = resultList.size();
 
 					if (mIsSelectCurrentLocation) {
-						resultList.add(0, Constant.CURRENT_LOCATION);
+						resultList.add(0, getContext().getString(R.string.current_location));
 					}
 				}
 

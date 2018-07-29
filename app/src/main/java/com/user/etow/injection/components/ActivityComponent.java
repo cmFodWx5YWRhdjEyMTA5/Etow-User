@@ -14,8 +14,8 @@ import com.user.etow.ui.auth.term_and_condition.TermAndConditionActivity;
 import com.user.etow.ui.auth.user_start.UserStartActivity;
 import com.user.etow.ui.auth.verify_mobile_number.VerifyMobileNumberActivity;
 import com.user.etow.ui.booking_completed.BookingCompletedActivity;
+import com.user.etow.ui.booking_trip.BookingTripActivity;
 import com.user.etow.ui.confirm_booking.ConfirmBookingActivity;
-import com.user.etow.ui.date_booking.DateBookingActivity;
 import com.user.etow.ui.feedback.FeedbackActivity;
 import com.user.etow.ui.main.MainActivity;
 import com.user.etow.ui.main.get_in_touch.GetInTouchFragment;
@@ -74,7 +74,7 @@ public interface ActivityComponent {
 
     void inject(BookingCompletedActivity bookingCompletedActivity);
 
-    void inject(DateBookingActivity dateBookingActivity);
+    void inject(BookingTripActivity bookingTripActivity);
 
     /*inject fragment*/
     void inject(HomeFragment myTaskFragment);

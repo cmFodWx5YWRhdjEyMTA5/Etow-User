@@ -140,12 +140,12 @@ public class MyBookingsFragment extends BaseMVPFragmentWithDialog implements MyB
 
     @Override
     public void loadListTripUpcoming(List<Trip> listTripUpcoming) {
-        listTripUpcoming.add(new Trip(1));
-        listTripUpcoming.add(new Trip(2));
-        listTripUpcoming.add(new Trip(3));
-        listTripUpcoming.add(new Trip(2));
-        listTripUpcoming.add(new Trip(1));
-        listTripUpcoming.add(new Trip(3));
+        listTripUpcoming.add(new Trip());
+        listTripUpcoming.add(new Trip());
+        listTripUpcoming.add(new Trip());
+        listTripUpcoming.add(new Trip());
+        listTripUpcoming.add(new Trip());
+        listTripUpcoming.add(new Trip());
 
         tripUpcomingAdapter.setListData(listTripUpcoming);
     }

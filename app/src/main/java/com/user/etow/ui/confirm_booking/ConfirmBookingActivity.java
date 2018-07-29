@@ -13,8 +13,10 @@ import android.widget.TextView;
 import com.user.etow.R;
 import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
+import com.user.etow.models.Trip;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
 import com.user.etow.ui.trip_process.TripProcessActivity;
+import com.user.etow.utils.StringUtil;
 
 import javax.inject.Inject;
 
@@ -39,7 +41,7 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
     @BindView(R.id.layout_estimate_time)
     LinearLayout layoutEstimateTime;
 
-    private boolean mIsDateScheduled;
+    private Trip mTripBooking;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +58,7 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
     private void getDataIntent() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            mIsDateScheduled = bundle.getBoolean(Constant.IS_DATE_SCHEDULED);
+            mTripBooking = (Trip) bundle.get(Constant.OBJECT_TRIP);
         }
     }
 
@@ -88,7 +90,7 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
 
     private void initUi() {
         tvTitleToolbar.setText(getString(R.string.confirm_booking));
-        if (mIsDateScheduled) {
+        if (!StringUtil.isEmpty(mTripBooking.getPickup_date())) {
             tvLabelDateTime.setText(getString(R.string.scheduled_booking_date_and_time));
             layoutEstimateTime.setVisibility(View.GONE);
             viewDivider.setVisibility(View.GONE);

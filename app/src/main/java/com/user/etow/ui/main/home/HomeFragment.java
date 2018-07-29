@@ -7,23 +7,18 @@ package com.user.etow.ui.main.home;
  * ******************************************************************************
  */
 
-import android.content.Intent;
+import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.HandlerThread;
-import android.os.Message;
 import android.support.annotation.Nullable;
-import android.support.v4.widget.DrawerLayout;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AutoCompleteTextView;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -36,18 +31,15 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.user.etow.R;
-import com.user.etow.adapter.autocompleteaddress.PlacesAutoCompleteAdapter;
 import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
-import com.user.etow.listener.IMaps;
+import com.user.etow.listener.IGetDateListener;
+import com.user.etow.listener.IGetTimeListener;
 import com.user.etow.ui.base.BaseMVPFragmentWithDialog;
-import com.user.etow.ui.confirm_booking.ConfirmBookingActivity;
-import com.user.etow.ui.date_booking.DateBookingActivity;
+import com.user.etow.ui.booking_trip.BookingTripActivity;
 import com.user.etow.ui.main.MainActivity;
-import com.user.etow.utils.MapsUtil;
+import com.user.etow.utils.DateTimeUtils;
 import com.user.etow.utils.StringUtil;
-
-import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -58,8 +50,6 @@ import butterknife.OnClick;
 public class HomeFragment extends BaseMVPFragmentWithDialog implements HomeMVPView, OnMapReadyCallback {
 
     private final String TAG = HomeFragment.class.getName();
-
-    private MainActivity mMainActivity;
 
     @Inject
     HomePresenter presenter;
@@ -82,39 +72,8 @@ public class HomeFragment extends BaseMVPFragmentWithDialog implements HomeMVPVi
     @BindView(R.id.layout_vehicle_flatbed)
     LinearLayout layoutVehicleFlatbed;
 
-    @BindView(R.id.layout_where_to_go)
-    RelativeLayout layoutWhereToGo;
-
-    @BindView(R.id.layout_select_location)
-    LinearLayout layoutSelectLocation;
-
-    @BindView(R.id.tv_pick_up)
-    AutoCompleteTextView tvPickUp;
-
-    @BindView(R.id.tv_drop_off)
-    AutoCompleteTextView tvDropOff;
-
-    @BindView(R.id.img_clear_pick_up)
-    ImageView imgClearPickUp;
-
-    @BindView(R.id.img_clear_drop_off)
-    ImageView imgClearDropOff;
-
-    @BindView(R.id.tv_current_location)
-    TextView tvCurrentLocation;
-
-    @BindView(R.id.layout_date_time_booking)
-    LinearLayout layoutDateTimeBooking;
-
-    @BindView(R.id.tv_date_time_booking)
-    TextView tvDateTimeBooking;
-
     private boolean mIsVehicleNormal = true;
-    private int countClick = 1;
     private GoogleMap mMap;
-    private PlacesAutoCompleteAdapter mAdapter;
-    private HandlerThread mHandlerThread;
-    private Handler mThreadHandler;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -125,7 +84,7 @@ public class HomeFragment extends BaseMVPFragmentWithDialog implements HomeMVPVi
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mMainActivity = (MainActivity) getActivity();
+
         getActivityComponent().inject(this);
         viewUnbind = ButterKnife.bind(this, view);
         presenter.initialView(this);
@@ -135,18 +94,6 @@ public class HomeFragment extends BaseMVPFragmentWithDialog implements HomeMVPVi
         this.getChildFragmentManager().beginTransaction()
                 .add(R.id.fragment_view_map, mMapFragment).commit();
         mMapFragment.getMapAsync(this);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (!StringUtil.isEmpty(mMainActivity.getDateBooking())) {
-            layoutDateTimeBooking.setVisibility(View.VISIBLE);
-            tvDateTimeBooking.setText(mMainActivity.getDateBooking());
-            onClickLayoutWhereToGo();
-        } else {
-            layoutDateTimeBooking.setVisibility(View.GONE);
-        }
     }
 
     @Override
@@ -208,223 +155,87 @@ public class HomeFragment extends BaseMVPFragmentWithDialog implements HomeMVPVi
                     .target(currentLocation).zoom(13).build());
             mMap.moveCamera(myLoc);
         }
-
-        setupAutoComplete();
     }
 
-    @OnClick(R.id.layout_where_to_go)
+    @OnClick(R.id.tv_where_to_go)
     public void onClickLayoutWhereToGo() {
-        layoutWhereToGo.setVisibility(View.GONE);
-        layoutSelectLocation.setVisibility(View.VISIBLE);
-    }
-
-    @OnClick(R.id.tv_current_location)
-    public void onClickCurrentLocation() {
-        if (countClick == 1) {
-            // Todo Get current location
-            tvCurrentLocation.setTextColor(getResources().getColor(R.color.textColorPrimary));
-        } else {
-            tvCurrentLocation.setVisibility(View.GONE);
-            tvPickUp.setVisibility(View.VISIBLE);
-            tvPickUp.requestFocus();
-        }
-        countClick++;
-    }
-
-    public void setupAutoComplete() {
-        if (mThreadHandler == null) {
-            mHandlerThread = new HandlerThread(TAG, android.os.Process.THREAD_PRIORITY_BACKGROUND);
-            mHandlerThread.start();
-
-            // Initialize the Handler
-            mThreadHandler = new Handler(mHandlerThread.getLooper()) {
-                @Override
-                public void handleMessage(Message msg) {
-                    if (msg.what == 1) {
-                        ArrayList<String> results = mAdapter.resultList;
-
-                        if (results != null && results.size() > 0) {
-                            mAdapter.notifyDataSetChanged();
-                        } else {
-                            mAdapter.notifyDataSetInvalidated();
-                        }
-                    }
-                }
-            };
-        }
-        // set auto complete address pick up
-        tvPickUp.setAdapter(new PlacesAutoCompleteAdapter(getActivity(), R.layout.item_auto_place, true));
-        tvPickUp.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                GlobalFuntion.hideSoftKeyboard(getActivity(), tvPickUp);
-                // Get data associated with the specified position
-                // in the list (AdapterView)
-                final String description = (String) parent
-                        .getItemAtPosition(position);
-
-                // Move camera to new address.
-                new MapsUtil.GetLatLngByAddress(new IMaps() {
-
-                    @Override
-                    public void processFinished(Object obj) {
-                        try {
-                            // Move camera smoothly
-                            LatLng latLng = (LatLng) obj;
-                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
-                            MarkerOptions marker = new MarkerOptions().position(latLng)
-                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_black));
-                            mMap.addMarker(marker);
-                        } catch (Exception ex) {
-                            throw new RuntimeException(ex);
-                        }
-                    }
-
-                    @Override
-                    public void getLatLong(String latitude, String longitude) {
-
-                    }
-                }).execute(description);
-            }
-        });
-
-        tvPickUp.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                final String value = s.toString();
-                if (value.length() > 0) {
-                    /*if (Constant.CURRENT_LOCATION.equals(value)) {
-                        tvPickUp.setVisibility(View.GONE);
-                        tvCurrentLocation.setVisibility(View.VISIBLE);
-                        tvCurrentLocation.setTextColor(getResources().getColor(R.color.textColorPrimary));
-                    }*/
-                    imgClearPickUp.setVisibility(View.VISIBLE);
-                    // Remove all callbacks and messages
-                    mThreadHandler.removeCallbacksAndMessages(null);
-                    // Now add a new one
-                    mThreadHandler.postDelayed(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            if (mAdapter == null) {
-                                mAdapter = new PlacesAutoCompleteAdapter(getActivity(), R.layout.item_auto_place, true);
-                            }
-                            // Background thread
-                            mAdapter.resultList = mAdapter.mPlaceAPI.autocomplete(value);
-                            // Post to Main Thread
-                            mThreadHandler.sendEmptyMessage(1);
-                        }
-                    }, 500);
-                } else {
-                    imgClearPickUp.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                tvPickUp.setDropDownHeight(DrawerLayout.LayoutParams.WRAP_CONTENT);
-            }
-        });
-
-        // set auto complete address drop off
-        tvDropOff.setAdapter(new PlacesAutoCompleteAdapter(getActivity(), R.layout.item_auto_place, false));
-        tvDropOff.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                GlobalFuntion.hideSoftKeyboard(getActivity(), tvDropOff);
-                // Get data associated with the specified position
-                // in the list (AdapterView)
-                final String description = (String) parent
-                        .getItemAtPosition(position);
-
-                // Move camera to new address.
-                new MapsUtil.GetLatLngByAddress(new IMaps() {
-
-                    @Override
-                    public void processFinished(Object obj) {
-                        try {
-                            // Move camera smoothly
-                            LatLng latLng = (LatLng) obj;
-                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
-                            MarkerOptions marker = new MarkerOptions().position(latLng)
-                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_black));
-                            mMap.addMarker(marker);
-
-                            // Go to Confirm Booking
-                            Bundle bundle = new Bundle();
-                            bundle.putBoolean(Constant.IS_DATE_SCHEDULED, false);
-                            GlobalFuntion.startActivity(getActivity(), ConfirmBookingActivity.class, bundle);
-                        } catch (Exception ex) {
-                            throw new RuntimeException(ex);
-                        }
-                    }
-
-                    @Override
-                    public void getLatLong(String latitude, String longitude) {
-
-                    }
-                }).execute(description);
-            }
-        });
-
-        tvDropOff.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                final String value = s.toString();
-                if (value.length() > 0) {
-                    imgClearDropOff.setVisibility(View.VISIBLE);
-                    // Remove all callbacks and messages
-                    mThreadHandler.removeCallbacksAndMessages(null);
-                    // Now add a new one
-                    mThreadHandler.postDelayed(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            if (mAdapter == null) {
-                                mAdapter = new PlacesAutoCompleteAdapter(getActivity(),
-                                        R.layout.item_auto_place, false);
-                            }
-                            // Background thread
-                            mAdapter.resultList = mAdapter.mPlaceAPI.autocomplete(value);
-                            // Post to Main Thread
-                            mThreadHandler.sendEmptyMessage(1);
-                        }
-                    }, 500);
-                } else {
-                    imgClearDropOff.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                tvDropOff.setDropDownHeight(DrawerLayout.LayoutParams.WRAP_CONTENT);
-            }
-        });
-    }
-
-    @OnClick(R.id.img_clear_pick_up)
-    public void onClickClearPickUp() {
-        tvPickUp.setText("");
-    }
-
-    @OnClick(R.id.img_clear_drop_off)
-    public void onClickClearDropOff() {
-        tvDropOff.setText("");
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(Constant.IS_VEHICLE_NORMAL, mIsVehicleNormal);
+        GlobalFuntion.startActivity(getActivity(), BookingTripActivity.class, bundle);
     }
 
     @OnClick(R.id.img_date)
     public void onClickDateBooking() {
-        Intent intent = new Intent(getActivity(), DateBookingActivity.class);
-        startActivityForResult(intent, GlobalFuntion.PICK_SCHEDULE_DATE);
+        showDialogSelectScheduleDate();
+    }
+
+    public void showDialogSelectScheduleDate() {
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.layout_dialog_select_schedule_date);
+        Window window = dialog.getWindow();
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        WindowManager.LayoutParams windowAttributes = window.getAttributes();
+        windowAttributes.gravity = Gravity.BOTTOM;
+        window.setAttributes(windowAttributes);
+        dialog.setCancelable(true);
+
+        // Get view
+        final TextView tvDate = dialog.findViewById(R.id.tv_date);
+        final TextView tvTime = dialog.findViewById(R.id.tv_time);
+        final TextView tvSetPickupDate = dialog.findViewById(R.id.tv_set_pickup_date);
+
+        // Set listerer
+        tvDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GlobalFuntion.showDatePicker(getActivity(), new IGetDateListener() {
+                    @Override
+                    public void getDate(String date) {
+                        tvDate.setText(date);
+                    }
+                });
+            }
+        });
+
+        tvTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GlobalFuntion.showTimePicker(getActivity(), new IGetTimeListener() {
+                    @Override
+                    public void getTime(String time) {
+                        tvTime.setText(time);
+                    }
+                });
+            }
+        });
+
+        tvSetPickupDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String date = tvDate.getText().toString().trim();
+                String time = tvTime.getText().toString().trim();
+                if (StringUtil.isEmpty(date)) {
+                    showAlert(getString(R.string.please_select_date));
+                } else if (StringUtil.isEmpty(time)) {
+                    showAlert(getString(R.string.please_select_time));
+                } else {
+                    String dateTime = date + ", " + time;
+                    if (Long.parseLong(DateTimeUtils.convertDateToTimeStampFormat4(dateTime)) <
+                            Long.parseLong(DateTimeUtils.getCurrentTimeStamp())) {
+                        showAlert(getString(R.string.schedule_booking_invalid));
+                    } else {
+                        dialog.dismiss();
+                        Bundle bundle = new Bundle();
+                        bundle.putBoolean(Constant.IS_VEHICLE_NORMAL, mIsVehicleNormal);
+                        bundle.putString(Constant.SCHEDULE_DATE, dateTime);
+                        GlobalFuntion.startActivity(getActivity(), BookingTripActivity.class, bundle);
+                    }
+                }
+            }
+        });
+
+        dialog.show();
     }
 }

@@ -8,12 +8,10 @@ package com.user.etow.constant;
 import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -21,12 +19,9 @@ import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -40,6 +35,7 @@ import com.user.etow.listener.IGetTimeListener;
 import com.user.etow.models.CountryCode;
 import com.user.etow.ui.auth.sign_in.SignInActivity;
 import com.user.etow.ui.widget.image.ImagePicker;
+import com.user.etow.utils.DateTimeUtils;
 import com.user.etow.utils.StringUtil;
 
 import org.json.JSONArray;
@@ -59,7 +55,6 @@ public class GlobalFuntion {
 
     public static double LATITUDE = 0.0;
     public static double LONGITUDE = 0.0;
-    public static final int PICK_SCHEDULE_DATE = 10;
     public static final int PICK_IMAGE_AVATAR = 0;
 
     public static void startActivity(Context context, Class<?> clz) {
@@ -81,6 +76,15 @@ public class GlobalFuntion {
         intent.putExtras(bundle);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
+    }
+
+    public static void showSoftKeyboard(Activity activity, EditText editText) {
+        try {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.showSoftInput(editText, InputMethodManager.SHOW_IMPLICIT);
+        } catch (NullPointerException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public static void hideSoftKeyboard(Activity activity) {
@@ -157,33 +161,6 @@ public class GlobalFuntion {
         }
     }
 
-    public static void showDialogDescription(Context context, String description) {
-        final Dialog dialog = new Dialog(context);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.layout_dialog_description);
-        Window window = dialog.getWindow();
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
-        window.setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        WindowManager.LayoutParams windowAttributes = window.getAttributes();
-        windowAttributes.gravity = Gravity.BOTTOM;
-        window.setAttributes(windowAttributes);
-        dialog.setCancelable(false);
-
-        // Get view
-        final TextView tvDescription = dialog.findViewById(R.id.tv_description);
-        final TextView tvClose = dialog.findViewById(R.id.tv_close);
-
-        tvDescription.setText(description);
-        tvClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-        dialog.show();
-    }
-
     public static String loadJSONFromAsset(Context context, String file) {
         String json = null;
         try {
@@ -239,7 +216,7 @@ public class GlobalFuntion {
                 String date = new StringBuilder().append(year).append("-")
                         .append(StringUtil.getDoubleNumber(monthOfYear + 1)).append("-")
                         .append(StringUtil.getDoubleNumber(dayOfMonth)).toString();
-                getDateListener.getDate(date);
+                getDateListener.getDate(DateTimeUtils.parseDateFormat1(date));
             }
 
         };
@@ -258,7 +235,7 @@ public class GlobalFuntion {
                 String time = "";
                 time = new StringBuilder().append(StringUtil.getDoubleNumber(hourOfDay)).append(":")
                         .append(StringUtil.getDoubleNumber(minute)).toString();
-                getDateListener.getTime(time);
+                getDateListener.getTime(DateTimeUtils.parseTimeFormat1(time));
             }
         };
         TimePickerDialog timePicker = new TimePickerDialog(context,
@@ -276,10 +253,10 @@ public class GlobalFuntion {
         } else {
             Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             if (location != null) {
-                GlobalFuntion.LATITUDE = location.getLatitude();
-                GlobalFuntion.LONGITUDE = location.getLongitude();
-                Log.e("Latitude current", GlobalFuntion.LATITUDE + "");
-                Log.e("Longitude current", GlobalFuntion.LONGITUDE + "");
+                LATITUDE = location.getLatitude();
+                LONGITUDE = location.getLongitude();
+                Log.e("Latitude current", LATITUDE + "");
+                Log.e("Longitude current", LONGITUDE + "");
             } else {
                 Toast.makeText(activity, activity.getString(R.string.unble_trace_location), Toast.LENGTH_SHORT).show();
             }
