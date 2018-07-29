@@ -61,11 +61,7 @@ public class SignInPresenter extends BasePresenter<SignInMVPView> {
                                         DataStoreManager.setUserToken(user.getToken());
                                         DataStoreManager.setUser(user);
                                         getMvpView().updateStatusLogin();
-                                    } else {
-                                        getMvpView().showAlert(apiResponse.getMessage());
                                     }
-                                } else {
-                                    getMvpView().showAlert(apiResponse.getMessage());
                                 }
                             }
                         }

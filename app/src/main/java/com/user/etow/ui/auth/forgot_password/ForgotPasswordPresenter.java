@@ -52,8 +52,8 @@ public class ForgotPasswordPresenter extends BasePresenter<ForgotPasswordMVPView
                         @Override
                         public void onNext(ApiSuccess apiSuccess) {
                             if (apiSuccess != null) {
-                                getMvpView().showAlert(apiSuccess.getMessage());
                                 if (Constant.SUCCESS.equalsIgnoreCase(apiSuccess.getStatus())) {
+                                    getMvpView().showAlert(apiSuccess.getMessage());
                                     getMvpView().getStatusResetPassword();
                                 }
                             }

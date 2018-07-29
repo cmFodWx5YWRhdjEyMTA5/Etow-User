@@ -68,8 +68,6 @@ public class VerifyMobileNumberPresenter extends BasePresenter<VerifyMobileNumbe
                             if (apiSuccess != null) {
                                 if (Constant.SUCCESS.equalsIgnoreCase(apiSuccess.getStatus())) {
                                     getMvpView().getStatusCodeOTP(phone);
-                                } else {
-                                    getMvpView().showAlert(apiSuccess.getMessage());
                                 }
                             }
                         }

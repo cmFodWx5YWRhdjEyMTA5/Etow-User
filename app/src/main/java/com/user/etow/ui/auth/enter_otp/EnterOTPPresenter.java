@@ -54,8 +54,6 @@ public class EnterOTPPresenter extends BasePresenter<EnterOTPMVPView> {
                             if (apiSuccess != null) {
                                 if (Constant.SUCCESS.equalsIgnoreCase(apiSuccess.getStatus())) {
                                     getMvpView().getStatusVerifyOTP(phone);
-                                } else {
-                                    getMvpView().showAlert(apiSuccess.getMessage());
                                 }
                             }
                         }

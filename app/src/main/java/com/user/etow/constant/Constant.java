@@ -14,6 +14,17 @@ public interface Constant {
     int JSON_PARSER_CODE = -10;
     int OTHER_CODE = -20;
 
+    int CODE_HTTP_203 = 203;
+    int CODE_HTTP_204 = 204;
+    int CODE_HTTP_300 = 300;
+    int CODE_HTTP_401 = 401;
+    int CODE_HTTP_409 = 409;
+    int CODE_HTTP_410 = 410;
+    int CODE_HTTP_411 = 411;
+    int CODE_HTTP_412 = 412;
+    int CODE_HTTP_413 = 413;
+    int CODE_HTTP_421 = 421;
+    int CODE_HTTP_507 = 507;
     int CODE_HTTP_510 = 510;
 
     String GENERIC_ERROR = "General error, please try again later";

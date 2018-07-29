@@ -73,8 +73,8 @@ public class MyAccountPresenter extends BasePresenter<MyAccountMVPView> {
                         @Override
                         public void onNext(ApiResponse apiResponse) {
                             if (apiResponse != null) {
-                                getMvpView().showAlert(apiResponse.getMessage());
                                 if (Constant.SUCCESS.equalsIgnoreCase(apiResponse.getStatus())) {
+                                    getMvpView().showAlert(apiResponse.getMessage());
                                     User user = apiResponse.getDataObject(User.class);
                                     if (user != null) {
                                         DataStoreManager.setUser(user);

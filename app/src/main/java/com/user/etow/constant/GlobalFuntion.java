@@ -104,10 +104,49 @@ public class GlobalFuntion {
 
     public static void showMessageError(Activity activity, int code) {
         switch (code) {
-            /*case Constant.CODE_HTTP_401:
-                Toast.makeText(activity, activity.getString(R.string.msg_error_login_with_email),
-                 Toast.LENGTH_SHORT).show();
-                break;*/
+            case Constant.CODE_HTTP_203:
+                Toast.makeText(activity, activity.getString(R.string.msg_otp_incorrect), Toast.LENGTH_SHORT).show();
+                break;
+
+            case Constant.CODE_HTTP_204:
+                Toast.makeText(activity, activity.getString(R.string.msg_can_not_get_otp_code), Toast.LENGTH_SHORT).show();
+                break;
+
+            case Constant.CODE_HTTP_300:
+                Toast.makeText(activity, activity.getString(R.string.msg_missing_params), Toast.LENGTH_SHORT).show();
+                break;
+
+            case Constant.CODE_HTTP_401:
+                Toast.makeText(activity, activity.getString(R.string.msg_email_existed), Toast.LENGTH_SHORT).show();
+                break;
+
+            case Constant.CODE_HTTP_409:
+                Toast.makeText(activity, activity.getString(R.string.msg__email_or_password_incorrect), Toast.LENGTH_SHORT).show();
+                break;
+
+            case Constant.CODE_HTTP_410:
+                Toast.makeText(activity, activity.getString(R.string.msg_password_missing), Toast.LENGTH_SHORT).show();
+                break;
+
+            case Constant.CODE_HTTP_411:
+                Toast.makeText(activity, activity.getString(R.string.msg_password_incorrect), Toast.LENGTH_SHORT).show();
+                break;
+
+            case Constant.CODE_HTTP_412:
+                Toast.makeText(activity, activity.getString(R.string.msg_email_does_not_exist), Toast.LENGTH_SHORT).show();
+                break;
+
+            case Constant.CODE_HTTP_413:
+                Toast.makeText(activity, activity.getString(R.string.msg_logout_failed), Toast.LENGTH_SHORT).show();
+                break;
+
+            case Constant.CODE_HTTP_421:
+                Toast.makeText(activity, activity.getString(R.string.msg_not_permission_trip), Toast.LENGTH_SHORT).show();
+                break;
+
+            case Constant.CODE_HTTP_507:
+                Toast.makeText(activity, activity.getString(R.string.msg_token_missing), Toast.LENGTH_SHORT).show();
+                break;
 
             case Constant.CODE_HTTP_510:
                 showDialogLogout(activity);

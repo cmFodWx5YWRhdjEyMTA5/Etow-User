@@ -174,5 +174,18 @@
     <string name="unble_trace_location">Unble to trace your location</string>
     <string name="message_turn_on_gps">Please turn on your GPS</string>
     <string name="choose_image">Please choose image</string>
+
+    // msg request api
+    <string name="msg_otp_incorrect">Otp incorrect.</string>
+    <string name="msg_can_not_get_otp_code">Can\'t get OTP code.</string>
+    <string name="msg_missing_params">Missing params.</string>
+    <string name="msg_email_existed">Email existed, please try again.</string>
+    <string name="msg__email_or_password_incorrect">Email or password incorrect.</string>
+    <string name="msg_password_missing">Password missing.</string>
+    <string name="msg_password_incorrect">Password incorrect.</string>
+    <string name="msg_email_does_not_exist">Email does not exist.</string>
+    <string name="msg_logout_failed">Failed to logout, please try again.</string>
+    <string name="msg_not_permission_trip">You are not permission with this trip</string>
+    <string name="msg_token_missing">Token missing</string>
     <string name="msg_confirm_login_another_device">Your account login another device!</string>
 </resources>

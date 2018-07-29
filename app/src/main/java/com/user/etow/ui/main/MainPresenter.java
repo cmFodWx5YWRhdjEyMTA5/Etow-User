@@ -5,7 +5,6 @@ package com.user.etow.ui.main;
  *  Author DangTin. Create on 2018/05/13
  */
 
-import com.user.etow.constant.Constant;
 import com.user.etow.data.NetworkManager;
 import com.user.etow.data.prefs.DataStoreManager;
 import com.user.etow.models.response.ApiSuccess;

@@ -24,10 +24,6 @@ public class NetworkManager {
         this.mThinkFitService = thinkFitService;
     }
 
-    public ThinkFitService getThinkFitService() {
-        return mThinkFitService;
-    }
-
     public Observable<ApiSuccess> getOTP(String phone) {
         return mThinkFitService.getOTP(phone);
     }
