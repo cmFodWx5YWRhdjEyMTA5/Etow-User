@@ -9,4 +9,5 @@ import com.user.etow.ui.base.BaseScreenMvpView;
 
 interface ForgotPasswordMVPView extends BaseScreenMvpView {
 
+    void getStatusResetPassword();
 }

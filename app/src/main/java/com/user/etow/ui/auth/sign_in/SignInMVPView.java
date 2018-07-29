@@ -9,4 +9,5 @@ import com.user.etow.ui.base.BaseScreenMvpView;
 
 interface SignInMVPView extends BaseScreenMvpView {
 
+    void updateStatusLogin();
 }

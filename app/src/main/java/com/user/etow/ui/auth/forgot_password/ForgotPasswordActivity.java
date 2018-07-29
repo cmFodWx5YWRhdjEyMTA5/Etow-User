@@ -102,7 +102,13 @@ public class ForgotPasswordActivity extends BaseMVPDialogActivity implements For
     @OnClick(R.id.tv_request_password)
     public void onClickRequestPassword() {
         if (mIsClickRequestPassword) {
-            //Todo
+            presenter.resetPassword(edtEmail.getText().toString().trim());
         }
+    }
+
+    @Override
+    public void getStatusResetPassword() {
+        edtEmail.setText("");
+        onBackPressed();
     }
 }

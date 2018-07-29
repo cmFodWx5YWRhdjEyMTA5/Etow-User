@@ -11,4 +11,5 @@ import java.util.ArrayList;
 
 interface MainMVPView extends BaseScreenMvpView {
 
+    void logout();
 }

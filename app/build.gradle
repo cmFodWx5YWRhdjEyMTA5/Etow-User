@@ -91,4 +91,7 @@ dependencies {
 
     // phone number
     implementation 'io.michaelrocks:libphonenumber-android:8.8.5'
+
+    // Circle image
+    implementation 'de.hdodenhof:circleimageview:2.0.0'
 }

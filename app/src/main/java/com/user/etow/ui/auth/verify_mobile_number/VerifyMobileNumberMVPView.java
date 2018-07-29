@@ -10,4 +10,6 @@ import com.user.etow.ui.base.BaseScreenMvpView;
 interface VerifyMobileNumberMVPView extends BaseScreenMvpView {
 
     void getStatusCodeOTP(String phone);
+
+    void finishActivity();
 }

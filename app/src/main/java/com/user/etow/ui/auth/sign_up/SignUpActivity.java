@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.user.etow.R;
+import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
 import com.user.etow.ui.auth.sign_in.SignInActivity;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
@@ -48,6 +49,7 @@ public class SignUpActivity extends BaseMVPDialogActivity implements SignUpMVPVi
     TextView tvSignUp;
 
     private boolean mIsActiveSignUp;
+    private String mPhoneNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +59,17 @@ public class SignUpActivity extends BaseMVPDialogActivity implements SignUpMVPVi
         viewUnbind = ButterKnife.bind(this);
         presenter.initialView(this);
 
-        tvMobileNumber.setText("+84 9768576574");
+        getDataIntent();
+
+        tvMobileNumber.setText(mPhoneNumber);
         setListener();
+    }
+
+    private void getDataIntent() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            mPhoneNumber = bundle.getString(Constant.PHONE_NUMBER);
+        }
     }
 
     @Override
@@ -204,10 +215,12 @@ public class SignUpActivity extends BaseMVPDialogActivity implements SignUpMVPVi
     @OnClick(R.id.tv_sign_in)
     public void onClickSignIn() {
         GlobalFuntion.startActivity(this, SignInActivity.class);
+        finishAffinity();
     }
 
     @OnClick(R.id.tv_sign_up)
     public void onClickSignUp() {
+
         if (mIsActiveSignUp) {
             if (!StringUtil.isValidEmail(edtEmail.getText().toString().trim())) {
                 showAlert(getString(R.string.email_invalid));
@@ -215,8 +228,18 @@ public class SignUpActivity extends BaseMVPDialogActivity implements SignUpMVPVi
                     .equals(edtConfirmPassword.getText().toString().trim())) {
                 showAlert(getString(R.string.password_not_match));
             } else {
-                GlobalFuntion.startActivity(this, MainActivity.class);
+                String strFullName = edtName.getText().toString().trim();
+                String strEmail = edtEmail.getText().toString().trim();
+                String strPassword = edtPassword.getText().toString().trim();
+
+                presenter.register(strFullName, strEmail, strPassword, mPhoneNumber);
             }
         }
+    }
+
+    @Override
+    public void updateStatusRegister() {
+        GlobalFuntion.startActivity(this, MainActivity.class);
+        finishAffinity();
     }
 }

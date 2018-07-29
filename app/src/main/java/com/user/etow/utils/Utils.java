@@ -5,25 +5,33 @@ package com.user.etow.utils;
  *  Author DangTin. Create on 2018/05/13
  */
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Build;
 import android.os.StrictMode;
+import android.support.v4.app.ActivityCompat;
+import android.util.Base64;
 import android.util.DisplayMetrics;
 import android.widget.DatePicker;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.user.etow.listener.IGetDateListener;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Calendar;
 
 public class Utils {
 
-    private static Typeface tahomaBoldTypeFace;
     private static Typeface tahomaRegularTypeFace;
 
     public static MaterialDialog createProgress(Context context, String title) {
@@ -57,14 +65,6 @@ public class Utils {
         } catch (Exception e) {
             return 0;
         }
-    }
-
-    public static Typeface getTahomaBoldTypeFace(Context context) {
-        if (tahomaBoldTypeFace == null) {
-            tahomaBoldTypeFace = Typeface.createFromAsset(context.getAssets(),
-                    "fonts/Tahoma-Bold.ttf");
-        }
-        return tahomaBoldTypeFace;
     }
 
     public static Typeface getTahomaRegularTypeFace(Context context) {
@@ -110,5 +110,37 @@ public class Utils {
         // Allow strict mode
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
+    }
+
+    public static void callPhoneNumber(Activity activity, String phoneNumber) {
+        try {
+            if (Build.VERSION.SDK_INT > 22) {
+                if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CALL_PHONE}, 101);
+                    return;
+                }
+
+                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                callIntent.setData(Uri.parse("tel:" + phoneNumber));
+                activity.startActivity(callIntent);
+
+            } else {
+                Intent callIntent = new Intent(Intent.ACTION_CALL);
+                callIntent.setData(Uri.parse("tel:" + phoneNumber));
+                activity.startActivity(callIntent);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static final String convertBitmapToBase64(Bitmap bitmap) {
+        if (bitmap != null) {
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            byte[] imageToByte = stream.toByteArray();
+            return Base64.encodeToString(imageToByte, Base64.DEFAULT);
+        }
+        return "";
     }
 }

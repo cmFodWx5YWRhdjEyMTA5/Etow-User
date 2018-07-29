@@ -53,6 +53,7 @@ public class VerifyMobileNumberActivity extends BaseMVPDialogActivity implements
 
     private CountryCodeAdapter countryCodeAdapter;
     private CountryCode mCountryCode;
+    private boolean mIsUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +63,15 @@ public class VerifyMobileNumberActivity extends BaseMVPDialogActivity implements
         viewUnbind = ButterKnife.bind(this);
         presenter.initialView(this);
 
+        getDataIntent();
         initUi();
+    }
+
+    private void getDataIntent() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            mIsUpdate = bundle.getBoolean(Constant.IS_UPDATE);
+        }
     }
 
     @Override
@@ -163,11 +172,9 @@ public class VerifyMobileNumberActivity extends BaseMVPDialogActivity implements
         } else if (!chbTermsConditions.isChecked()) {
             showAlert(getString(R.string.please_agree_the_terms_and_conditions));
         } else if (!GlobalFuntion.checkMobileNumber(this, strMobileNumber, mCountryCode.getCode())) {
-                showAlert(getString(R.string.msg_mobile_number_invalid));
+            showAlert(getString(R.string.msg_mobile_number_invalid));
         } else {
-            // presenter.getOTP(mCountryCode.getDialCode() + strMobileNumber);
-            //Todo fake next page
-            getStatusCodeOTP(mCountryCode.getDialCode() + strMobileNumber);
+            presenter.getOTP(mCountryCode.getDialCode() + strMobileNumber);
         }
     }
 
@@ -179,7 +186,13 @@ public class VerifyMobileNumberActivity extends BaseMVPDialogActivity implements
     @Override
     public void getStatusCodeOTP(String phone) {
         Bundle bundle = new Bundle();
+        bundle.putBoolean(Constant.IS_UPDATE, mIsUpdate);
         bundle.putString(Constant.PHONE_NUMBER, phone);
         GlobalFuntion.startActivity(this, EnterOTPActivity.class, bundle);
+    }
+
+    @Override
+    public void finishActivity() {
+        finish();
     }
 }

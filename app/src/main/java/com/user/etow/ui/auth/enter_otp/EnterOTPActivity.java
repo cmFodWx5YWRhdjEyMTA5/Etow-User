@@ -14,9 +14,12 @@ import android.widget.TextView;
 import com.user.etow.R;
 import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
+import com.user.etow.messages.EditPhoneNumberSuccess;
 import com.user.etow.ui.auth.sign_up.SignUpActivity;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
 import com.user.etow.utils.StringUtil;
+
+import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 
@@ -40,6 +43,7 @@ public class EnterOTPActivity extends BaseMVPDialogActivity implements EnterOTPM
 
     private boolean mIsActiveDone;
     private String mPhoneNumber;
+    private boolean mIsUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +63,7 @@ public class EnterOTPActivity extends BaseMVPDialogActivity implements EnterOTPM
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             mPhoneNumber = bundle.getString(Constant.PHONE_NUMBER);
+            mIsUpdate = bundle.getBoolean(Constant.IS_UPDATE);
         }
     }
 
@@ -118,9 +123,7 @@ public class EnterOTPActivity extends BaseMVPDialogActivity implements EnterOTPM
     @OnClick(R.id.tv_done)
     public void onClickDone() {
         if (mIsActiveDone) {
-            // presenter.verifyOTP(edtOtp.getText().toString().trim(), mPhoneNumber);
-            //Todo fake next page
-            getStatusVerifyOTP(mPhoneNumber);
+            presenter.verifyOTP(edtOtp.getText().toString().trim(), mPhoneNumber);
         }
     }
 
@@ -131,8 +134,13 @@ public class EnterOTPActivity extends BaseMVPDialogActivity implements EnterOTPM
 
     @Override
     public void getStatusVerifyOTP(String phone) {
-        Bundle bundle = new Bundle();
-        bundle.putString(Constant.PHONE_NUMBER, mPhoneNumber);
-        GlobalFuntion.startActivity(this, SignUpActivity.class, bundle);
+        if (mIsUpdate) {
+            EventBus.getDefault().post(new EditPhoneNumberSuccess(mPhoneNumber));
+            finish();
+        } else {
+            Bundle bundle = new Bundle();
+            bundle.putString(Constant.PHONE_NUMBER, mPhoneNumber);
+            GlobalFuntion.startActivity(this, SignUpActivity.class, bundle);
+        }
     }
 }

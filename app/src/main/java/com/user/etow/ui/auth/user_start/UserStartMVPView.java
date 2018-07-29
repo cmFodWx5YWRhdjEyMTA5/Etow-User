@@ -9,4 +9,5 @@ import com.user.etow.ui.base.BaseScreenMvpView;
 
 interface UserStartMVPView extends BaseScreenMvpView {
 
+    void finishActivity();
 }

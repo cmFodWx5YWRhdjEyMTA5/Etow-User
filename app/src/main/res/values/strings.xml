@@ -8,6 +8,8 @@
 <resources>
     <string name="app_name">eTow User</string>
     <string name="google_key_map">AIzaSyCPvjIdgwye9PkpctRONhsb_9x1R9Ztx80</string>
+    <string name="phone_number_call_us">01692229676</string>
+    <string name="feedback_email_us">info@etow.com</string>
 
     // Navigation
     <string name="drawer_open">Open</string>
@@ -44,7 +46,6 @@
     <string name="or">Or</string>
     <string name="comments">Comments</string>
     <string name="get_in_touch_with_us_on">Or get in touch with us on</string>
-    <string name="email_us">info@etow.com</string>
     <string name="send">Send</string>
     <string name="your_message_sent_successfully">Your message sent successfully</string>
 
@@ -81,6 +82,9 @@
     <string name="password_not_match">Password and Confirm password not match</string>
     <string name="update">Update</string>
     <string name="edit">Edit</string>
+    <string name="please_enter_email">Please enter email</string>
+    <string name="please_enter_password">Please enter password</string>
+    <string name="please_enter_full_name">Please enter full name</string>
 
     // Main screen
     <string name="select_vehicle_type">Select vehicle type</string>
@@ -167,4 +171,8 @@
     <string name="set_pickup_date">Set Pickup Date</string>
     <string name="please_select_date">Please select date booking</string>
     <string name="please_select_time">Please select time booking</string>
+    <string name="unble_trace_location">Unble to trace your location</string>
+    <string name="message_turn_on_gps">Please turn on your GPS</string>
+    <string name="choose_image">Please choose image</string>
+    <string name="msg_confirm_login_another_device">Your account login another device!</string>
 </resources>

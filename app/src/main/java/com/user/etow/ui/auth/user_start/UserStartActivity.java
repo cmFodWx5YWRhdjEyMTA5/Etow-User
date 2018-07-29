@@ -5,7 +5,13 @@ package com.user.etow.ui.auth.user_start;
  *  Author DangTin. Create on 2018/05/13
  */
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 
 import com.user.etow.R;
 import com.user.etow.constant.GlobalFuntion;
@@ -23,6 +29,8 @@ public class UserStartActivity extends BaseMVPDialogActivity implements UserStar
     @Inject
     UserStartPresenter presenter;
 
+    private LocationManager mLocationManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +38,8 @@ public class UserStartActivity extends BaseMVPDialogActivity implements UserStar
         getActivityComponent().inject(this);
         viewUnbind = ButterKnife.bind(this);
         presenter.initialView(this);
+
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
     }
 
     @Override
@@ -66,5 +76,30 @@ public class UserStartActivity extends BaseMVPDialogActivity implements UserStar
     @OnClick(R.id.tv_join_now)
     public void onClickJoinNow() {
         GlobalFuntion.startActivity(this, VerifyMobileNumberActivity.class);
+    }
+
+    @Override
+    public void finishActivity() {
+        finish();
+    }
+
+    private void settingGPS() {
+        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            GlobalFuntion.showDialogNoGPS(this);
+        } else if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            GlobalFuntion.getCurrentLocation(this, mLocationManager);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 1) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                settingGPS();
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }
+        }
     }
 }

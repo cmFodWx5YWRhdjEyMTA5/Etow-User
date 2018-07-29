@@ -53,7 +53,7 @@
                 android:background="@drawable/bg_grey_corner_8"
                 android:padding="@dimen/define_dimen_12"
                 android:singleLine="true"
-                android:textColor="@color/textColorPrimary"
+                android:textColor="@color/textColorAccent"
                 android:textSize="@dimen/text_size_small" />
 
             <EditText
@@ -121,8 +121,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/define_dimen_20"
-                android:layout_marginTop="@dimen/define_dimen_26"
-                android:gravity="center"
+                android:layout_marginTop="@dimen/define_dimen_20"
+                android:gravity="center|center_vertical"
                 android:orientation="horizontal">
 
                 <com.user.etow.ui.widget.textview.TahomaRegularTextView
@@ -140,6 +140,8 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="@dimen/define_dimen_10"
                     android:text="@string/sign_in"
+                    android:paddingTop="@dimen/define_dimen_5"
+                    android:paddingBottom="@dimen/define_dimen_5"
                     android:textColor="@color/textColorPrimary"
                     android:textSize="@dimen/text_size_normal" />
             </LinearLayout>

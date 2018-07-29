@@ -106,7 +106,7 @@ public class DateBookingActivity extends BaseMVPDialogActivity implements DateBo
             String dateTime = date + ", " + time;
             Intent intent = new Intent();
             intent.putExtra(Constant.DATE_BOOKING, dateTime);
-            setResult(RESULT_OK, intent);
+            setResult(GlobalFuntion.PICK_SCHEDULE_DATE, intent);
             finish();
         }
     }

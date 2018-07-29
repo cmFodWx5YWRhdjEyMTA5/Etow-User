@@ -18,6 +18,7 @@ import com.user.etow.constant.GlobalFuntion;
 import com.user.etow.ui.base.BaseMVPFragmentWithDialog;
 import com.user.etow.ui.feedback.FeedbackActivity;
 import com.user.etow.ui.main.MainActivity;
+import com.user.etow.utils.Utils;
 
 import javax.inject.Inject;
 
@@ -64,5 +65,10 @@ public class GetInTouchFragment extends BaseMVPFragmentWithDialog implements Get
     @OnClick(R.id.img_feedback)
     public void onClickImageFeedback() {
         GlobalFuntion.startActivity(getActivity(), FeedbackActivity.class);
+    }
+
+    @OnClick(R.id.img_call_us)
+    public void onClickCallUs() {
+        Utils.callPhoneNumber(getActivity(), getString(R.string.phone_number_call_us));
     }
 }

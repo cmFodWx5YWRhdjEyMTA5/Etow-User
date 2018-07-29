@@ -12,6 +12,8 @@ import com.google.gson.GsonBuilder;
 import com.user.etow.BuildConfig;
 import com.user.etow.constant.Constant;
 import com.user.etow.constant.KeyAPI;
+import com.user.etow.data.prefs.DataStoreManager;
+import com.user.etow.models.response.ApiResponse;
 import com.user.etow.models.response.ApiSuccess;
 
 import java.util.concurrent.TimeUnit;
@@ -39,9 +41,7 @@ public interface ThinkFitService {
             okBuilder.addInterceptor(chain -> {
                 Request original = chain.request();
                 Request.Builder builder = original.newBuilder();
-                builder.header(KeyAPI.KEY_DEVICE_TYPE, KeyAPI.VALUE_DEVICE_TYPE)
-                        .header(KeyAPI.KEY_HTTP_X_APP_ID, KeyAPI.VALUE_HTTP_X_APP_ID)
-                        .header(KeyAPI.KEY_HTTP_X_SECRET_KEY, KeyAPI.VALUE_HTTP_X_SECRET_KEY)
+                builder.header(KeyAPI.KEY_AUTHORIZATION, DataStoreManager.getUserToken())
                         .method(original.method(), original.body());
                 return chain.proceed(builder.build());
             });
@@ -80,4 +80,31 @@ public interface ThinkFitService {
     @FormUrlEncoded
     @POST("user/verify-otp")
     Observable<ApiSuccess> verifyOTP(@Field(KeyAPI.KEY_OTP) String otp);
+
+    @FormUrlEncoded
+    @POST("user/register")
+    Observable<ApiResponse> register(@Field(KeyAPI.KEY_FULL_NAME) String fullName,
+                                     @Field(KeyAPI.KEY_EMAIL) String email,
+                                     @Field(KeyAPI.KEY_PASSWORD) String password,
+                                     @Field(KeyAPI.KEY_PHONE) String phone);
+
+    @FormUrlEncoded
+    @POST("user/reset-password")
+    Observable<ApiSuccess> resetPassword(@Field(KeyAPI.KEY_EMAIL) String email);
+
+    @FormUrlEncoded
+    @POST("user/login")
+    Observable<ApiResponse> login(@Field(KeyAPI.KEY_EMAIL) String email,
+                                  @Field(KeyAPI.KEY_PASSWORD) String password);
+
+    @FormUrlEncoded
+    @POST("user/update-profile")
+    Observable<ApiResponse> updateProfile(@Field(KeyAPI.KEY_FULL_NAME) String fullName,
+                                          @Field(KeyAPI.KEY_PHONE) String phone,
+                                          @Field(KeyAPI.KEY_EMAIL) String email,
+                                          @Field(KeyAPI.KEY_PASSWORD) String password,
+                                          @Field(KeyAPI.KEY_AVATAR) String avatar);
+
+    @POST("user/logout")
+    Observable<ApiSuccess> logout();
 }

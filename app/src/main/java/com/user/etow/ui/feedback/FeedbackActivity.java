@@ -5,6 +5,8 @@ package com.user.etow.ui.feedback;
  *  Author DangTin. Create on 2018/05/13
  */
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.widget.TextView;
@@ -42,7 +44,7 @@ public class FeedbackActivity extends BaseMVPDialogActivity implements FeedbackM
 
         String textMessage = "<font color=#9E9E9D>" + getString(R.string.get_in_touch_with_us_on)
                 + "</font> <b><font color=#121315>"
-                + getString(R.string.email_us) + "</font></b>";
+                + getString(R.string.feedback_email_us) + "</font></b>";
         tvMessage.setText(Html.fromHtml(textMessage));
     }
 
@@ -80,5 +82,12 @@ public class FeedbackActivity extends BaseMVPDialogActivity implements FeedbackM
     @OnClick(R.id.tv_send)
     public void onClickSend() {
         tvMessage.setText(getString(R.string.your_message_sent_successfully));
+    }
+
+    @OnClick(R.id.tv_message)
+    public void onClickSendEmail() {
+        Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
+                "mailto",getString(R.string.feedback_email_us), null));
+        startActivity(Intent.createChooser(emailIntent, "Send Email"));
     }
 }

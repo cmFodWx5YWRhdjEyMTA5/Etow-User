@@ -23,4 +23,9 @@ public class UserStartPresenter extends BasePresenter<UserStartMVPView> {
     public void initialView(UserStartMVPView mvpView) {
         super.initialView(mvpView);
     }
+
+    @Override
+    public void destroyView() {
+        super.destroyView();
+    }
 }

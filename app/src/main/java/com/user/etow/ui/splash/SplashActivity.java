@@ -10,8 +10,10 @@ import android.os.Handler;
 
 import com.user.etow.R;
 import com.user.etow.constant.GlobalFuntion;
+import com.user.etow.data.prefs.DataStoreManager;
 import com.user.etow.ui.auth.user_start.UserStartActivity;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
+import com.user.etow.ui.main.MainActivity;
 import com.user.etow.utils.Utils;
 
 import javax.inject.Inject;
@@ -35,11 +37,9 @@ public class SplashActivity extends BaseMVPDialogActivity implements SplashMVPVi
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                Utils.getTahomaBoldTypeFace(SplashActivity.this);
                 Utils.getTahomaRegularTypeFace(SplashActivity.this);
 
-                GlobalFuntion.startActivity(SplashActivity.this, UserStartActivity.class);
-                finish();
+                goToActivity();
             }
         }, 1000);
     }
@@ -68,5 +68,20 @@ public class SplashActivity extends BaseMVPDialogActivity implements SplashMVPVi
     @Override
     public void onErrorCallApi(int code) {
         GlobalFuntion.showMessageError(this, code);
+    }
+
+    private void goToActivity() {
+        if (!DataStoreManager.getFirstInstallApp()) {
+            DataStoreManager.setFirstInstallApp(true);
+            DataStoreManager.removeUser();
+            GlobalFuntion.startActivity(SplashActivity.this, UserStartActivity.class);
+        } else {
+            if (DataStoreManager.getIsLogin()) {
+                GlobalFuntion.startActivity(SplashActivity.this, MainActivity.class);
+            } else {
+                GlobalFuntion.startActivity(SplashActivity.this, UserStartActivity.class);
+            }
+        }
+        finish();
     }
 }

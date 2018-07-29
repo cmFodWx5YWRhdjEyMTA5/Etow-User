@@ -14,6 +14,8 @@ public interface Constant {
     int JSON_PARSER_CODE = -10;
     int OTHER_CODE = -20;
 
+    int CODE_HTTP_510 = 510;
+
     String GENERIC_ERROR = "General error, please try again later";
     String SERVER_ERROR = "Fail to connect to server";
 
@@ -33,4 +35,5 @@ public interface Constant {
     String IS_DATE_SCHEDULED = "IS_DATE_SCHEDULED";
     String DATE_BOOKING = "DATE_BOOKING";
     String PHONE_NUMBER = "PHONE_NUMBER";
+    String IS_UPDATE = "IS_UPDATE";
 }

@@ -196,17 +196,18 @@ public class HomeFragment extends BaseMVPFragmentWithDialog implements HomeMVPVi
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        // Add a marker in Sydney, Australia, and move the camera.
-        LatLng currentLocation = new LatLng(-34, 151);
-        // create marker
-        MarkerOptions marker = new MarkerOptions().position(currentLocation)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_black));
-        // adding marker
-        mMap.addMarker(marker);
-
-        CameraUpdate myLoc = CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
-                .target(currentLocation).zoom(13).build());
-        mMap.moveCamera(myLoc);
+        if (GlobalFuntion.LATITUDE > 0 && GlobalFuntion.LONGITUDE > 0) {
+            // Add a marker in Sydney, Australia, and move the camera.
+            LatLng currentLocation = new LatLng(GlobalFuntion.LATITUDE, GlobalFuntion.LONGITUDE);
+            // create marker
+            MarkerOptions marker = new MarkerOptions().position(currentLocation)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_black));
+            // adding marker
+            mMap.addMarker(marker);
+            CameraUpdate myLoc = CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
+                    .target(currentLocation).zoom(13).build());
+            mMap.moveCamera(myLoc);
+        }
 
         setupAutoComplete();
     }
@@ -424,6 +425,6 @@ public class HomeFragment extends BaseMVPFragmentWithDialog implements HomeMVPVi
     @OnClick(R.id.img_date)
     public void onClickDateBooking() {
         Intent intent = new Intent(getActivity(), DateBookingActivity.class);
-        startActivityForResult(intent, 1);
+        startActivityForResult(intent, GlobalFuntion.PICK_SCHEDULE_DATE);
     }
 }
