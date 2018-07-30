@@ -7,6 +7,7 @@ package com.user.etow.ui.confirm_booking;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -41,6 +42,42 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
     @BindView(R.id.layout_estimate_time)
     LinearLayout layoutEstimateTime;
 
+    @BindView(R.id.tv_pick_up)
+    TextView tvPickUp;
+
+    @BindView(R.id.tv_drop_off)
+    TextView tvDropOff;
+
+    @BindView(R.id.img_vehicle)
+    ImageView imgVehicle;
+
+    @BindView(R.id.tv_vehicle)
+    TextView tvVehicle;
+
+    @BindView(R.id.tv_date_time)
+    TextView tvDateTime;
+
+    @BindView(R.id.tv_cost)
+    TextView tvCost;
+
+    @BindView(R.id.layout_cash)
+    LinearLayout layoutCash;
+
+    @BindView(R.id.layout_card)
+    LinearLayout layoutCard;
+
+    @BindView(R.id.img_payment_cash)
+    ImageView imgPaymentCash;
+
+    @BindView(R.id.img_payment_card)
+    ImageView imgPaymentCard;
+
+    @BindView(R.id.tv_payment_cash)
+    TextView tvPaymentCash;
+
+    @BindView(R.id.tv_payment_card)
+    TextView tvPaymentCard;
+
     private Trip mTripBooking;
 
     @Override
@@ -53,6 +90,7 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
 
         getDataIntent();
         initUi();
+        initData();
     }
 
     private void getDataIntent() {
@@ -99,6 +137,10 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
             layoutEstimateTime.setVisibility(View.VISIBLE);
             viewDivider.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void initData() {
+
     }
 
     @OnClick(R.id.img_back)

@@ -260,12 +260,16 @@ public class BookingTripActivity extends BaseMVPDialogActivity implements Bookin
             public void processFinished(Object obj) {
                 mTripBooking.setPick_up(obj.toString());
 
-                if (StringUtil.isEmpty(mTripBooking.getDrop_off()) ||
-                        StringUtil.isEmpty(mTripBooking.getDrop_off_latitude()) ||
-                        StringUtil.isEmpty(mTripBooking.getDrop_off_longitude())) {
-                    // Not do anything
+                if (StringUtil.isEmpty(obj.toString())) {
+                    showAlert(getString(R.string.unble_trace_location));
                 } else {
-                    goToConfirmBooking();
+                    if (StringUtil.isEmpty(mTripBooking.getDrop_off()) ||
+                            StringUtil.isEmpty(mTripBooking.getDrop_off_latitude()) ||
+                            StringUtil.isEmpty(mTripBooking.getDrop_off_longitude())) {
+                        // Not do anything
+                    } else {
+                        goToConfirmBooking();
+                    }
                 }
             }
 
