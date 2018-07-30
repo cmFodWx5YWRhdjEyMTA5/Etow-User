@@ -5,8 +5,14 @@ package com.user.etow.ui.splash;
  *  Author DangTin. Create on 2018/05/13
  */
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.ActivityCompat;
 
 import com.user.etow.R;
 import com.user.etow.constant.GlobalFuntion;
@@ -32,16 +38,10 @@ public class SplashActivity extends BaseMVPDialogActivity implements SplashMVPVi
         getActivityComponent().inject(this);
         viewUnbind = ButterKnife.bind(this);
         presenter.initialView(this);
-
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Utils.getTahomaRegularTypeFace(SplashActivity.this);
-
-                goToActivity();
-            }
-        }, 1000);
+        // init font text
+        Utils.getTahomaRegularTypeFace(SplashActivity.this);
+        // Request permissions
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
     }
 
     @Override
@@ -71,17 +71,44 @@ public class SplashActivity extends BaseMVPDialogActivity implements SplashMVPVi
     }
 
     private void goToActivity() {
-        if (!DataStoreManager.getFirstInstallApp()) {
-            DataStoreManager.setFirstInstallApp(true);
-            DataStoreManager.removeUser();
-            GlobalFuntion.startActivity(SplashActivity.this, UserStartActivity.class);
-        } else {
-            if (DataStoreManager.getIsLogin()) {
-                GlobalFuntion.startActivity(SplashActivity.this, MainActivity.class);
+        Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (!DataStoreManager.getFirstInstallApp()) {
+                    DataStoreManager.setFirstInstallApp(true);
+                    DataStoreManager.removeUser();
+                    GlobalFuntion.startActivity(SplashActivity.this, UserStartActivity.class);
+                } else {
+                    if (DataStoreManager.getIsLogin()) {
+                        GlobalFuntion.startActivity(SplashActivity.this, MainActivity.class);
+                    } else {
+                        GlobalFuntion.startActivity(SplashActivity.this, UserStartActivity.class);
+                    }
+                }
+                finish();
+            }
+        }, 1000);
+    }
+
+    private void settingGPS() {
+        LocationManager mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            GlobalFuntion.showDialogNoGPS(this);
+        } else if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            GlobalFuntion.getCurrentLocation(this, mLocationManager);
+            goToActivity();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == 1) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                settingGPS();
             } else {
-                GlobalFuntion.startActivity(SplashActivity.this, UserStartActivity.class);
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
             }
         }
-        finish();
     }
 }

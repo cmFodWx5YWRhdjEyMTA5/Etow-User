@@ -5,6 +5,11 @@ package com.user.etow.ui.confirm_booking;
  *  Author DangTin. Create on 2018/05/13
  */
 
+import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.LightingColorFilter;
+import android.graphics.drawable.Drawable;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -17,6 +22,7 @@ import com.user.etow.constant.GlobalFuntion;
 import com.user.etow.models.Trip;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
 import com.user.etow.ui.trip_process.TripProcessActivity;
+import com.user.etow.utils.DateTimeUtils;
 import com.user.etow.utils.StringUtil;
 
 import javax.inject.Inject;
@@ -79,6 +85,7 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
     TextView tvPaymentCard;
 
     private Trip mTripBooking;
+    private boolean mIsPaymentCash = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +147,22 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
     }
 
     private void initData() {
-
+        tvPickUp.setText(mTripBooking.getPick_up());
+        tvDropOff.setText(mTripBooking.getDrop_off());
+        if (Constant.TYPE_VEHICLE_NORMAL.equals(mTripBooking.getVehicle_type())) {
+            imgVehicle.setImageResource(R.drawable.ic_car_normal_black);
+            tvVehicle.setText(getString(R.string.type_vehicle_normal));
+        } else {
+            Drawable myIcon = getResources().getDrawable(R.drawable.ic_vehicle_flatbed_white);
+            ColorFilter filter = new LightingColorFilter(Color.BLACK, Color.BLACK);
+            myIcon.setColorFilter(filter);
+            imgVehicle.setImageDrawable(myIcon);
+            tvVehicle.setText(getString(R.string.type_vehicle_flatbed));
+        }
+        if (!StringUtil.isEmpty(mTripBooking.getPickup_date())) {
+            tvDateTime.setText(DateTimeUtils.parseDateFormat2(mTripBooking.getPickup_date()));
+        }
+        getEstimateCost();
     }
 
     @OnClick(R.id.img_back)
@@ -151,5 +173,50 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
     @OnClick(R.id.tv_confirm_booking)
     public void onClickConfirmBooking() {
         GlobalFuntion.startActivity(this, TripProcessActivity.class);
+    }
+
+    private void getEstimateCost() {
+        float[] result = new float[3];
+        Location.distanceBetween(Double.parseDouble(mTripBooking.getPick_up_latitude()),
+                Double.parseDouble(mTripBooking.getPick_up_longitude()),
+                Double.parseDouble(mTripBooking.getDrop_off_latitude()),
+                Double.parseDouble(mTripBooking.getDrop_off_longitude()), result);
+        int distance = (int) (result[0] / 1000);
+        presenter.getEstimateCost(distance + "");
+    }
+
+    @Override
+    public void loadEstimateCost(String cost) {
+        tvCost.setText(cost + " " + getString(R.string.unit_price));
+    }
+
+    @OnClick(R.id.layout_cash)
+    public void onClickLayoutCash() {
+        if (!mIsPaymentCash) {
+            mIsPaymentCash = true;
+
+            layoutCash.setBackgroundResource(R.drawable.bg_white_corner_border_grey_radius_8);
+            imgPaymentCash.setImageResource(R.drawable.ic_cash_black);
+            tvPaymentCash.setTextColor(getResources().getColor(R.color.textColorPrimary));
+
+            layoutCard.setBackgroundResource(R.drawable.bg_grey_corner_radius_6);
+            imgPaymentCard.setImageResource(R.drawable.ic_card_grey);
+            tvPaymentCard.setTextColor(getResources().getColor(R.color.textColorAccent));
+        }
+    }
+
+    @OnClick(R.id.layout_card)
+    public void onClickLayoutCard() {
+        if (mIsPaymentCash) {
+            mIsPaymentCash = false;
+
+            layoutCard.setBackgroundResource(R.drawable.bg_white_corner_border_grey_radius_8);
+            imgPaymentCard.setImageResource(R.drawable.ic_card_black);
+            tvPaymentCard.setTextColor(getResources().getColor(R.color.textColorPrimary));
+
+            layoutCash.setBackgroundResource(R.drawable.bg_grey_corner_radius_6);
+            imgPaymentCash.setImageResource(R.drawable.ic_cash_grey);
+            tvPaymentCash.setTextColor(getResources().getColor(R.color.textColorAccent));
+        }
     }
 }

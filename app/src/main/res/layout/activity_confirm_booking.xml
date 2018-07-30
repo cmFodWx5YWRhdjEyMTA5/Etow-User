@@ -260,7 +260,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/define_dimen_10"
-                                android:background="@drawable/bg_grey_corner_radius_6"
+                                android:background="@drawable/bg_white_corner_border_grey_radius_8"
                                 android:gravity="center"
                                 android:orientation="horizontal"
                                 android:padding="@dimen/define_dimen_8">
@@ -269,7 +269,7 @@
                                     android:id="@+id/img_payment_cash"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_cash_grey" />
+                                    android:src="@drawable/ic_cash_black" />
 
                                 <com.user.etow.ui.widget.textview.TahomaRegularTextView
                                     android:id="@+id/tv_payment_cash"
@@ -278,7 +278,7 @@
                                     android:layout_marginStart="@dimen/define_dimen_6"
                                     android:gravity="center"
                                     android:text="@string/cash"
-                                    android:textColor="@color/textColorAccent"
+                                    android:textColor="@color/textColorPrimary"
                                     android:textSize="@dimen/text_size_normal" />
                             </LinearLayout>
 

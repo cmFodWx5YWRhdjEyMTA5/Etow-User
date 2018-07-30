@@ -132,7 +132,7 @@ public class BookingTripActivity extends BaseMVPDialogActivity implements Bookin
                 mScheduleDate = bundle.getString(Constant.SCHEDULE_DATE);
                 layoutDateTimeBooking.setVisibility(View.VISIBLE);
                 tvDateTimeBooking.setText(mScheduleDate);
-                mTripBooking.setPickup_date(DateTimeUtils.convertDateToTimeStampFormat4(mScheduleDate));
+                mTripBooking.setPickup_date(mScheduleDate);
             } else {
                 layoutDateTimeBooking.setVisibility(View.GONE);
             }
@@ -492,6 +492,11 @@ public class BookingTripActivity extends BaseMVPDialogActivity implements Bookin
     }
 
     private void goToConfirmBooking() {
+        if (mIsVehicleNormal) {
+            mTripBooking.setVehicle_type(Constant.TYPE_VEHICLE_NORMAL);
+        } else {
+            mTripBooking.setVehicle_type(Constant.TYPE_VEHICLE_FLATBED);
+        }
         Bundle bundle = new Bundle();
         bundle.putSerializable(Constant.OBJECT_TRIP, mTripBooking);
         GlobalFuntion.startActivity(BookingTripActivity.this, ConfirmBookingActivity.class, bundle);

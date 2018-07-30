@@ -37,6 +37,9 @@ public interface Constant {
     String TYPE_PAYMENT_CASH = "type_payment_cash";
     String TYPE_PAYMENT_CARD = "type_payment_card";
 
+    String TYPE_VEHICLE_NORMAL = "normal";
+    String TYPE_VEHICLE_FLATBED = "flatbed";
+
     // Key Intent
     String TYPE_PAYMENT = "TYPE_PAYMENT";
     String IS_TRIP_COMPLETED = "IS_TRIP_COMPLETED";

@@ -19,6 +19,7 @@ public class DateTimeUtils {
     private static final String DEFAULT_FORMAT_DATE_2 = "EEEE dd MMM yyyy";
     private static final String DEFAULT_FORMAT_DATE_3 = "hh:mm a";
     private static final String DEFAULT_FORMAT_DATE_4 = "E dd MMM yyyy, hh:mm a";
+    private static final String DEFAULT_FORMAT_DATE_5 = "hh:mm a, dd-MMM-yyyy";
 
     public static boolean isDateBefore(Date currentDate, Date pivotDate) {
         if (currentDate == null || pivotDate == null) {
@@ -138,6 +139,24 @@ public class DateTimeUtils {
     public static String parseDateFormat1(String time) {
         String inputPattern = "yyyy-MM-dd";
         String outputPattern = "E dd MMM yyyy";
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+
+        Date date = null;
+        String str = null;
+
+        try {
+            date = inputFormat.parse(time);
+            str = outputFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return str;
+    }
+
+    public static String parseDateFormat2(String time) {
+        String inputPattern = DEFAULT_FORMAT_DATE_4;
+        String outputPattern = DEFAULT_FORMAT_DATE_5;
         SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
         SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
 

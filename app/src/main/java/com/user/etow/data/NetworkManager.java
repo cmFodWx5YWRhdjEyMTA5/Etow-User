@@ -8,6 +8,7 @@ package com.user.etow.data;
 import com.user.etow.data.networking.ThinkFitService;
 import com.user.etow.models.response.ApiResponse;
 import com.user.etow.models.response.ApiSuccess;
+import com.user.etow.models.response.EstimateCostResponse;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -51,5 +52,9 @@ public class NetworkManager {
 
     public Observable<ApiSuccess> logout() {
         return mThinkFitService.logout();
+    }
+
+    public Observable<EstimateCostResponse> getEstimateCost(String distance) {
+        return mThinkFitService.getEstimateCost(distance);
     }
 }

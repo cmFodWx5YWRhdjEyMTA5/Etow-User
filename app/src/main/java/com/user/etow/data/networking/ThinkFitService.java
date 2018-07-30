@@ -15,6 +15,7 @@ import com.user.etow.constant.KeyAPI;
 import com.user.etow.data.prefs.DataStoreManager;
 import com.user.etow.models.response.ApiResponse;
 import com.user.etow.models.response.ApiSuccess;
+import com.user.etow.models.response.EstimateCostResponse;
 
 import java.util.concurrent.TimeUnit;
 
@@ -107,4 +108,8 @@ public interface ThinkFitService {
 
     @POST("user/logout")
     Observable<ApiSuccess> logout();
+
+    @FormUrlEncoded
+    @POST("trip/get-price")
+    Observable<EstimateCostResponse> getEstimateCost(@Field(KeyAPI.KEY_DISTANCE) String distance);
 }

@@ -177,6 +177,9 @@
     <string name="schedule_booking_invalid">Schedule booking invalid</string>
     <string name="error_select_drop_off_location">Error ! Please select drop off location again.</string>
     <string name="error_select_pick_up_location">Error ! Please select pick up location again.</string>
+    <string name="type_vehicle_normal">Normal</string>
+    <string name="type_vehicle_flatbed">Flatbed</string>
+    <string name="unit_price">AED</string>
 
     // msg request api
     <string name="msg_otp_incorrect">Otp incorrect.</string>
