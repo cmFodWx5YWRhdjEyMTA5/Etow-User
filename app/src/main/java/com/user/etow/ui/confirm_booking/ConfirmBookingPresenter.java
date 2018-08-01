@@ -31,6 +31,11 @@ public class ConfirmBookingPresenter extends BasePresenter<ConfirmBookingMVPView
         super.initialView(mvpView);
     }
 
+    @Override
+    public void destroyView() {
+        super.destroyView();
+    }
+
     public void getEstimateCost(String distance) {
         if (!isConnectToInternet()) {
             notifyNoNetwork();

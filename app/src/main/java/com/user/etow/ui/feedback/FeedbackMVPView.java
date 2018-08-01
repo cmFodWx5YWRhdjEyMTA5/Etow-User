@@ -9,4 +9,5 @@ import com.user.etow.ui.base.BaseScreenMvpView;
 
 interface FeedbackMVPView extends BaseScreenMvpView {
 
+    void getStatusFeedback();
 }

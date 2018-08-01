@@ -121,4 +121,8 @@ public interface EtowService {
                                       @Field(KeyAPI.KEY_PRICE) String price,
                                       @Field(KeyAPI.KEY_VEHICLE_TYPE) String vehicleType,
                                       @Field(KeyAPI.KEY_PAYMENT_TYPE) String paymentType);
+
+    @FormUrlEncoded
+    @POST("feedback/send")
+    Observable<ApiSuccess> sendFeedback(@Field(KeyAPI.KEY_COMMENT) String comment);
 }

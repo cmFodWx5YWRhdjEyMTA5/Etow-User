@@ -11,13 +11,11 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.user.etow.R;
+import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
-import com.user.etow.messages.GoToUpcomingTrip;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
 import com.user.etow.ui.main.MainActivity;
 import com.user.etow.utils.Utils;
-
-import org.greenrobot.eventbus.EventBus;
 
 import javax.inject.Inject;
 
@@ -78,9 +76,9 @@ public class BookingCompletedActivity extends BaseMVPDialogActivity implements B
 
     @OnClick(R.id.tv_upcoming_trip)
     public void onClickUpcomingTrip() {
-        EventBus.getDefault().post(new GoToUpcomingTrip());
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        Bundle bundle = new Bundle();
+        bundle.putBoolean(Constant.GO_TO_UPCOMING_TRIPS, true);
+        GlobalFuntion.startActivity(this, MainActivity.class, bundle);
         finishAffinity();
     }
 

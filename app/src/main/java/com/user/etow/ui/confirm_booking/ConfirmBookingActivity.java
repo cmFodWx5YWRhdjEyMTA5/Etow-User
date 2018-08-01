@@ -22,7 +22,6 @@ import com.user.etow.constant.GlobalFuntion;
 import com.user.etow.models.Trip;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
 import com.user.etow.ui.booking_completed.BookingCompletedActivity;
-import com.user.etow.ui.trip_completed.TripCompletedActivity;
 import com.user.etow.ui.trip_process.TripProcessActivity;
 import com.user.etow.utils.DateTimeUtils;
 

@@ -65,4 +65,8 @@ public class NetworkManager {
                 DateTimeUtils.convertDateToTimeStampFormat4(trip.getPickup_date()),
                 trip.getPrice(), trip.getVehicle_type(), trip.getPayment_type());
     }
+
+    public Observable<ApiSuccess> sendFeedback(String comment) {
+        return mEtowService.sendFeedback(comment);
+    }
 }

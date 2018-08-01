@@ -49,4 +49,5 @@ public interface Constant {
     String IS_UPDATE = "IS_UPDATE";
     String SCHEDULE_DATE = "SCHEDULE_DATE";
     String IS_VEHICLE_NORMAL = "IS_VEHICLE_NORMAL";
+    String GO_TO_UPCOMING_TRIPS = "GO_TO_UPCOMING_TRIPS";
 }

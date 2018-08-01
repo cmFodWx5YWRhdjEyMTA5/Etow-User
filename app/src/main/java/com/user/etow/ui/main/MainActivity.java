@@ -23,6 +23,7 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.user.etow.R;
+import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
 import com.user.etow.messages.SelectAvatarSuccess;
 import com.user.etow.models.Image;
@@ -63,6 +64,7 @@ public class MainActivity extends BaseMVPDialogActivity implements MainMVPView {
     TextView tvTitleHeader;
 
     private boolean mTabCompleted = true;
+    private boolean mCheckGoToUpcomingTrip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +78,20 @@ public class MainActivity extends BaseMVPDialogActivity implements MainMVPView {
         imgBack.setImageResource(R.drawable.ic_close_black);
         tvTitleToolbar.setText(getString(R.string.menu));
 
+        getDataIntent();
         setListenerDrawer();
-        replaceFragment(new HomeFragment(), HomeFragment.class.getName());
+    }
+
+    private void getDataIntent() {
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null)
+            mCheckGoToUpcomingTrip = bundle.getBoolean(Constant.GO_TO_UPCOMING_TRIPS);
+        if (mCheckGoToUpcomingTrip) {
+            mTabCompleted = false;
+            replaceFragment(new MyBookingsFragment(), MyBookingsFragment.class.getName());
+        } else {
+            replaceFragment(new HomeFragment(), HomeFragment.class.getName());
+        }
     }
 
     @Override
@@ -246,12 +260,6 @@ public class MainActivity extends BaseMVPDialogActivity implements MainMVPView {
     public void logout() {
         GlobalFuntion.startActivity(this, SignInActivity.class);
         finishAffinity();
-    }
-
-    @Override
-    public void goToUpcomingTrip() {
-        mTabCompleted = false;
-        replaceFragment(new MyBookingsFragment(), MyBookingsFragment.class.getName());
     }
 
     public boolean isTabCompleted() {

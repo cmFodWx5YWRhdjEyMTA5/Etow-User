@@ -24,4 +24,5 @@ public class KeyAPI {
     public static final String KEY_VEHICLE_TYPE = "vehicle_type";
     public static final String KEY_PRICE = "price";
     public static final String KEY_PAYMENT_TYPE = "payment_type";
+    public static final String KEY_COMMENT = "comment";
 }

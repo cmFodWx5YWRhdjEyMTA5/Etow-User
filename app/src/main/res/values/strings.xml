@@ -85,6 +85,7 @@
     <string name="please_enter_email">Please enter email</string>
     <string name="please_enter_password">Please enter password</string>
     <string name="please_enter_full_name">Please enter full name</string>
+    <string name="please_enter_comment">Please enter comments</string>
 
     // Main screen
     <string name="select_vehicle_type">Select vehicle type</string>

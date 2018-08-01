@@ -23,4 +23,9 @@ public class BookingTripPresenter extends BasePresenter<BookingTripMVPView> {
     public void initialView(BookingTripMVPView mvpView) {
         super.initialView(mvpView);
     }
+
+    @Override
+    public void destroyView() {
+        super.destroyView();
+    }
 }

@@ -9,11 +9,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.user.etow.R;
 import com.user.etow.constant.GlobalFuntion;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
+import com.user.etow.utils.StringUtil;
 
 import javax.inject.Inject;
 
@@ -28,6 +30,9 @@ public class FeedbackActivity extends BaseMVPDialogActivity implements FeedbackM
 
     @BindView(R.id.tv_message)
     TextView tvMessage;
+
+    @BindView(R.id.edt_comment)
+    EditText edtComment;
 
     @BindView(R.id.tv_title_toolbar)
     TextView tvTitleToolbar;
@@ -81,13 +86,23 @@ public class FeedbackActivity extends BaseMVPDialogActivity implements FeedbackM
 
     @OnClick(R.id.tv_send)
     public void onClickSend() {
-        tvMessage.setText(getString(R.string.your_message_sent_successfully));
+        if (StringUtil.isEmpty(edtComment.getText().toString().trim())) {
+            showAlert(getString(R.string.please_enter_comment));
+        } else {
+            presenter.sendFeedback(edtComment.getText().toString().trim());
+        }
     }
 
     @OnClick(R.id.tv_message)
     public void onClickSendEmail() {
         Intent emailIntent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                "mailto",getString(R.string.feedback_email_us), null));
+                "mailto", getString(R.string.feedback_email_us), null));
         startActivity(Intent.createChooser(emailIntent, "Send Email"));
+    }
+
+    @Override
+    public void getStatusFeedback() {
+        edtComment.setText("");
+        tvMessage.setText(getString(R.string.your_message_sent_successfully));
     }
 }
