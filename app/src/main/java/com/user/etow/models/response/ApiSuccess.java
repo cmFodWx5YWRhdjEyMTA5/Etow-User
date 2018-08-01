@@ -8,7 +8,6 @@ package com.user.etow.models.response;
 public class ApiSuccess {
 
     private String status;
-
     private String message;
 
     public String getStatus() {

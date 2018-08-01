@@ -45,6 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="@dimen/define_dimen_2"
             android:text="@string/check_status_your_booking"
             android:textColor="@color/textColorSecondary"
             android:textSize="@dimen/text_size_normal" />
@@ -52,7 +53,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
+            android:gravity="center|center_vertical"
             android:orientation="horizontal">
 
             <com.user.etow.ui.widget.textview.TahomaRegularTextView
@@ -64,11 +65,14 @@
                 android:textSize="@dimen/text_size_normal" />
 
             <com.user.etow.ui.widget.textview.TahomaRegularTextView
+                android:id="@+id/tv_upcoming_trip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="@dimen/define_dimen_5"
                 android:text="@string/upcoming_trips"
+                android:paddingTop="@dimen/define_dimen_2"
+                android:paddingBottom="@dimen/define_dimen_2"
                 android:textColor="@android:color/holo_blue_dark"
                 android:textSize="@dimen/text_size_normal" />
         </LinearLayout>
@@ -90,6 +94,7 @@
                 android:textSize="@dimen/text_size_small" />
 
             <ImageView
+                android:id="@+id/img_call_us"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/define_dimen_10"

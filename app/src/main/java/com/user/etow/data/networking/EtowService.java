@@ -31,7 +31,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.POST;
 import rx.Observable;
 
-public interface ThinkFitService {
+public interface EtowService {
 
     class Creator {
         public static Retrofit newRetrofitInstance() {
@@ -112,4 +112,13 @@ public interface ThinkFitService {
     @FormUrlEncoded
     @POST("trip/get-price")
     Observable<EstimateCostResponse> getEstimateCost(@Field(KeyAPI.KEY_DISTANCE) String distance);
+
+    @FormUrlEncoded
+    @POST("trip/create")
+    Observable<ApiSuccess> createTrip(@Field(KeyAPI.KEY_PICK_UP) String pickUp,
+                                      @Field(KeyAPI.KEY_DROP_OFF) String dropOff,
+                                      @Field(KeyAPI.KEY_PICKUP_DATE) String pickUpDate,
+                                      @Field(KeyAPI.KEY_PRICE) String price,
+                                      @Field(KeyAPI.KEY_VEHICLE_TYPE) String vehicleType,
+                                      @Field(KeyAPI.KEY_PAYMENT_TYPE) String paymentType);
 }

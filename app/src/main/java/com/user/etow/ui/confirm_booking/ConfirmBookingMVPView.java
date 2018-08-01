@@ -10,4 +10,6 @@ import com.user.etow.ui.base.BaseScreenMvpView;
 interface ConfirmBookingMVPView extends BaseScreenMvpView {
 
     void loadEstimateCost(String cost);
+
+    void getStatusCreateTrip();
 }

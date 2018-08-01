@@ -7,8 +7,13 @@ package com.user.etow.ui.main;
 
 import com.user.etow.data.NetworkManager;
 import com.user.etow.data.prefs.DataStoreManager;
+import com.user.etow.messages.GoToUpcomingTrip;
 import com.user.etow.models.response.ApiSuccess;
 import com.user.etow.ui.base.BasePresenter;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import javax.inject.Inject;
 
@@ -27,6 +32,15 @@ public class MainPresenter extends BasePresenter<MainMVPView> {
     @Override
     public void initialView(MainMVPView mvpView) {
         super.initialView(mvpView);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
+    }
+
+    @Override
+    public void destroyView() {
+        super.destroyView();
+        EventBus.getDefault().unregister(this);
     }
 
     public void logout() {
@@ -60,5 +74,10 @@ public class MainPresenter extends BasePresenter<MainMVPView> {
                         }
                     });
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onGoToUpcomingTrip(GoToUpcomingTrip goToUpcomingTrip) {
+        getMvpView().goToUpcomingTrip();
     }
 }

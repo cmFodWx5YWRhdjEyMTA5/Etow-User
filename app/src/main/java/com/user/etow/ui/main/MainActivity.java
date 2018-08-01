@@ -62,6 +62,8 @@ public class MainActivity extends BaseMVPDialogActivity implements MainMVPView {
     @BindView(R.id.tv_title_header)
     TextView tvTitleHeader;
 
+    private boolean mTabCompleted = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -244,5 +246,15 @@ public class MainActivity extends BaseMVPDialogActivity implements MainMVPView {
     public void logout() {
         GlobalFuntion.startActivity(this, SignInActivity.class);
         finishAffinity();
+    }
+
+    @Override
+    public void goToUpcomingTrip() {
+        mTabCompleted = false;
+        replaceFragment(new MyBookingsFragment(), MyBookingsFragment.class.getName());
+    }
+
+    public boolean isTabCompleted() {
+        return mTabCompleted;
     }
 }

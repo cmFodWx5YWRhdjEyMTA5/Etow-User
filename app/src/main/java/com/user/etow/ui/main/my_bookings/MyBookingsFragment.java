@@ -49,6 +49,7 @@ public class MyBookingsFragment extends BaseMVPFragmentWithDialog implements MyB
     RecyclerView rcvUpcoming;
 
     private boolean mIsTabCompleted = true;
+    private MainActivity mMainActivity;
 
     private TripCompletedAdapter tripCompletedAdapter;
     private TripUpcomingAdapter tripUpcomingAdapter;
@@ -66,7 +67,11 @@ public class MyBookingsFragment extends BaseMVPFragmentWithDialog implements MyB
         getActivityComponent().inject(this);
         viewUnbind = ButterKnife.bind(this, view);
         presenter.initialView(this);
+        mMainActivity = (MainActivity) getActivity();
         ((MainActivity)getActivity()).showAndHiddenItemToolbar(getString(R.string.my_bookings));
+
+        mIsTabCompleted = mMainActivity.isTabCompleted();
+        initUi();
 
         tripCompletedAdapter = new TripCompletedAdapter(getActivity());
         tripCompletedAdapter.injectInto(rcvCompleted);
@@ -98,6 +103,24 @@ public class MyBookingsFragment extends BaseMVPFragmentWithDialog implements MyB
     @Override
     public void onErrorCallApi(int code) {
         GlobalFuntion.showMessageError(getActivity(), code);
+    }
+
+    private void initUi() {
+        if (mIsTabCompleted) {
+            tvCompleted.setBackgroundResource(R.color.black);
+            tvCompleted.setTextColor(getResources().getColor(R.color.white));
+            tvUpcoming.setBackgroundResource(R.color.button_grey);
+            tvUpcoming.setTextColor(getResources().getColor(R.color.textColorSecondary));
+            rcvCompleted.setVisibility(View.VISIBLE);
+            rcvUpcoming.setVisibility(View.GONE);
+        } else {
+            tvUpcoming.setBackgroundResource(R.color.black);
+            tvUpcoming.setTextColor(getResources().getColor(R.color.white));
+            tvCompleted.setBackgroundResource(R.color.button_grey);
+            tvCompleted.setTextColor(getResources().getColor(R.color.textColorSecondary));
+            rcvCompleted.setVisibility(View.GONE);
+            rcvUpcoming.setVisibility(View.VISIBLE);
+        }
     }
 
     @OnClick(R.id.tv_completed)

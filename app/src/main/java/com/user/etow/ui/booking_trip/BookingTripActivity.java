@@ -133,6 +133,7 @@ public class BookingTripActivity extends BaseMVPDialogActivity implements Bookin
                 layoutDateTimeBooking.setVisibility(View.VISIBLE);
                 tvDateTimeBooking.setText(mScheduleDate);
                 mTripBooking.setPickup_date(mScheduleDate);
+                mTripBooking.setSchedule(true);
             } else {
                 layoutDateTimeBooking.setVisibility(View.GONE);
             }

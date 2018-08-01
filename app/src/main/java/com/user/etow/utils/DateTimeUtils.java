@@ -211,6 +211,21 @@ public class DateTimeUtils {
         return result;
     }
 
+    public static String convertDateToTimeStampFormat5(String strDate) {
+        String result = "";
+        if (strDate != null) {
+            try {
+                SimpleDateFormat format = new SimpleDateFormat(DEFAULT_FORMAT_DATE_5);
+                Date date = format.parse(strDate);
+                Long timestamp = date.getTime() / 1000;
+                result = String.valueOf(timestamp);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
     public static String convertTimeStampToDate(String strTimeStamp) {
         String result = "";
         if (strTimeStamp != null) {
