@@ -23,6 +23,7 @@ import com.user.etow.constant.GlobalFuntion;
 import com.user.etow.injection.ActivityContext;
 import com.user.etow.models.Trip;
 import com.user.etow.ui.trip_detail.TripDetailActivity;
+import com.user.etow.utils.DateTimeUtils;
 
 import java.util.List;
 
@@ -38,8 +39,9 @@ public class TripUpcomingAdapter extends RecyclerView.Adapter<TripUpcomingAdapte
     private RecyclerView mRecyclerView;
 
     @Inject
-    public TripUpcomingAdapter(@ActivityContext Context context) {
+    public TripUpcomingAdapter(@ActivityContext Context context, List<Trip> list) {
         this.context = context;
+        this.listTripUpcoming = list;
     }
 
     @Override
@@ -58,11 +60,6 @@ public class TripUpcomingAdapter extends RecyclerView.Adapter<TripUpcomingAdapte
         return null == listTripUpcoming ? 0 : listTripUpcoming.size();
     }
 
-    public void setListData(List<Trip> list) {
-        this.listTripUpcoming = list;
-        notifyDataSetChanged();
-    }
-
     public void injectInto(RecyclerView recyclerView) {
         mRecyclerView = recyclerView;
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
@@ -78,6 +75,15 @@ public class TripUpcomingAdapter extends RecyclerView.Adapter<TripUpcomingAdapte
     }
 
     public static class TripUpcomingViewHolder extends BaseRecyclerViewAdapter.BaseViewHolder<Trip> {
+
+        @BindView(R.id.tv_pick_up)
+        TextView tvPickUp;
+
+        @BindView(R.id.tv_date)
+        TextView tvDate;
+
+        @BindView(R.id.tv_time)
+        TextView tvTime;
 
         @BindView(R.id.tv_status)
         TextView tvStatus;
@@ -97,16 +103,19 @@ public class TripUpcomingAdapter extends RecyclerView.Adapter<TripUpcomingAdapte
         @Override
         public void bindData(Context context, Trip trip, int position) {
             if (trip != null) {
-                /*if (trip.getStatus() == 1) {
+                tvPickUp.setText(trip.getPick_up());
+                tvDate.setText(DateTimeUtils.convertTimeStampToDateFormat2(trip.getPickup_date()));
+                tvTime.setText(DateTimeUtils.convertTimeStampToDateFormat3(trip.getPickup_date()));
+                if (Constant.TRIP_STATUS_NEW.equals(trip.getStatus())) {
                     tvStatus.setText(context.getString(R.string.pending));
                     tvStatus.setTextColor(context.getResources().getColor(R.color.orange));
-                } else if (trip.getStatus() == 2) {
+                } else if (Constant.TRIP_STATUS_ACCEPT.equals(trip.getStatus())) {
                     tvStatus.setText(context.getString(R.string.confirmed));
                     tvStatus.setTextColor(context.getResources().getColor(R.color.button_green));
-                } else {
+                } else if (Constant.TRIP_STATUS_REJECT.equals(trip.getStatus())) {
                     tvStatus.setText(context.getString(R.string.no_driver_available));
                     tvStatus.setTextColor(context.getResources().getColor(R.color.button_red));
-                }*/
+                }
 
                 layoutItem.setOnClickListener(new View.OnClickListener() {
                     @Override

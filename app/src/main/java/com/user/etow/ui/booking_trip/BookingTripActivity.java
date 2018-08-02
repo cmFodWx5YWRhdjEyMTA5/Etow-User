@@ -38,7 +38,6 @@ import com.user.etow.listener.IMaps;
 import com.user.etow.models.Trip;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
 import com.user.etow.ui.confirm_booking.ConfirmBookingActivity;
-import com.user.etow.utils.DateTimeUtils;
 import com.user.etow.utils.MapsUtil;
 import com.user.etow.utils.StringUtil;
 
@@ -104,6 +103,7 @@ public class BookingTripActivity extends BaseMVPDialogActivity implements Bookin
     private Handler mThreadHandler;
     private String mScheduleDate;
     private Trip mTripBooking;
+    private String mIsScheduleTrip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,15 +128,17 @@ public class BookingTripActivity extends BaseMVPDialogActivity implements Bookin
         if (bundle != null) {
             mIsVehicleNormal = bundle.getBoolean(Constant.IS_VEHICLE_NORMAL);
             setSelectVehicle(mIsVehicleNormal);
-            if (bundle.getString(Constant.SCHEDULE_DATE) != null) {
-                mScheduleDate = bundle.getString(Constant.SCHEDULE_DATE);
+
+            mIsScheduleTrip = bundle.getString(Constant.IS_SCHEDULE_TRIP);
+            mScheduleDate = bundle.getString(Constant.SCHEDULE_DATE);
+            if (Constant.IS_SCHEDULE.equals(mIsScheduleTrip)) {
                 layoutDateTimeBooking.setVisibility(View.VISIBLE);
                 tvDateTimeBooking.setText(mScheduleDate);
-                mTripBooking.setPickup_date(mScheduleDate);
-                mTripBooking.setSchedule(true);
             } else {
                 layoutDateTimeBooking.setVisibility(View.GONE);
             }
+            mTripBooking.setPickup_date(mScheduleDate);
+            mTripBooking.setIs_schedule(mIsScheduleTrip);
         }
     }
 

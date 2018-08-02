@@ -16,5 +16,5 @@ interface MyBookingsMVPView extends BaseScreenMvpView {
 
     void loadListTripCompleted(List<Trip> listTripCompleted);
 
-    void loadListTripUpcoming(List<Trip> listTripUpcoming);
+    void loadListTripUpcoming();
 }

@@ -16,7 +16,7 @@ import java.util.Date;
 public class DateTimeUtils {
 
     private static final String DEFAULT_FORMAT_DATE = "MM/dd/yyyy";
-    private static final String DEFAULT_FORMAT_DATE_2 = "EEEE dd MMM yyyy";
+    private static final String DEFAULT_FORMAT_DATE_2 = "EEEE dd - MMM yyyy";
     private static final String DEFAULT_FORMAT_DATE_3 = "hh:mm a";
     private static final String DEFAULT_FORMAT_DATE_4 = "E dd MMM yyyy, hh:mm a";
     private static final String DEFAULT_FORMAT_DATE_5 = "hh:mm a, dd-MMM-yyyy";
@@ -211,38 +211,7 @@ public class DateTimeUtils {
         return result;
     }
 
-    public static String convertDateToTimeStampFormat5(String strDate) {
-        String result = "";
-        if (strDate != null) {
-            try {
-                SimpleDateFormat format = new SimpleDateFormat(DEFAULT_FORMAT_DATE_5);
-                Date date = format.parse(strDate);
-                Long timestamp = date.getTime() / 1000;
-                result = String.valueOf(timestamp);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-        return result;
-    }
-
-    public static String convertTimeStampToDate(String strTimeStamp) {
-        String result = "";
-        if (strTimeStamp != null) {
-            try {
-                Float floatTimestamp = Float.parseFloat(strTimeStamp);
-                Long timestamp = (long) (floatTimestamp * 1000);
-                SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_FORMAT_DATE);
-                Date date = (new Date(timestamp));
-                result = sdf.format(date);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return result;
-    }
-
-    public static String convertTimeStampToFormatDate2(String strTimeStamp) {
+    public static String convertTimeStampToDateFormat2(String strTimeStamp) {
         String result = "";
         if (strTimeStamp != null) {
             try {
@@ -258,13 +227,29 @@ public class DateTimeUtils {
         return result;
     }
 
-    public static String convertTimeStampToFormatDate3(String strTimeStamp) {
+    public static String convertTimeStampToDateFormat3(String strTimeStamp) {
         String result = "";
         if (strTimeStamp != null) {
             try {
                 Float floatTimestamp = Float.parseFloat(strTimeStamp);
                 Long timestamp = (long) (floatTimestamp * 1000);
                 SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_FORMAT_DATE_3);
+                Date date = (new Date(timestamp));
+                result = sdf.format(date);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    public static String convertTimeStampToDateFormat4(String strTimeStamp) {
+        String result = "";
+        if (strTimeStamp != null) {
+            try {
+                Float floatTimestamp = Float.parseFloat(strTimeStamp);
+                Long timestamp = (long) (floatTimestamp * 1000);
+                SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_FORMAT_DATE_4);
                 Date date = (new Date(timestamp));
                 result = sdf.format(date);
             } catch (Exception e) {

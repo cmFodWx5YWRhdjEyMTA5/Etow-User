@@ -17,7 +17,7 @@ public class Trip implements Serializable {
     private String vehicle_type;
     private String payment_type;
     private User user;
-    private boolean isSchedule;
+    private String is_schedule ;
 
     public int getId() {
         return id;
@@ -123,11 +123,11 @@ public class Trip implements Serializable {
         this.user = user;
     }
 
-    public boolean isSchedule() {
-        return isSchedule;
+    public String getIs_schedule() {
+        return is_schedule;
     }
 
-    public void setSchedule(boolean schedule) {
-        isSchedule = schedule;
+    public void setIs_schedule(String is_schedule) {
+        this.is_schedule = is_schedule;
     }
 }

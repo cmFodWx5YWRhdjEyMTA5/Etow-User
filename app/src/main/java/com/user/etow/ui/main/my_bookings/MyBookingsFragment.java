@@ -76,11 +76,12 @@ public class MyBookingsFragment extends BaseMVPFragmentWithDialog implements MyB
         tripCompletedAdapter = new TripCompletedAdapter(getActivity());
         tripCompletedAdapter.injectInto(rcvCompleted);
 
-        tripUpcomingAdapter = new TripUpcomingAdapter(getActivity());
+        tripUpcomingAdapter = new TripUpcomingAdapter(getActivity(), presenter.getListTripUpcoming());
         tripUpcomingAdapter.injectInto(rcvUpcoming);
 
+        presenter.initFirebase();
         presenter.getListTripCompleted();
-        presenter.getListTripUpcoming();
+        presenter.getTripSchedules();
     }
 
     @Override
@@ -162,14 +163,7 @@ public class MyBookingsFragment extends BaseMVPFragmentWithDialog implements MyB
     }
 
     @Override
-    public void loadListTripUpcoming(List<Trip> listTripUpcoming) {
-        listTripUpcoming.add(new Trip());
-        listTripUpcoming.add(new Trip());
-        listTripUpcoming.add(new Trip());
-        listTripUpcoming.add(new Trip());
-        listTripUpcoming.add(new Trip());
-        listTripUpcoming.add(new Trip());
-
-        tripUpcomingAdapter.setListData(listTripUpcoming);
+    public void loadListTripUpcoming() {
+        tripUpcomingAdapter.notifyDataSetChanged();
     }
 }
