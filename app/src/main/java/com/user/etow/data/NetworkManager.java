@@ -5,6 +5,8 @@ package com.user.etow.data;
  *  Author DangTin. Create on 2018/05/13
  */
 
+import android.util.Log;
+
 import com.user.etow.data.networking.EtowService;
 import com.user.etow.models.Trip;
 import com.user.etow.models.response.ApiResponse;
@@ -61,9 +63,8 @@ public class NetworkManager {
     }
 
     public Observable<ApiSuccess> createTrip(Trip trip) {
-        return mEtowService.createTrip(trip.getPick_up(), trip.getDrop_off(),
-                DateTimeUtils.convertDateToTimeStampFormat4(trip.getPickup_date()),
-                trip.getPrice(), trip.getVehicle_type(), trip.getPayment_type());
+        Log.e("infor", trip.toJSon() + "");
+        return mEtowService.createTrip(trip.toJSon());
     }
 
     public Observable<ApiSuccess> sendFeedback(String comment) {

@@ -162,7 +162,7 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
             imgVehicle.setImageDrawable(myIcon);
             tvVehicle.setText(getString(R.string.type_vehicle_flatbed));
         }
-        tvDateTime.setText(DateTimeUtils.parseDateFormat2(mTripBooking.getPickup_date()));
+        tvDateTime.setText(DateTimeUtils.convertTimeStampToDateFormat5(mTripBooking.getPickup_date()));
         //Get estimate cost
         getEstimateCost();
     }
@@ -174,10 +174,10 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
 
     private void getEstimateCost() {
         float[] result = new float[3];
-        Location.distanceBetween(Double.parseDouble(mTripBooking.getPick_up_latitude()),
-                Double.parseDouble(mTripBooking.getPick_up_longitude()),
-                Double.parseDouble(mTripBooking.getDrop_off_latitude()),
-                Double.parseDouble(mTripBooking.getDrop_off_longitude()), result);
+        Location.distanceBetween(Double.parseDouble(mTripBooking.getPickup_latitude()),
+                Double.parseDouble(mTripBooking.getPickup_longitude()),
+                Double.parseDouble(mTripBooking.getDropoff_latitude()),
+                Double.parseDouble(mTripBooking.getDropoff_longitude()), result);
         int distance = (int) (result[0] / 1000);
         presenter.getEstimateCost(distance + "");
     }

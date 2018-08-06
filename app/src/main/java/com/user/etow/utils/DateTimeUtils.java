@@ -154,24 +154,6 @@ public class DateTimeUtils {
         return str;
     }
 
-    public static String parseDateFormat2(String time) {
-        String inputPattern = DEFAULT_FORMAT_DATE_4;
-        String outputPattern = DEFAULT_FORMAT_DATE_5;
-        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
-        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
-
-        Date date = null;
-        String str = null;
-
-        try {
-            date = inputFormat.parse(time);
-            str = outputFormat.format(date);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return str;
-    }
-
     public static String parseTimeFormat1(String time) {
         String inputPattern = "HH:mm";
         String outputPattern = "hh:mm a";
@@ -250,6 +232,22 @@ public class DateTimeUtils {
                 Float floatTimestamp = Float.parseFloat(strTimeStamp);
                 Long timestamp = (long) (floatTimestamp * 1000);
                 SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_FORMAT_DATE_4);
+                Date date = (new Date(timestamp));
+                result = sdf.format(date);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    public static String convertTimeStampToDateFormat5(String strTimeStamp) {
+        String result = "";
+        if (strTimeStamp != null) {
+            try {
+                Float floatTimestamp = Float.parseFloat(strTimeStamp);
+                Long timestamp = (long) (floatTimestamp * 1000);
+                SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_FORMAT_DATE_5);
                 Date date = (new Date(timestamp));
                 result = sdf.format(date);
             } catch (Exception e) {

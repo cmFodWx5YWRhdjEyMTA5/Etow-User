@@ -12,6 +12,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.user.etow.adapter.TripUpcomingAdapter;
 import com.user.etow.constant.Constant;
 import com.user.etow.data.NetworkManager;
 import com.user.etow.injection.PerActivity;
@@ -59,7 +60,7 @@ public class MyBookingsPresenter extends BasePresenter<MyBookingsMVPView> {
         mDatabaseReference = mFirebaseDatabase.getReference(mReference);
     }
 
-    public void getTripSchedules() {
+    public void getTripSchedules(TripUpcomingAdapter tripUpcomingAdapter) {
         getMvpView().showProgressDialog(true);
         mDatabaseReference.orderByChild("is_schedule").equalTo(Constant.IS_SCHEDULE)
                 .addChildEventListener(new ChildEventListener() {
@@ -68,7 +69,7 @@ public class MyBookingsPresenter extends BasePresenter<MyBookingsMVPView> {
                         getMvpView().showProgressDialog(false);
                         Trip trip = dataSnapshot.getValue(Trip.class);
                         listTripUpcoming.add(trip);
-                        getMvpView().loadListTripUpcoming();
+                        tripUpcomingAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -82,7 +83,7 @@ public class MyBookingsPresenter extends BasePresenter<MyBookingsMVPView> {
                                 }
                             }
                         }
-                        getMvpView().loadListTripUpcoming();
+                        tripUpcomingAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -96,7 +97,7 @@ public class MyBookingsPresenter extends BasePresenter<MyBookingsMVPView> {
                                 }
                             }
                         }
-                        getMvpView().loadListTripUpcoming();
+                        tripUpcomingAdapter.notifyDataSetChanged();
                     }
 
                     @Override

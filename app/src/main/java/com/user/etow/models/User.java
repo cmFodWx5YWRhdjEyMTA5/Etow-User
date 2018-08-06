@@ -10,7 +10,6 @@ public class User {
     private String phone;
     private String token;
     private String avatar;
-    private String status;
 
     public int getId() {
         return id;
@@ -58,14 +57,6 @@ public class User {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     public String toJSon() {

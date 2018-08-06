@@ -115,12 +115,7 @@ public interface EtowService {
 
     @FormUrlEncoded
     @POST("trip/create")
-    Observable<ApiSuccess> createTrip(@Field(KeyAPI.KEY_PICK_UP) String pickUp,
-                                      @Field(KeyAPI.KEY_DROP_OFF) String dropOff,
-                                      @Field(KeyAPI.KEY_PICKUP_DATE) String pickUpDate,
-                                      @Field(KeyAPI.KEY_PRICE) String price,
-                                      @Field(KeyAPI.KEY_VEHICLE_TYPE) String vehicleType,
-                                      @Field(KeyAPI.KEY_PAYMENT_TYPE) String paymentType);
+    Observable<ApiSuccess> createTrip(@Field(KeyAPI.KEY_TRIP) String tripInfor);
 
     @FormUrlEncoded
     @POST("feedback/send")

@@ -34,8 +34,8 @@ public interface Constant {
     String DOMAIN_NAME = "suusoft.com/eTow/public";
     String HOST = HOST_SCHEMA + DOMAIN_NAME + "/api/v1/";
 
-    String TYPE_PAYMENT_CASH = "type_payment_cash";
-    String TYPE_PAYMENT_CARD = "type_payment_card";
+    String TYPE_PAYMENT_CASH = "cash";
+    String TYPE_PAYMENT_CARD = "card";
 
     String TYPE_VEHICLE_NORMAL = "normal";
     String TYPE_VEHICLE_FLATBED = "flatbed";

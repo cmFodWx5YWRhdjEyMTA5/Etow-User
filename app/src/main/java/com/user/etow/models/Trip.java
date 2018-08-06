@@ -1,5 +1,7 @@
 package com.user.etow.models;
 
+import com.google.gson.Gson;
+
 import java.io.Serializable;
 
 public class Trip implements Serializable {
@@ -7,17 +9,23 @@ public class Trip implements Serializable {
     private int id;
     private String pickup_date;
     private String pick_up;
+    private String pickup_latitude;
+    private String pickup_longitude;
     private String drop_off;
-    private String pick_up_latitude;
-    private String pick_up_longitude;
-    private String drop_off_latitude;
-    private String drop_off_longitude;
+    private String dropoff_latitude;
+    private String dropoff_longitude;
     private String price;
     private String status;
     private String vehicle_type;
     private String payment_type;
+    private String payment_status;
     private User user;
-    private String is_schedule ;
+    private Driver driver;
+    private String is_schedule;
+    private String status_schedule;
+    private String current_latitude;
+    private String current_longitude;
+    private String note;
 
     public int getId() {
         return id;
@@ -43,6 +51,22 @@ public class Trip implements Serializable {
         this.pick_up = pick_up;
     }
 
+    public String getPickup_latitude() {
+        return pickup_latitude;
+    }
+
+    public void setPickup_latitude(String pickup_latitude) {
+        this.pickup_latitude = pickup_latitude;
+    }
+
+    public String getPickup_longitude() {
+        return pickup_longitude;
+    }
+
+    public void setPickup_longitude(String pickup_longitude) {
+        this.pickup_longitude = pickup_longitude;
+    }
+
     public String getDrop_off() {
         return drop_off;
     }
@@ -51,36 +75,20 @@ public class Trip implements Serializable {
         this.drop_off = drop_off;
     }
 
-    public String getPick_up_latitude() {
-        return pick_up_latitude;
+    public String getDropoff_latitude() {
+        return dropoff_latitude;
     }
 
-    public void setPick_up_latitude(String pick_up_latitude) {
-        this.pick_up_latitude = pick_up_latitude;
+    public void setDropoff_latitude(String dropoff_latitude) {
+        this.dropoff_latitude = dropoff_latitude;
     }
 
-    public String getPick_up_longitude() {
-        return pick_up_longitude;
+    public String getDropoff_longitude() {
+        return dropoff_longitude;
     }
 
-    public void setPick_up_longitude(String pick_up_longitude) {
-        this.pick_up_longitude = pick_up_longitude;
-    }
-
-    public String getDrop_off_latitude() {
-        return drop_off_latitude;
-    }
-
-    public void setDrop_off_latitude(String drop_off_latitude) {
-        this.drop_off_latitude = drop_off_latitude;
-    }
-
-    public String getDrop_off_longitude() {
-        return drop_off_longitude;
-    }
-
-    public void setDrop_off_longitude(String drop_off_longitude) {
-        this.drop_off_longitude = drop_off_longitude;
+    public void setDropoff_longitude(String dropoff_longitude) {
+        this.dropoff_longitude = dropoff_longitude;
     }
 
     public String getPrice() {
@@ -115,6 +123,14 @@ public class Trip implements Serializable {
         this.payment_type = payment_type;
     }
 
+    public String getPayment_status() {
+        return payment_status;
+    }
+
+    public void setPayment_status(String payment_status) {
+        this.payment_status = payment_status;
+    }
+
     public User getUser() {
         return user;
     }
@@ -123,11 +139,56 @@ public class Trip implements Serializable {
         this.user = user;
     }
 
+    public Driver getDriver() {
+        return driver;
+    }
+
+    public void setDriver(Driver driver) {
+        this.driver = driver;
+    }
+
     public String getIs_schedule() {
         return is_schedule;
     }
 
     public void setIs_schedule(String is_schedule) {
         this.is_schedule = is_schedule;
+    }
+
+    public String getStatus_schedule() {
+        return status_schedule;
+    }
+
+    public void setStatus_schedule(String status_schedule) {
+        this.status_schedule = status_schedule;
+    }
+
+    public String getCurrent_latitude() {
+        return current_latitude;
+    }
+
+    public void setCurrent_latitude(String current_latitude) {
+        this.current_latitude = current_latitude;
+    }
+
+    public String getCurrent_longitude() {
+        return current_longitude;
+    }
+
+    public void setCurrent_longitude(String current_longitude) {
+        this.current_longitude = current_longitude;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public String toJSon() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 }

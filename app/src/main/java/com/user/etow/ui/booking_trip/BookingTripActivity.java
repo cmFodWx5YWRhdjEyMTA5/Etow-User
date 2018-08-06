@@ -38,6 +38,7 @@ import com.user.etow.listener.IMaps;
 import com.user.etow.models.Trip;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
 import com.user.etow.ui.confirm_booking.ConfirmBookingActivity;
+import com.user.etow.utils.DateTimeUtils;
 import com.user.etow.utils.MapsUtil;
 import com.user.etow.utils.StringUtil;
 
@@ -137,7 +138,7 @@ public class BookingTripActivity extends BaseMVPDialogActivity implements Bookin
             } else {
                 layoutDateTimeBooking.setVisibility(View.GONE);
             }
-            mTripBooking.setPickup_date(mScheduleDate);
+            mTripBooking.setPickup_date(DateTimeUtils.convertDateToTimeStampFormat4(mScheduleDate));
             mTripBooking.setIs_schedule(mIsScheduleTrip);
         }
     }
@@ -255,8 +256,8 @@ public class BookingTripActivity extends BaseMVPDialogActivity implements Bookin
         LocationManager mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         GlobalFuntion.getCurrentLocation(this, mLocationManager);
 
-        mTripBooking.setPick_up_latitude(GlobalFuntion.LATITUDE + "");
-        mTripBooking.setPick_up_longitude(GlobalFuntion.LONGITUDE + "");
+        mTripBooking.setPickup_latitude(GlobalFuntion.LATITUDE + "");
+        mTripBooking.setPickup_longitude(GlobalFuntion.LONGITUDE + "");
         LatLng latLng = new LatLng(GlobalFuntion.LATITUDE, GlobalFuntion.LONGITUDE);
         MapsUtil.GetAddressByLatLng getAddressByLatLng = new MapsUtil.GetAddressByLatLng(new IMaps() {
             @Override
@@ -267,8 +268,8 @@ public class BookingTripActivity extends BaseMVPDialogActivity implements Bookin
                     showAlert(getString(R.string.unble_trace_location));
                 } else {
                     if (StringUtil.isEmpty(mTripBooking.getDrop_off()) ||
-                            StringUtil.isEmpty(mTripBooking.getDrop_off_latitude()) ||
-                            StringUtil.isEmpty(mTripBooking.getDrop_off_longitude())) {
+                            StringUtil.isEmpty(mTripBooking.getDropoff_latitude()) ||
+                            StringUtil.isEmpty(mTripBooking.getDropoff_longitude())) {
                         // Not do anything
                     } else {
                         goToConfirmBooking();
@@ -332,13 +333,13 @@ public class BookingTripActivity extends BaseMVPDialogActivity implements Bookin
                             if (!getString(R.string.current_location).equals(tvPickUp.getText().toString().trim())) {
                                 LatLng latLng = (LatLng) obj;
                                 if (latLng != null) {
-                                    mTripBooking.setPick_up_latitude(latLng.latitude + "");
-                                    mTripBooking.setPick_up_longitude(latLng.longitude + "");
+                                    mTripBooking.setPickup_latitude(latLng.latitude + "");
+                                    mTripBooking.setPickup_longitude(latLng.longitude + "");
                                     mTripBooking.setPick_up(tvPickUp.getText().toString().trim());
 
                                     if (StringUtil.isEmpty(mTripBooking.getDrop_off()) ||
-                                            StringUtil.isEmpty(mTripBooking.getDrop_off_latitude()) ||
-                                            StringUtil.isEmpty(mTripBooking.getDrop_off_longitude())) {
+                                            StringUtil.isEmpty(mTripBooking.getDropoff_latitude()) ||
+                                            StringUtil.isEmpty(mTripBooking.getDropoff_longitude())) {
                                         // Not do anything
                                     } else {
                                         goToConfirmBooking();
@@ -428,13 +429,13 @@ public class BookingTripActivity extends BaseMVPDialogActivity implements Bookin
                             mMap.addMarker(marker);*/
                             LatLng latLng = (LatLng) obj;
                             if (latLng != null) {
-                                mTripBooking.setDrop_off_latitude(latLng.latitude + "");
-                                mTripBooking.setDrop_off_longitude(latLng.longitude + "");
+                                mTripBooking.setDropoff_latitude(latLng.latitude + "");
+                                mTripBooking.setDropoff_longitude(latLng.longitude + "");
                                 mTripBooking.setDrop_off(tvDropOff.getText().toString().trim());
 
                                 if (StringUtil.isEmpty(mTripBooking.getPick_up()) ||
-                                        StringUtil.isEmpty(mTripBooking.getPick_up_latitude()) ||
-                                        StringUtil.isEmpty(mTripBooking.getPick_up_longitude())) {
+                                        StringUtil.isEmpty(mTripBooking.getPickup_latitude()) ||
+                                        StringUtil.isEmpty(mTripBooking.getPickup_longitude())) {
                                     // Not do anything
                                 } else {
                                     goToConfirmBooking();

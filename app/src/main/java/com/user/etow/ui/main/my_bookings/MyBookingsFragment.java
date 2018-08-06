@@ -68,7 +68,7 @@ public class MyBookingsFragment extends BaseMVPFragmentWithDialog implements MyB
         viewUnbind = ButterKnife.bind(this, view);
         presenter.initialView(this);
         mMainActivity = (MainActivity) getActivity();
-        ((MainActivity)getActivity()).showAndHiddenItemToolbar(getString(R.string.my_bookings));
+        ((MainActivity) getActivity()).showAndHiddenItemToolbar(getString(R.string.my_bookings));
 
         mIsTabCompleted = mMainActivity.isTabCompleted();
         initUi();
@@ -81,7 +81,7 @@ public class MyBookingsFragment extends BaseMVPFragmentWithDialog implements MyB
 
         presenter.initFirebase();
         presenter.getListTripCompleted();
-        presenter.getTripSchedules();
+        presenter.getTripSchedules(tripUpcomingAdapter);
     }
 
     @Override
@@ -99,7 +99,8 @@ public class MyBookingsFragment extends BaseMVPFragmentWithDialog implements MyB
     }
 
     @Override
-    protected void initToolbar() {}
+    protected void initToolbar() {
+    }
 
     @Override
     public void onErrorCallApi(int code) {
@@ -160,10 +161,5 @@ public class MyBookingsFragment extends BaseMVPFragmentWithDialog implements MyB
         listTripCompleted.add(new Trip());
 
         tripCompletedAdapter.setListData(listTripCompleted);
-    }
-
-    @Override
-    public void loadListTripUpcoming() {
-        tripUpcomingAdapter.notifyDataSetChanged();
     }
 }
