@@ -51,7 +51,8 @@
 
         <include
             android:id="@+id/layout_trip_ongoing"
-            layout="@layout/layout_trip_ongoing" />
+            layout="@layout/layout_trip_ongoing"
+            android:visibility="gone"/>
     </LinearLayout>
 
 </RelativeLayout>

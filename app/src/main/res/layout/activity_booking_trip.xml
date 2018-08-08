@@ -120,6 +120,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
+                            android:padding="@dimen/define_dimen_2"
                             android:src="@drawable/ic_clear_black"
                             android:visibility="gone" />
                     </RelativeLayout>
@@ -150,6 +151,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
+                            android:padding="@dimen/define_dimen_2"
                             android:src="@drawable/ic_clear_black"
                             android:visibility="gone" />
                     </RelativeLayout>

@@ -120,4 +120,9 @@ public interface EtowService {
     @FormUrlEncoded
     @POST("feedback/send")
     Observable<ApiSuccess> sendFeedback(@Field(KeyAPI.KEY_COMMENT) String comment);
+
+    @FormUrlEncoded
+    @POST("trip/update")
+    Observable<ApiSuccess> updateTrip(@Field(KeyAPI.KEY_TRIP_ID) int tripId,
+                                      @Field(KeyAPI.KEY_STATUS) String status);
 }

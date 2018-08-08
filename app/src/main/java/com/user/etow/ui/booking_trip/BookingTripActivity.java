@@ -131,14 +131,16 @@ public class BookingTripActivity extends BaseMVPDialogActivity implements Bookin
             setSelectVehicle(mIsVehicleNormal);
 
             mIsScheduleTrip = bundle.getString(Constant.IS_SCHEDULE_TRIP);
-            mScheduleDate = bundle.getString(Constant.SCHEDULE_DATE);
             if (Constant.IS_SCHEDULE.equals(mIsScheduleTrip)) {
                 layoutDateTimeBooking.setVisibility(View.VISIBLE);
                 tvDateTimeBooking.setText(mScheduleDate);
             } else {
                 layoutDateTimeBooking.setVisibility(View.GONE);
             }
-            mTripBooking.setPickup_date(DateTimeUtils.convertDateToTimeStampFormat4(mScheduleDate));
+            if (bundle.getString(Constant.SCHEDULE_DATE) != null) {
+                mScheduleDate = bundle.getString(Constant.SCHEDULE_DATE);
+                mTripBooking.setPickup_date(DateTimeUtils.convertDateToTimeStampFormat4(mScheduleDate));
+            }
             mTripBooking.setIs_schedule(mIsScheduleTrip);
         }
     }

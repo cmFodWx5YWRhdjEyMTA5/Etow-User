@@ -2,7 +2,9 @@ package com.user.etow.models;
 
 import com.google.gson.Gson;
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable {
 
     private int id;
     private String full_name;

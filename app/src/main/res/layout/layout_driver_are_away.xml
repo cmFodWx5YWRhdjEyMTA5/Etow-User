@@ -51,7 +51,7 @@
         android:orientation="horizontal">
 
         <com.user.etow.ui.widget.textview.TahomaRegularTextView
-            android:id="@+id/tv_cancel"
+            android:id="@+id/tv_cancel_driver_away"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

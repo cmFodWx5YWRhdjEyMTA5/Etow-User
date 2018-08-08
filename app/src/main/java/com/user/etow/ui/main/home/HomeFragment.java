@@ -161,7 +161,6 @@ public class HomeFragment extends BaseMVPFragmentWithDialog implements HomeMVPVi
     public void onClickLayoutWhereToGo() {
         Bundle bundle = new Bundle();
         bundle.putBoolean(Constant.IS_VEHICLE_NORMAL, mIsVehicleNormal);
-        bundle.putString(Constant.SCHEDULE_DATE, DateTimeUtils.convertTimeStampToDateFormat4(DateTimeUtils.getCurrentTimeStamp()));
         bundle.putString(Constant.IS_SCHEDULE_TRIP, Constant.IS_NOT_SCHEDULE);
         GlobalFuntion.startActivity(getActivity(), BookingTripActivity.class, bundle);
     }

@@ -88,6 +88,7 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
     TextView tvConfirmBooking;
 
     private Trip mTripBooking;
+    private boolean mIsActiveConfirmButton;
     private boolean mIsPaymentCash = true;
 
     @Override
@@ -162,6 +163,9 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
             imgVehicle.setImageDrawable(myIcon);
             tvVehicle.setText(getString(R.string.type_vehicle_flatbed));
         }
+        if (!Constant.IS_SCHEDULE.equals(mTripBooking.getIs_schedule())) {
+            mTripBooking.setPickup_date(DateTimeUtils.getCurrentTimeStamp());
+        }
         tvDateTime.setText(DateTimeUtils.convertTimeStampToDateFormat5(mTripBooking.getPickup_date()));
         //Get estimate cost
         getEstimateCost();
@@ -193,14 +197,27 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
         if (Constant.IS_SCHEDULE.equals(mTripBooking.getIs_schedule())) {
             GlobalFuntion.startActivity(this, BookingCompletedActivity.class);
         } else {
-            //Todo
             GlobalFuntion.startActivity(this, TripProcessActivity.class);
         }
     }
 
     @OnClick(R.id.layout_cash)
     public void onClickLayoutCash() {
+        mIsActiveConfirmButton = true;
+        tvConfirmBooking.setBackgroundResource(R.drawable.bg_black_corner);
+        tvConfirmBooking.setTextColor(getResources().getColor(R.color.white));
+
         if (!mIsPaymentCash) {
+            mIsPaymentCash = true;
+
+            layoutCash.setBackgroundResource(R.drawable.bg_white_corner_border_grey_radius_8);
+            imgPaymentCash.setImageResource(R.drawable.ic_cash_black);
+            tvPaymentCash.setTextColor(getResources().getColor(R.color.textColorPrimary));
+
+            layoutCard.setBackgroundResource(R.drawable.bg_grey_corner_radius_6);
+            imgPaymentCard.setImageResource(R.drawable.ic_card_grey);
+            tvPaymentCard.setTextColor(getResources().getColor(R.color.textColorAccent));
+        } else {
             mIsPaymentCash = true;
 
             layoutCash.setBackgroundResource(R.drawable.bg_white_corner_border_grey_radius_8);
@@ -215,6 +232,10 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
 
     @OnClick(R.id.layout_card)
     public void onClickLayoutCard() {
+        mIsActiveConfirmButton = true;
+        tvConfirmBooking.setBackgroundResource(R.drawable.bg_black_corner);
+        tvConfirmBooking.setTextColor(getResources().getColor(R.color.white));
+
         if (mIsPaymentCash) {
             mIsPaymentCash = false;
 
@@ -230,11 +251,15 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
 
     @OnClick(R.id.tv_confirm_booking)
     public void onClickConfirmBooking() {
-        if (mIsPaymentCash) {
-            mTripBooking.setPayment_type(Constant.TYPE_PAYMENT_CASH);
+        if (mIsActiveConfirmButton) {
+            if (mIsPaymentCash) {
+                mTripBooking.setPayment_type(Constant.TYPE_PAYMENT_CASH);
+            } else {
+                mTripBooking.setPayment_type(Constant.TYPE_PAYMENT_CARD);
+            }
+            presenter.createTrip(mTripBooking);
         } else {
-            mTripBooking.setPayment_type(Constant.TYPE_PAYMENT_CARD);
+            showAlert(getString(R.string.please_select_payment_method));
         }
-        presenter.createTrip(mTripBooking);
     }
 }

@@ -9,4 +9,7 @@ import com.user.etow.ui.base.BaseScreenMvpView;
 
 interface TripProcessMVPView extends BaseScreenMvpView {
 
+    void getStatusDriverAvailable(boolean isAvailable);
+
+    void updateStatusCancelTrip();
 }

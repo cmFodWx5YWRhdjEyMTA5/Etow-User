@@ -40,17 +40,19 @@ public class ConfirmBookingPresenter extends BasePresenter<ConfirmBookingMVPView
         if (!isConnectToInternet()) {
             notifyNoNetwork();
         } else {
+            getMvpView().showProgressDialog(true);
             mNetworkManager.getEstimateCost(distance)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<EstimateCostResponse>() {
                         @Override
                         public void onCompleted() {
-
+                            getMvpView().showProgressDialog(false);
                         }
 
                         @Override
                         public void onError(Throwable e) {
+                            getMvpView().showProgressDialog(false);
                             getMvpView().onErrorCallApi(getErrorFromHttp(e).getCode());
                         }
 
