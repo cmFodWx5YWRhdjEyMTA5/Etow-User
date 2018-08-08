@@ -36,7 +36,7 @@
         android:textSize="@dimen/text_size_normal" />
 
     <com.user.etow.ui.widget.textview.TahomaRegularTextView
-        android:id="@+id/tv_cancel"
+        android:id="@+id/tv_cancel_wait"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/define_dimen_10"

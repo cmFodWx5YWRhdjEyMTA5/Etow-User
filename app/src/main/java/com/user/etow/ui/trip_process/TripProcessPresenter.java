@@ -30,6 +30,7 @@ public class TripProcessPresenter extends BasePresenter<TripProcessMVPView> {
     }
 
     public void checkDriverAvailable() {
+        // Todo hard code status available
         getMvpView().getStatusDriverAvailable(false);
     }
 

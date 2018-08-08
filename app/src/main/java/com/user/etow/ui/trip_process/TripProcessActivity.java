@@ -10,6 +10,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.user.etow.R;
 import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
@@ -23,7 +32,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class TripProcessActivity extends BaseMVPDialogActivity implements TripProcessMVPView {
+public class TripProcessActivity extends BaseMVPDialogActivity implements TripProcessMVPView ,
+        OnMapReadyCallback {
 
     @Inject
     TripProcessPresenter presenter;
@@ -34,7 +44,11 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
     @BindView(R.id.layout_wait_driver)
     LinearLayout layoutWaitDriver;
 
-    private int mTripId;
+    @BindView(R.id.layout_cancel_trip)
+    LinearLayout layoutCancelTrip;
+
+    private GoogleMap mMap;
+    private int mTripId = 38;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +57,12 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
         getActivityComponent().inject(this);
         viewUnbind = ButterKnife.bind(this);
         presenter.initialView(this);
+
+        // init map
+        SupportMapFragment mMapFragment = new SupportMapFragment();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_view_map, mMapFragment).commit();
+        mMapFragment.getMapAsync(this);
 
         //Todo check driver available in current estimate time
         presenter.checkDriverAvailable();
@@ -76,7 +96,7 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
 
     @Override
     public void getStatusDriverAvailable(boolean isAvailable) {
-        if (isAvailable) {
+        if (!isAvailable) {
             layoutDriverAreAway.setVisibility(View.VISIBLE);
         } else {
             layoutWaitDriver.setVisibility(View.VISIBLE);
@@ -88,6 +108,23 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finishAffinity();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        if (GlobalFuntion.LATITUDE > 0 && GlobalFuntion.LONGITUDE > 0) {
+            // Add a marker in Sydney, Australia, and move the camera.
+            LatLng currentLocation = new LatLng(GlobalFuntion.LATITUDE, GlobalFuntion.LONGITUDE);
+            // create marker
+            MarkerOptions marker = new MarkerOptions().position(currentLocation)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_black));
+            // adding marker
+            mMap.addMarker(marker);
+            CameraUpdate myLoc = CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
+                    .target(currentLocation).zoom(13).build());
+            mMap.moveCamera(myLoc);
+        }
     }
 
     @OnClick(R.id.tv_confirm)
@@ -105,6 +142,23 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
 
     @OnClick(R.id.tv_cancel_driver_away)
     public void onClickCancelDriverAway() {
+        presenter.updateTrip(mTripId, Constant.TRIP_STATUS_CANCEL);
+    }
+
+    @OnClick(R.id.tv_cancel_wait)
+    public void onClickCancelWait() {
+        layoutWaitDriver.setVisibility(View.GONE);
+        layoutCancelTrip.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.tv_no_cancel)
+    public void onClickNoCancel() {
+        layoutCancelTrip.setVisibility(View.GONE);
+        layoutWaitDriver.setVisibility(View.VISIBLE);
+    }
+
+    @OnClick(R.id.tv_yes_cancel)
+    public void onClickYesCancel() {
         presenter.updateTrip(mTripId, Constant.TRIP_STATUS_CANCEL);
     }
 }
