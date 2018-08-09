@@ -5,11 +5,14 @@ package com.user.etow.ui.trip_process;
  *  Author DangTin. Create on 2018/05/13
  */
 
+import com.user.etow.models.Trip;
 import com.user.etow.ui.base.BaseScreenMvpView;
 
 interface TripProcessMVPView extends BaseScreenMvpView {
 
     void getStatusDriverAvailable(boolean isAvailable);
 
-    void updateStatusCancelTrip();
+    void getTripDetail(Trip trip);
+
+    void updateStatusTrip();
 }

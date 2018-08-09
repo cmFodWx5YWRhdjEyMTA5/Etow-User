@@ -34,12 +34,10 @@ import com.user.etow.R;
 import com.user.etow.adapter.autocompleteaddress.PlacesAutoCompleteAdapter;
 import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
-import com.user.etow.listener.IMaps;
 import com.user.etow.models.Trip;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
 import com.user.etow.ui.confirm_booking.ConfirmBookingActivity;
 import com.user.etow.utils.DateTimeUtils;
-import com.user.etow.utils.MapsUtil;
 import com.user.etow.utils.StringUtil;
 
 import java.util.ArrayList;
@@ -131,17 +129,18 @@ public class BookingTripActivity extends BaseMVPDialogActivity implements Bookin
             setSelectVehicle(mIsVehicleNormal);
 
             mIsScheduleTrip = bundle.getString(Constant.IS_SCHEDULE_TRIP);
+            mTripBooking.setIs_schedule(mIsScheduleTrip);
+
+            if (bundle.getString(Constant.SCHEDULE_DATE) != null) {
+                mScheduleDate = bundle.getString(Constant.SCHEDULE_DATE);
+                mTripBooking.setPickup_date(DateTimeUtils.convertDateToTimeStampFormat4(mScheduleDate));
+            }
             if (Constant.IS_SCHEDULE.equals(mIsScheduleTrip)) {
                 layoutDateTimeBooking.setVisibility(View.VISIBLE);
                 tvDateTimeBooking.setText(mScheduleDate);
             } else {
                 layoutDateTimeBooking.setVisibility(View.GONE);
             }
-            if (bundle.getString(Constant.SCHEDULE_DATE) != null) {
-                mScheduleDate = bundle.getString(Constant.SCHEDULE_DATE);
-                mTripBooking.setPickup_date(DateTimeUtils.convertDateToTimeStampFormat4(mScheduleDate));
-            }
-            mTripBooking.setIs_schedule(mIsScheduleTrip);
         }
     }
 
@@ -260,31 +259,20 @@ public class BookingTripActivity extends BaseMVPDialogActivity implements Bookin
 
         mTripBooking.setPickup_latitude(GlobalFuntion.LATITUDE + "");
         mTripBooking.setPickup_longitude(GlobalFuntion.LONGITUDE + "");
-        LatLng latLng = new LatLng(GlobalFuntion.LATITUDE, GlobalFuntion.LONGITUDE);
-        MapsUtil.GetAddressByLatLng getAddressByLatLng = new MapsUtil.GetAddressByLatLng(new IMaps() {
-            @Override
-            public void processFinished(Object obj) {
-                mTripBooking.setPick_up(obj.toString());
-
-                if (StringUtil.isEmpty(obj.toString())) {
-                    showAlert(getString(R.string.unble_trace_location));
-                } else {
-                    if (StringUtil.isEmpty(mTripBooking.getDrop_off()) ||
-                            StringUtil.isEmpty(mTripBooking.getDropoff_latitude()) ||
-                            StringUtil.isEmpty(mTripBooking.getDropoff_longitude())) {
-                        // Not do anything
-                    } else {
-                        goToConfirmBooking();
-                    }
-                }
+        String currentAddress = GlobalFuntion.getCompleteAddressString(this, GlobalFuntion.LATITUDE,
+                GlobalFuntion.LONGITUDE);
+        mTripBooking.setPick_up(currentAddress);
+        if (StringUtil.isEmpty(currentAddress)) {
+            showAlert(getString(R.string.unble_trace_location));
+        } else {
+            if (StringUtil.isEmpty(mTripBooking.getDrop_off()) ||
+                    StringUtil.isEmpty(mTripBooking.getDropoff_latitude()) ||
+                    StringUtil.isEmpty(mTripBooking.getDropoff_longitude())) {
+                // Not do anything
+            } else {
+                goToConfirmBooking();
             }
-
-            @Override
-            public void getLatLong(String latitude, String longitude) {
-
-            }
-        });
-        getAddressByLatLng.execute(latLng);
+        }
     }
 
     public void setupAutoComplete() {
@@ -317,49 +305,25 @@ public class BookingTripActivity extends BaseMVPDialogActivity implements Bookin
                 GlobalFuntion.hideSoftKeyboard(BookingTripActivity.this, tvPickUp);
                 // Get data associated with the specified position
                 // in the list (AdapterView)
-                final String description = (String) parent
-                        .getItemAtPosition(position);
+                final String description = (String) parent.getItemAtPosition(position);
+                if (!getString(R.string.current_location).equals(tvPickUp.getText().toString().trim())) {
+                    LatLng latLng = GlobalFuntion.getLocationFromAddress(BookingTripActivity.this, description);
+                    if (latLng != null) {
+                        mTripBooking.setPickup_latitude(latLng.latitude + "");
+                        mTripBooking.setPickup_longitude(latLng.longitude + "");
+                        mTripBooking.setPick_up(tvPickUp.getText().toString().trim());
 
-                // Move camera to new address.
-                new MapsUtil.GetLatLngByAddress(new IMaps() {
-
-                    @Override
-                    public void processFinished(Object obj) {
-                        try {
-                            /*// Move camera smoothly
-                            LatLng latLng = (LatLng) obj;
-                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
-                            MarkerOptions marker = new MarkerOptions().position(latLng)
-                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_black));
-                            mMap.addMarker(marker);*/
-                            if (!getString(R.string.current_location).equals(tvPickUp.getText().toString().trim())) {
-                                LatLng latLng = (LatLng) obj;
-                                if (latLng != null) {
-                                    mTripBooking.setPickup_latitude(latLng.latitude + "");
-                                    mTripBooking.setPickup_longitude(latLng.longitude + "");
-                                    mTripBooking.setPick_up(tvPickUp.getText().toString().trim());
-
-                                    if (StringUtil.isEmpty(mTripBooking.getDrop_off()) ||
-                                            StringUtil.isEmpty(mTripBooking.getDropoff_latitude()) ||
-                                            StringUtil.isEmpty(mTripBooking.getDropoff_longitude())) {
-                                        // Not do anything
-                                    } else {
-                                        goToConfirmBooking();
-                                    }
-                                } else {
-                                    showAlert(getString(R.string.error_select_pick_up_location));
-                                }
-                            }
-                        } catch (Exception ex) {
-                            throw new RuntimeException(ex);
+                        if (StringUtil.isEmpty(mTripBooking.getDrop_off()) ||
+                                StringUtil.isEmpty(mTripBooking.getDropoff_latitude()) ||
+                                StringUtil.isEmpty(mTripBooking.getDropoff_longitude())) {
+                            // Not do anything
+                        } else {
+                            goToConfirmBooking();
                         }
+                    } else {
+                        showAlert(getString(R.string.error_select_pick_up_location));
                     }
-
-                    @Override
-                    public void getLatLong(String latitude, String longitude) {
-
-                    }
-                }).execute(description);
+                }
             }
         });
 
@@ -414,47 +378,23 @@ public class BookingTripActivity extends BaseMVPDialogActivity implements Bookin
                 GlobalFuntion.hideSoftKeyboard(BookingTripActivity.this, tvDropOff);
                 // Get data associated with the specified position
                 // in the list (AdapterView)
-                final String description = (String) parent
-                        .getItemAtPosition(position);
+                final String description = (String) parent.getItemAtPosition(position);
+                LatLng latLng = GlobalFuntion.getLocationFromAddress(BookingTripActivity.this, description);
+                if (latLng != null) {
+                    mTripBooking.setDropoff_latitude(latLng.latitude + "");
+                    mTripBooking.setDropoff_longitude(latLng.longitude + "");
+                    mTripBooking.setDrop_off(tvDropOff.getText().toString().trim());
 
-                // Move camera to new address.
-                new MapsUtil.GetLatLngByAddress(new IMaps() {
-
-                    @Override
-                    public void processFinished(Object obj) {
-                        try {
-                            /*// Move camera smoothly
-                            LatLng latLng = (LatLng) obj;
-                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
-                            MarkerOptions marker = new MarkerOptions().position(latLng)
-                                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_black));
-                            mMap.addMarker(marker);*/
-                            LatLng latLng = (LatLng) obj;
-                            if (latLng != null) {
-                                mTripBooking.setDropoff_latitude(latLng.latitude + "");
-                                mTripBooking.setDropoff_longitude(latLng.longitude + "");
-                                mTripBooking.setDrop_off(tvDropOff.getText().toString().trim());
-
-                                if (StringUtil.isEmpty(mTripBooking.getPick_up()) ||
-                                        StringUtil.isEmpty(mTripBooking.getPickup_latitude()) ||
-                                        StringUtil.isEmpty(mTripBooking.getPickup_longitude())) {
-                                    // Not do anything
-                                } else {
-                                    goToConfirmBooking();
-                                }
-                            } else {
-                                showAlert(getString(R.string.error_select_drop_off_location));
-                            }
-                        } catch (Exception ex) {
-                            throw new RuntimeException(ex);
-                        }
+                    if (StringUtil.isEmpty(mTripBooking.getPick_up()) ||
+                            StringUtil.isEmpty(mTripBooking.getPickup_latitude()) ||
+                            StringUtil.isEmpty(mTripBooking.getPickup_longitude())) {
+                        // Not do anything
+                    } else {
+                        goToConfirmBooking();
                     }
-
-                    @Override
-                    public void getLatLong(String latitude, String longitude) {
-
-                    }
-                }).execute(description);
+                } else {
+                    showAlert(getString(R.string.error_select_drop_off_location));
+                }
             }
         });
 

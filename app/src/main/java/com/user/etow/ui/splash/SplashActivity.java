@@ -15,11 +15,13 @@ import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 
 import com.user.etow.R;
+import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
 import com.user.etow.data.prefs.DataStoreManager;
 import com.user.etow.ui.auth.user_start.UserStartActivity;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
 import com.user.etow.ui.main.MainActivity;
+import com.user.etow.ui.trip_process.TripProcessActivity;
 import com.user.etow.utils.Utils;
 
 import javax.inject.Inject;
@@ -75,15 +77,20 @@ public class SplashActivity extends BaseMVPDialogActivity implements SplashMVPVi
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (!DataStoreManager.getFirstInstallApp()) {
-                    DataStoreManager.setFirstInstallApp(true);
-                    DataStoreManager.removeUser();
-                    GlobalFuntion.startActivity(SplashActivity.this, UserStartActivity.class);
+                int idTripProcess = DataStoreManager.getPrefIdTripProcess();
+                if (idTripProcess != 0) {
+                    GlobalFuntion.startActivity(SplashActivity.this, TripProcessActivity.class);
                 } else {
-                    if (DataStoreManager.getIsLogin()) {
-                        GlobalFuntion.startActivity(SplashActivity.this, MainActivity.class);
-                    } else {
+                    if (!DataStoreManager.getFirstInstallApp()) {
+                        DataStoreManager.setFirstInstallApp(true);
+                        DataStoreManager.removeUser();
                         GlobalFuntion.startActivity(SplashActivity.this, UserStartActivity.class);
+                    } else {
+                        if (DataStoreManager.getIsLogin()) {
+                            GlobalFuntion.startActivity(SplashActivity.this, MainActivity.class);
+                        } else {
+                            GlobalFuntion.startActivity(SplashActivity.this, UserStartActivity.class);
+                        }
                     }
                 }
                 finish();

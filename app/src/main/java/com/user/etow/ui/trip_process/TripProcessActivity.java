@@ -22,6 +22,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.user.etow.R;
 import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
+import com.user.etow.data.prefs.DataStoreManager;
+import com.user.etow.models.Trip;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
 import com.user.etow.ui.main.MainActivity;
 import com.user.etow.ui.trip_completed.TripCompletedActivity;
@@ -47,8 +49,13 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
     @BindView(R.id.layout_cancel_trip)
     LinearLayout layoutCancelTrip;
 
+    @BindView(R.id.layout_booking_accepted)
+    LinearLayout layoutBookingAccepted;
+
+    @BindView(R.id.layout_driver_arrived)
+    LinearLayout layoutDriverArrived;
+
     private GoogleMap mMap;
-    private int mTripId = 38;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +71,8 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
                 .add(R.id.fragment_view_map, mMapFragment).commit();
         mMapFragment.getMapAsync(this);
 
-        //Todo check driver available in current estimate time
-        presenter.checkDriverAvailable();
+        presenter.initFirebase();
+        presenter.getTripDetail(DataStoreManager.getPrefIdTripProcess());
     }
 
     @Override
@@ -101,10 +108,25 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
         } else {
             layoutWaitDriver.setVisibility(View.VISIBLE);
         }
+        layoutBookingAccepted.setVisibility(View.GONE);
     }
 
     @Override
-    public void updateStatusCancelTrip() {
+    public void getTripDetail(Trip trip) {
+        if (Constant.TRIP_STATUS_NEW.equals(trip.getStatus())) {
+            presenter.checkDriverAvailable();
+        } else if (Constant.TRIP_STATUS_ACCEPT.equals(trip.getStatus())) {
+            layoutDriverAreAway.setVisibility(View.GONE);
+            layoutWaitDriver.setVisibility(View.GONE);
+            layoutBookingAccepted.setVisibility(View.VISIBLE);
+        } else if (Constant.TRIP_STATUS_ARRIVED.equals(trip.getStatus())) {
+            layoutBookingAccepted.setVisibility(View.GONE);
+            layoutDriverArrived.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void updateStatusTrip() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finishAffinity();
@@ -142,7 +164,7 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
 
     @OnClick(R.id.tv_cancel_driver_away)
     public void onClickCancelDriverAway() {
-        presenter.updateTrip(mTripId, Constant.TRIP_STATUS_CANCEL);
+        presenter.updateTrip(DataStoreManager.getPrefIdTripProcess(), Constant.TRIP_STATUS_CANCEL);
     }
 
     @OnClick(R.id.tv_cancel_wait)
@@ -159,6 +181,6 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
 
     @OnClick(R.id.tv_yes_cancel)
     public void onClickYesCancel() {
-        presenter.updateTrip(mTripId, Constant.TRIP_STATUS_CANCEL);
+        presenter.updateTrip(DataStoreManager.getPrefIdTripProcess(), Constant.TRIP_STATUS_CANCEL);
     }
 }
