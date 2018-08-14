@@ -8,7 +8,7 @@ package com.user.etow.ui.confirm_booking;
 import com.user.etow.constant.Constant;
 import com.user.etow.data.NetworkManager;
 import com.user.etow.models.Trip;
-import com.user.etow.models.response.ApiSuccess;
+import com.user.etow.models.response.ApiResponse;
 import com.user.etow.models.response.EstimateCostResponse;
 import com.user.etow.ui.base.BasePresenter;
 
@@ -76,7 +76,7 @@ public class ConfirmBookingPresenter extends BasePresenter<ConfirmBookingMVPView
             mNetworkManager.createTrip(trip)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<ApiSuccess>() {
+                    .subscribe(new Observer<ApiResponse>() {
                         @Override
                         public void onCompleted() {
                             getMvpView().showProgressDialog(false);
@@ -89,10 +89,11 @@ public class ConfirmBookingPresenter extends BasePresenter<ConfirmBookingMVPView
                         }
 
                         @Override
-                        public void onNext(ApiSuccess apiSuccess) {
-                            if (apiSuccess != null) {
-                                if (Constant.SUCCESS.equalsIgnoreCase(apiSuccess.getStatus())) {
-                                    getMvpView().getStatusCreateTrip();
+                        public void onNext(ApiResponse apiResponse) {
+                            if (apiResponse != null) {
+                                if (Constant.SUCCESS.equalsIgnoreCase(apiResponse.getStatus())) {
+                                    Trip tripResult = apiResponse.getDataObject(Trip.class);
+                                    getMvpView().getStatusCreateTrip(tripResult);
                                 }
                             }
                         }

@@ -25,6 +25,7 @@ import com.user.etow.ui.base.BaseMVPDialogActivity;
 import com.user.etow.ui.booking_completed.BookingCompletedActivity;
 import com.user.etow.ui.trip_process.TripProcessActivity;
 import com.user.etow.utils.DateTimeUtils;
+import com.user.etow.utils.StringUtil;
 
 import javax.inject.Inject;
 
@@ -87,6 +88,13 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
 
     @BindView(R.id.tv_confirm_booking)
     TextView tvConfirmBooking;
+
+    @BindView(R.id.tv_estimate_time_arrive)
+    TextView tvEstimateTimeArrive;
+
+    @BindView(R.id.tv_estimate_time_destination)
+    TextView tvEstimateTimeDestination;
+
 
     private Trip mTripBooking;
     private boolean mIsActiveConfirmButton;
@@ -168,8 +176,13 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
             mTripBooking.setPickup_date(DateTimeUtils.getCurrentTimeStamp());
         }
         tvDateTime.setText(DateTimeUtils.convertTimeStampToDateFormat5(mTripBooking.getPickup_date()));
-        //Get estimate cost
-        getEstimateCost();
+        if (GlobalFuntion.mSetting != null && !StringUtil.isEmpty(GlobalFuntion.mSetting.getEstimateTimeArrive())) {
+            tvEstimateTimeArrive.setText(GlobalFuntion.mSetting.getEstimateTimeArrive() + " " + getString(R.string.unit_time));
+        } else {
+            tvEstimateTimeArrive.setText("");
+        }
+        //Get estimate trip
+        getEstimateTrip();
     }
 
     @OnClick(R.id.img_back)
@@ -177,13 +190,23 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
         onBackPressed();
     }
 
-    private void getEstimateCost() {
+    private void getEstimateTrip() {
         float[] result = new float[3];
         Location.distanceBetween(Double.parseDouble(mTripBooking.getPickup_latitude()),
                 Double.parseDouble(mTripBooking.getPickup_longitude()),
                 Double.parseDouble(mTripBooking.getDropoff_latitude()),
                 Double.parseDouble(mTripBooking.getDropoff_longitude()), result);
         int distance = (int) (result[0] / 1000);
+        if (GlobalFuntion.mSetting != null && !StringUtil.isEmpty(GlobalFuntion.mSetting.getTimeDistance())) {
+            int timeDistance = Integer.parseInt(GlobalFuntion.mSetting.getTimeDistance());
+            int timeDestination = distance * timeDistance;
+            int timeDestination01 = timeDestination - Integer.parseInt(GlobalFuntion.mSetting.getTimeBuffer());
+            int timeDestination02 = timeDestination + Integer.parseInt(GlobalFuntion.mSetting.getTimeBuffer());
+            tvEstimateTimeDestination.setText(timeDestination01 + " - " + timeDestination02 + " " + getString(R.string.unit_time));
+        } else {
+            tvEstimateTimeDestination.setText("");
+        }
+        // Get cost trip
         presenter.getEstimateCost(distance + "");
     }
 
@@ -194,12 +217,11 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
     }
 
     @Override
-    public void getStatusCreateTrip() {
+    public void getStatusCreateTrip(Trip trip) {
         if (Constant.IS_SCHEDULE.equals(mTripBooking.getIs_schedule())) {
             GlobalFuntion.startActivity(this, BookingCompletedActivity.class);
         } else {
-            // Todo fake id trip
-            DataStoreManager.setPrefIdTripProcess(49);
+            DataStoreManager.setPrefIdTripProcess(trip.getId());
             GlobalFuntion.startActivity(this, TripProcessActivity.class);
         }
     }

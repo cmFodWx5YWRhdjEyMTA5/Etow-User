@@ -5,12 +5,22 @@ package com.user.etow.ui.splash;
  *  Author DangTin. Create on 2018/05/13
  */
 
+import android.content.Context;
+
+import com.user.etow.ETowApplication;
+import com.user.etow.constant.Constant;
+import com.user.etow.constant.GlobalFuntion;
 import com.user.etow.data.NetworkManager;
+import com.user.etow.models.Setting;
+import com.user.etow.models.response.ApiResponse;
 import com.user.etow.ui.base.BasePresenter;
 
 import javax.inject.Inject;
 
 import retrofit2.Retrofit;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class SplashPresenter extends BasePresenter<SplashMVPView> {
 
@@ -22,5 +32,38 @@ public class SplashPresenter extends BasePresenter<SplashMVPView> {
     @Override
     public void initialView(SplashMVPView mvpView) {
         super.initialView(mvpView);
+    }
+
+    public void getSetting(Context context) {
+        if (!isConnectToInternet()) {
+            notifyNoNetwork();
+        } else {
+            mNetworkManager.getSetting()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<ApiResponse>() {
+                        @Override
+                        public void onCompleted() {
+
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            getMvpView().onErrorCallApi(getErrorFromHttp(e).getCode());
+                        }
+
+                        @Override
+                        public void onNext(ApiResponse apiResponse) {
+                            if (apiResponse != null) {
+                                if (Constant.SUCCESS.equalsIgnoreCase(apiResponse.getStatus())) {
+                                    Setting setting = apiResponse.getDataObject(Setting.class);
+                                    if (setting != null) {
+                                        GlobalFuntion.mSetting = setting;
+                                    }
+                                }
+                            }
+                        }
+                    });
+        }
     }
 }

@@ -36,6 +36,7 @@ import com.user.etow.data.prefs.DataStoreManager;
 import com.user.etow.listener.IGetDateListener;
 import com.user.etow.listener.IGetTimeListener;
 import com.user.etow.models.CountryCode;
+import com.user.etow.models.Setting;
 import com.user.etow.ui.auth.sign_in.SignInActivity;
 import com.user.etow.ui.widget.image.ImagePicker;
 import com.user.etow.utils.DateTimeUtils;
@@ -61,6 +62,7 @@ public class GlobalFuntion {
     public static double LATITUDE = 0.0;
     public static double LONGITUDE = 0.0;
     public static final int PICK_IMAGE_AVATAR = 0;
+    public static Setting mSetting;
 
     public static void startActivity(Context context, Class<?> clz) {
         Intent intent = new Intent(context, clz);

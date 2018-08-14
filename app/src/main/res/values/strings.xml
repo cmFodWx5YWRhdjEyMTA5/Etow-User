@@ -182,6 +182,7 @@
     <string name="type_vehicle_normal">Normal</string>
     <string name="type_vehicle_flatbed">Flatbed</string>
     <string name="unit_price">AED</string>
+    <string name="unit_time">mins</string>
 
     // msg request api
     <string name="msg_otp_incorrect">Otp incorrect.</string>

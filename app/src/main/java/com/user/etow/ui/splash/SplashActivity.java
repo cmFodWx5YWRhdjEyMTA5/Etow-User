@@ -8,14 +8,12 @@ package com.user.etow.ui.splash;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 
 import com.user.etow.R;
-import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
 import com.user.etow.data.prefs.DataStoreManager;
 import com.user.etow.ui.auth.user_start.UserStartActivity;
@@ -44,6 +42,8 @@ public class SplashActivity extends BaseMVPDialogActivity implements SplashMVPVi
         Utils.getTahomaRegularTypeFace(SplashActivity.this);
         // Request permissions
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        // Get setting app
+        presenter.getSetting(this);
     }
 
     @Override

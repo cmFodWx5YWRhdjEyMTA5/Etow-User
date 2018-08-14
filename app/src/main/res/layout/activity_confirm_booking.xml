@@ -160,6 +160,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginEnd="@dimen/define_dimen_10"
                                     android:layout_weight="1"
+                                    android:visibility="visible"
                                     android:orientation="vertical">
 
                                     <com.user.etow.ui.widget.textview.TahomaRegularTextView
@@ -177,10 +178,11 @@
                                         android:textSize="@dimen/text_size_small" />
 
                                     <com.user.etow.ui.widget.textview.TahomaRegularTextView
+                                        android:id="@+id/tv_estimate_time_arrive"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="@dimen/define_dimen_6"
-                                        android:text="15-30 mins"
+                                        android:text="0-30 mins"
                                         android:textColor="@color/textColorPrimary"
                                         android:textSize="@dimen/text_size_normal" />
                                 </LinearLayout>
@@ -206,6 +208,7 @@
                                         android:textSize="@dimen/text_size_small" />
 
                                     <com.user.etow.ui.widget.textview.TahomaRegularTextView
+                                        android:id="@+id/tv_estimate_time_destination"
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="@dimen/define_dimen_6"

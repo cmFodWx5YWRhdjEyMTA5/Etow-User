@@ -62,8 +62,7 @@ public class NetworkManager {
         return mEtowService.getEstimateCost(distance);
     }
 
-    public Observable<ApiSuccess> createTrip(Trip trip) {
-        Log.e("infor", trip.toJSon() + "");
+    public Observable<ApiResponse> createTrip(Trip trip) {
         return mEtowService.createTrip(trip.toJSon());
     }
 
@@ -73,5 +72,9 @@ public class NetworkManager {
 
     public Observable<ApiSuccess> updateTrip(int tripId, String status) {
         return mEtowService.updateTrip(tripId, status);
+    }
+
+    public Observable<ApiResponse> getSetting() {
+        return mEtowService.getSetting();
     }
 }
