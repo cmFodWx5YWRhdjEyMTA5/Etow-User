@@ -126,7 +126,8 @@ public interface EtowService {
     @FormUrlEncoded
     @PUT("trip/update")
     Observable<ApiSuccess> updateTrip(@Field(KeyAPI.KEY_TRIP_ID) int tripId,
-                                      @Field(KeyAPI.KEY_STATUS) String status);
+                                      @Field(KeyAPI.KEY_STATUS) String status,
+                                      @Field(KeyAPI.KEY_NOTE) String note);
 
     @GET("trip/get-setting-time")
     Observable<ApiResponse> getSetting();

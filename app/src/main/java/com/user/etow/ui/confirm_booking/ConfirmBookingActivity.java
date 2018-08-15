@@ -9,7 +9,6 @@ import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.LightingColorFilter;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -25,7 +24,6 @@ import com.user.etow.ui.base.BaseMVPDialogActivity;
 import com.user.etow.ui.booking_completed.BookingCompletedActivity;
 import com.user.etow.ui.trip_process.TripProcessActivity;
 import com.user.etow.utils.DateTimeUtils;
-import com.user.etow.utils.StringUtil;
 
 import javax.inject.Inject;
 
@@ -176,8 +174,11 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
             mTripBooking.setPickup_date(DateTimeUtils.getCurrentTimeStamp());
         }
         tvDateTime.setText(DateTimeUtils.convertTimeStampToDateFormat5(mTripBooking.getPickup_date()));
-        if (GlobalFuntion.mSetting != null && !StringUtil.isEmpty(GlobalFuntion.mSetting.getEstimateTimeArrive())) {
-            tvEstimateTimeArrive.setText(GlobalFuntion.mSetting.getEstimateTimeArrive() + " " + getString(R.string.unit_time));
+        if (GlobalFuntion.mSetting != null) {
+            int timeEstimateArrive = Integer.parseInt(GlobalFuntion.mSetting.getEstimateTimeArrive());
+            int timeEstimateArrive01 = timeEstimateArrive - Integer.parseInt(GlobalFuntion.mSetting.getTimeBuffer());
+            int timeEstimateArrive02 = timeEstimateArrive + Integer.parseInt(GlobalFuntion.mSetting.getTimeBuffer());
+            tvEstimateTimeArrive.setText(timeEstimateArrive01 + " - " + timeEstimateArrive02 + " " + getString(R.string.unit_time));
         } else {
             tvEstimateTimeArrive.setText("");
         }
@@ -191,13 +192,11 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
     }
 
     private void getEstimateTrip() {
-        float[] result = new float[3];
-        Location.distanceBetween(Double.parseDouble(mTripBooking.getPickup_latitude()),
+        int distance = GlobalFuntion.getDistanceFromLocation(Double.parseDouble(mTripBooking.getPickup_latitude()),
                 Double.parseDouble(mTripBooking.getPickup_longitude()),
                 Double.parseDouble(mTripBooking.getDropoff_latitude()),
-                Double.parseDouble(mTripBooking.getDropoff_longitude()), result);
-        int distance = (int) (result[0] / 1000);
-        if (GlobalFuntion.mSetting != null && !StringUtil.isEmpty(GlobalFuntion.mSetting.getTimeDistance())) {
+                Double.parseDouble(mTripBooking.getDropoff_longitude()));
+        if (GlobalFuntion.mSetting != null) {
             int timeDistance = Integer.parseInt(GlobalFuntion.mSetting.getTimeDistance());
             int timeDestination = distance * timeDistance;
             int timeDestination01 = timeDestination - Integer.parseInt(GlobalFuntion.mSetting.getTimeBuffer());
@@ -221,9 +220,10 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
         if (Constant.IS_SCHEDULE.equals(mTripBooking.getIs_schedule())) {
             GlobalFuntion.startActivity(this, BookingCompletedActivity.class);
         } else {
-            DataStoreManager.setPrefIdTripProcess(trip.getId());
+            DataStoreManager.setPrefIdTripProcess(trip.getTrip_id());
             GlobalFuntion.startActivity(this, TripProcessActivity.class);
         }
+        finish();
     }
 
     @OnClick(R.id.layout_cash)

@@ -7,6 +7,7 @@ import java.io.Serializable;
 public class Trip implements Serializable {
 
     private int id;
+    private int trip_id;
     private String pickup_date;
     private String pick_up;
     private String pickup_latitude;
@@ -33,6 +34,14 @@ public class Trip implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public int getTrip_id() {
+        return trip_id;
+    }
+
+    public void setTrip_id(int trip_id) {
+        this.trip_id = trip_id;
     }
 
     public String getPickup_date() {

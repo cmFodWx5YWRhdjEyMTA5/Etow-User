@@ -70,8 +70,8 @@ public class NetworkManager {
         return mEtowService.sendFeedback(comment);
     }
 
-    public Observable<ApiSuccess> updateTrip(int tripId, String status) {
-        return mEtowService.updateTrip(tripId, status);
+    public Observable<ApiSuccess> updateTrip(int tripId, String status, String note) {
+        return mEtowService.updateTrip(tripId, status, note);
     }
 
     public Observable<ApiResponse> getSetting() {

@@ -34,7 +34,7 @@ public class SplashPresenter extends BasePresenter<SplashMVPView> {
         super.initialView(mvpView);
     }
 
-    public void getSetting(Context context) {
+    public void getSetting() {
         if (!isConnectToInternet()) {
             notifyNoNetwork();
         } else {

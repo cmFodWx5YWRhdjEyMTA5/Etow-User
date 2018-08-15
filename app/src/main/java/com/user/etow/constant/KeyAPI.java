@@ -22,4 +22,5 @@ public class KeyAPI {
     public static final String KEY_TRIP = "trip";
     public static final String KEY_TRIP_ID = "trip_id";
     public static final String KEY_STATUS = "status";
+    public static final String KEY_NOTE = "note";
 }

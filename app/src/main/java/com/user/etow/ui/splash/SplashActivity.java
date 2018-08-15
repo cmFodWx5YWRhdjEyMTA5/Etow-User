@@ -43,7 +43,7 @@ public class SplashActivity extends BaseMVPDialogActivity implements SplashMVPVi
         // Request permissions
         ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         // Get setting app
-        presenter.getSetting(this);
+        presenter.getSetting();
     }
 
     @Override

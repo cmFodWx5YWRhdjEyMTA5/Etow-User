@@ -182,7 +182,6 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="@dimen/define_dimen_6"
-                                        android:text="0-30 mins"
                                         android:textColor="@color/textColorPrimary"
                                         android:textSize="@dimen/text_size_normal" />
                                 </LinearLayout>
@@ -212,7 +211,6 @@
                                         android:layout_width="wrap_content"
                                         android:layout_height="wrap_content"
                                         android:layout_marginTop="@dimen/define_dimen_6"
-                                        android:text="25-40 mins"
                                         android:textColor="@color/textColorPrimary"
                                         android:textSize="@dimen/text_size_normal" />
                                 </LinearLayout>

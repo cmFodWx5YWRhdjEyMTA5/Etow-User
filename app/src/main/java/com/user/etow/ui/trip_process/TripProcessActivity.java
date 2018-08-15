@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -34,7 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class TripProcessActivity extends BaseMVPDialogActivity implements TripProcessMVPView ,
+public class TripProcessActivity extends BaseMVPDialogActivity implements TripProcessMVPView,
         OnMapReadyCallback {
 
     @Inject
@@ -54,6 +55,12 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
 
     @BindView(R.id.layout_driver_arrived)
     LinearLayout layoutDriverArrived;
+
+    @BindView(R.id.tv_current_estimate_time)
+    TextView tvCurrentEstimateTime;
+
+    @BindView(R.id.tv_time_driver_reach)
+    TextView tvTimeDriverReach;
 
     private GoogleMap mMap;
 
@@ -123,6 +130,21 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
             layoutBookingAccepted.setVisibility(View.GONE);
             layoutDriverArrived.setVisibility(View.VISIBLE);
         }
+
+        initData();
+    }
+
+    private void initData() {
+        if (GlobalFuntion.mSetting != null) {
+            int timeEstimateArrive = Integer.parseInt(GlobalFuntion.mSetting.getEstimateTimeArrive());
+            int timeEstimateArrive01 = timeEstimateArrive - Integer.parseInt(GlobalFuntion.mSetting.getTimeBuffer());
+            int timeEstimateArrive02 = timeEstimateArrive + Integer.parseInt(GlobalFuntion.mSetting.getTimeBuffer());
+            tvCurrentEstimateTime.setText(timeEstimateArrive01 + " - " + timeEstimateArrive02 + " " + getString(R.string.unit_time));
+            tvTimeDriverReach.setText(timeEstimateArrive01 + " - " + timeEstimateArrive02 + " " + getString(R.string.unit_time));
+        } else {
+            tvCurrentEstimateTime.setText("");
+            tvTimeDriverReach.setText("");
+        }
     }
 
     @Override
@@ -157,6 +179,7 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
 
     @OnClick(R.id.layout_trip_ongoing)
     public void onClickFakeClick() {
+        // Todo Fake paymemt method
         Bundle bundle = new Bundle();
         bundle.putString(Constant.TYPE_PAYMENT, Constant.TYPE_PAYMENT_CARD);
         GlobalFuntion.startActivity(this, TripCompletedActivity.class, bundle);
@@ -164,7 +187,8 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
 
     @OnClick(R.id.tv_cancel_driver_away)
     public void onClickCancelDriverAway() {
-        presenter.updateTrip(DataStoreManager.getPrefIdTripProcess(), Constant.TRIP_STATUS_CANCEL);
+        presenter.updateTrip(DataStoreManager.getPrefIdTripProcess(), Constant.TRIP_STATUS_CANCEL,
+                getString(R.string.no_driver_accepted));
     }
 
     @OnClick(R.id.tv_cancel_wait)
@@ -181,6 +205,7 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
 
     @OnClick(R.id.tv_yes_cancel)
     public void onClickYesCancel() {
-        presenter.updateTrip(DataStoreManager.getPrefIdTripProcess(), Constant.TRIP_STATUS_CANCEL);
+        presenter.updateTrip(DataStoreManager.getPrefIdTripProcess(), Constant.TRIP_STATUS_CANCEL,
+                getString(R.string.no_driver_accepted));
     }
 }

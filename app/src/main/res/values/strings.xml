@@ -87,6 +87,7 @@
     <string name="please_enter_full_name">Please enter full name</string>
     <string name="please_enter_comment">Please enter comments</string>
     <string name="please_select_payment_method">Please select payment method</string>
+    <string name="no_driver_accepted">No driver accepted</string>
 
     // Main screen
     <string name="select_vehicle_type">Select vehicle type</string>

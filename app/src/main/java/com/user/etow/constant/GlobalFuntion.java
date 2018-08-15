@@ -352,4 +352,12 @@ public class GlobalFuntion {
         }
         return p1;
     }
+
+    public static int getDistanceFromLocation(Double pickupLatitude, Double pickupLongitude,
+                                              Double dropoffLatitude, Double dropoffLongitude) {
+        float[] result = new float[3];
+        Location.distanceBetween(pickupLatitude, pickupLongitude, dropoffLatitude, dropoffLongitude, result);
+        int distance = (int) (result[0] / 1000);
+        return distance;
+    }
 }
