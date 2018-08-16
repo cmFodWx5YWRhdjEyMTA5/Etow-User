@@ -7,11 +7,12 @@ package com.user.etow.ui.main.my_bookings;
  * ******************************************************************************
  */
 
+import android.content.Context;
+
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.user.etow.ETowApplication;
 import com.user.etow.adapter.TripUpcomingAdapter;
 import com.user.etow.constant.Constant;
 import com.user.etow.data.NetworkManager;
@@ -29,9 +30,6 @@ import retrofit2.Retrofit;
 @PerActivity
 public class MyBookingsPresenter extends BasePresenter<MyBookingsMVPView> {
 
-    FirebaseDatabase mFirebaseDatabase;
-    DatabaseReference mDatabaseReference;
-    String mReference;
     ArrayList<Trip> listTripUpcoming = new ArrayList<>();
 
     @Inject
@@ -54,15 +52,9 @@ public class MyBookingsPresenter extends BasePresenter<MyBookingsMVPView> {
         getMvpView().loadListTripCompleted(list);
     }
 
-    public void initFirebase() {
-        mReference = "/trip";
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mDatabaseReference = mFirebaseDatabase.getReference(mReference);
-    }
-
-    public void getTripSchedules(TripUpcomingAdapter tripUpcomingAdapter) {
+    public void getTripSchedules(Context context, TripUpcomingAdapter tripUpcomingAdapter) {
         getMvpView().showProgressDialog(true);
-        mDatabaseReference.orderByChild("is_schedule").equalTo(Constant.IS_SCHEDULE)
+        ETowApplication.get(context).getDatabaseReference().orderByChild("is_schedule").equalTo(Constant.IS_SCHEDULE)
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {

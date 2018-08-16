@@ -90,9 +90,9 @@ public class HomeFragment extends BaseMVPFragmentWithDialog implements HomeMVPVi
         presenter.initialView(this);
         ((MainActivity) getActivity()).showAndHiddenItemToolbar("");
 
+        // init map
         SupportMapFragment mMapFragment = new SupportMapFragment();
-        this.getChildFragmentManager().beginTransaction()
-                .add(R.id.fragment_view_map, mMapFragment).commit();
+        mMapFragment = ((SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.fragment_view_map));
         mMapFragment.getMapAsync(this);
     }
 

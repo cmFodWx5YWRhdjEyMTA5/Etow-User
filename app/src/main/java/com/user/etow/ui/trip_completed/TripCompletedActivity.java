@@ -18,9 +18,12 @@ import android.widget.TextView;
 import com.user.etow.R;
 import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
+import com.user.etow.data.prefs.DataStoreManager;
+import com.user.etow.models.Trip;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
 import com.user.etow.ui.pay_card.PayCardActivity;
 import com.user.etow.ui.rate_trip.RateTripActivity;
+import com.user.etow.utils.Utils;
 
 import javax.inject.Inject;
 
@@ -51,7 +54,7 @@ public class TripCompletedActivity extends BaseMVPDialogActivity implements Trip
     @BindView(R.id.tv_action)
     TextView tvAction;
 
-    private String mTypePayment;
+    private Trip mTrip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,15 +64,10 @@ public class TripCompletedActivity extends BaseMVPDialogActivity implements Trip
         viewUnbind = ButterKnife.bind(this);
         presenter.initialView(this);
 
-        getDataIntent();
-        initUi();
-    }
+        imgBack.setVisibility(View.GONE);
+        tvTitleToolbar.setText(getString(R.string.trip_completed));
 
-    private void getDataIntent() {
-        Bundle bundle = getIntent().getExtras();
-        if (bundle != null) {
-            mTypePayment = bundle.getString(Constant.TYPE_PAYMENT);
-        }
+        presenter.getTripDetail(this, DataStoreManager.getPrefIdTripProcess());
     }
 
     @Override
@@ -98,10 +96,18 @@ public class TripCompletedActivity extends BaseMVPDialogActivity implements Trip
         GlobalFuntion.showMessageError(this, code);
     }
 
+    @Override
+    public void updateStatusTrip(Trip trip) {
+        mTrip = trip;
+        if (Constant.TRIP_STATUS_JOURNEY_COMPLETED.equals(trip.getStatus())) {
+            initUi();
+        } else if (Constant.TRIP_STATUS_COMPLETE.equals(trip.getStatus())) {
+            GlobalFuntion.startActivity(this, RateTripActivity.class);
+        }
+    }
+
     private void initUi() {
-        imgBack.setVisibility(View.GONE);
-        tvTitleToolbar.setText(getString(R.string.trip_completed));
-        if (Constant.TYPE_PAYMENT_CASH.equals(mTypePayment)) {
+        if (Constant.TYPE_PAYMENT_CASH.equals(mTrip.getPayment_type())) {
             imgPaymentType.setImageResource(R.drawable.ic_cash_black);
             tvPaymentType.setText(getString(R.string.cash));
             tvMesagePayCash.setVisibility(View.VISIBLE);
@@ -116,8 +122,12 @@ public class TripCompletedActivity extends BaseMVPDialogActivity implements Trip
 
     @OnClick(R.id.tv_action)
     public void onClickAction() {
-        if (Constant.TYPE_PAYMENT_CASH.equals(mTypePayment)) {
-            GlobalFuntion.startActivity(this, RateTripActivity.class);
+        if (Constant.TYPE_PAYMENT_CASH.equals(mTrip.getPayment_type())) {
+            if (Constant.TRIP_STATUS_COMPLETE.equals(mTrip.getStatus())) {
+                GlobalFuntion.startActivity(this, RateTripActivity.class);
+            } else {
+                presenter.updateTrip(DataStoreManager.getPrefIdTripProcess(), Constant.TRIP_STATUS_COMPLETE, "");
+            }
         } else {
             GlobalFuntion.startActivity(this, PayCardActivity.class);
         }
@@ -125,10 +135,10 @@ public class TripCompletedActivity extends BaseMVPDialogActivity implements Trip
 
     @OnClick(R.id.img_call_phone)
     public void onClickCallDriver() {
-        showDialogCallDriver();
+        showDialogCallDriver(mTrip.getDriver().getPhone());
     }
 
-    public void showDialogCallDriver() {
+    public void showDialogCallDriver(String phoneNumber) {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.layout_dialog_call_driver);
@@ -138,17 +148,26 @@ public class TripCompletedActivity extends BaseMVPDialogActivity implements Trip
         dialog.setCancelable(false);
 
         // Get view
+        final TextView tvPhomeNumber = dialog.findViewById(R.id.tv_phome_number);
         final TextView tvCancel = dialog.findViewById(R.id.tv_cancel);
         final TextView tvCall = dialog.findViewById(R.id.tv_call);
 
+        // set data
+        tvPhomeNumber.setText(phoneNumber);
+
         // Get listener
+        tvCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.callPhoneNumber(TripCompletedActivity.this, phoneNumber);
+            }
+        });
         tvCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
             }
         });
-
         dialog.show();
     }
 }

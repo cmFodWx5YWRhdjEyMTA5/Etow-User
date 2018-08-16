@@ -115,8 +115,7 @@ public class BookingTripActivity extends BaseMVPDialogActivity implements Bookin
         getDataIntent();
         // init map
         SupportMapFragment mMapFragment = new SupportMapFragment();
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_view_map, mMapFragment).commit();
+        mMapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_view_map));
         mMapFragment.getMapAsync(this);
     }
 

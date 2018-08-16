@@ -5,9 +5,14 @@ package com.user.etow.ui.trip_process;
  *  Author DangTin. Create on 2018/05/13
  */
 
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -28,6 +33,7 @@ import com.user.etow.models.Trip;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
 import com.user.etow.ui.main.MainActivity;
 import com.user.etow.ui.trip_completed.TripCompletedActivity;
+import com.user.etow.utils.Utils;
 
 import javax.inject.Inject;
 
@@ -56,6 +62,9 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
     @BindView(R.id.layout_driver_arrived)
     LinearLayout layoutDriverArrived;
 
+    @BindView(R.id.layout_trip_ongoing)
+    LinearLayout layoutTripOngoing;
+
     @BindView(R.id.tv_current_estimate_time)
     TextView tvCurrentEstimateTime;
 
@@ -63,6 +72,7 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
     TextView tvTimeDriverReach;
 
     private GoogleMap mMap;
+    private Trip mTrip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,12 +84,10 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
 
         // init map
         SupportMapFragment mMapFragment = new SupportMapFragment();
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_view_map, mMapFragment).commit();
+        mMapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_view_map));
         mMapFragment.getMapAsync(this);
 
-        presenter.initFirebase();
-        presenter.getTripDetail(DataStoreManager.getPrefIdTripProcess());
+        presenter.getTripDetail(this, DataStoreManager.getPrefIdTripProcess());
     }
 
     @Override
@@ -120,6 +128,7 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
 
     @Override
     public void getTripDetail(Trip trip) {
+        mTrip = trip;
         if (Constant.TRIP_STATUS_NEW.equals(trip.getStatus())) {
             presenter.checkDriverAvailable();
         } else if (Constant.TRIP_STATUS_ACCEPT.equals(trip.getStatus())) {
@@ -129,6 +138,11 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
         } else if (Constant.TRIP_STATUS_ARRIVED.equals(trip.getStatus())) {
             layoutBookingAccepted.setVisibility(View.GONE);
             layoutDriverArrived.setVisibility(View.VISIBLE);
+        } else if (Constant.TRIP_STATUS_ON_GOING.equals(trip.getStatus())) {
+            layoutDriverArrived.setVisibility(View.GONE);
+            layoutTripOngoing.setVisibility(View.VISIBLE);
+        } else if (Constant.TRIP_STATUS_JOURNEY_COMPLETED.equals(trip.getStatus())) {
+            GlobalFuntion.startActivity(this, TripCompletedActivity.class);
         }
 
         initData();
@@ -207,5 +221,43 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
     public void onClickYesCancel() {
         presenter.updateTrip(DataStoreManager.getPrefIdTripProcess(), Constant.TRIP_STATUS_CANCEL,
                 getString(R.string.no_driver_accepted));
+    }
+
+    @OnClick(R.id.tv_call_driver)
+    public void onClickCallDriver() {
+        showDialogCallDriver(mTrip.getDriver().getPhone());
+    }
+
+    public void showDialogCallDriver(String phoneNumber) {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.layout_dialog_call_driver);
+        Window window = dialog.getWindow();
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.WHITE));
+        dialog.setCancelable(false);
+
+        // Get view
+        final TextView tvPhomeNumber = dialog.findViewById(R.id.tv_phome_number);
+        final TextView tvCancel = dialog.findViewById(R.id.tv_cancel);
+        final TextView tvCall = dialog.findViewById(R.id.tv_call);
+
+        // Set data
+        tvPhomeNumber.setText(phoneNumber);
+
+        // Get listener
+        tvCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Utils.callPhoneNumber(TripProcessActivity.this, phoneNumber);
+            }
+        });
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
     }
 }
