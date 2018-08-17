@@ -7,11 +7,12 @@ import java.io.Serializable;
 public class Driver implements Serializable {
 
     private int id;
-    private String full_name;
+    private String name;
     private String email;
     private String phone;
     private String token;
     private String avatar;
+    private String vehicle_number;
     private DriverInfor drivers;
 
     public int getId() {
@@ -22,12 +23,12 @@ public class Driver implements Serializable {
         this.id = id;
     }
 
-    public String getFull_name() {
-        return full_name;
+    public String getName() {
+        return name;
     }
 
-    public void setFull_name(String full_name) {
-        this.full_name = full_name;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -60,6 +61,14 @@ public class Driver implements Serializable {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public String getVehicle_number() {
+        return vehicle_number;
+    }
+
+    public void setVehicle_number(String vehicle_number) {
+        this.vehicle_number = vehicle_number;
     }
 
     public DriverInfor getDrivers() {

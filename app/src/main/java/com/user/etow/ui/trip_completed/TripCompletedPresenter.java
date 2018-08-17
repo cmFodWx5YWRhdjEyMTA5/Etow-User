@@ -41,13 +41,15 @@ public class TripCompletedPresenter extends BasePresenter<TripCompletedMVPView> 
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         Trip trip = dataSnapshot.getValue(Trip.class);
-                        if (getMvpView() != null && trip != null) getMvpView().updateStatusTrip(trip);
+                        if (getMvpView() != null && trip != null)
+                            getMvpView().updateStatusTrip(trip);
                     }
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                         Trip trip = dataSnapshot.getValue(Trip.class);
-                        if (getMvpView() != null && trip != null) getMvpView().updateStatusTrip(trip);
+                        if (getMvpView() != null && trip != null)
+                            getMvpView().updateStatusTrip(trip);
                     }
 
                     @Override
@@ -67,12 +69,12 @@ public class TripCompletedPresenter extends BasePresenter<TripCompletedMVPView> 
                 });
     }
 
-    public void updateTrip(int tripId, String status, String note) {
+    public void updatePaymentStatus(int tripId, String status) {
         if (!isConnectToInternet()) {
             notifyNoNetwork();
         } else {
             getMvpView().showProgressDialog(true);
-            mNetworkManager.updateTrip(tripId, status, note)
+            mNetworkManager.updatePaymentStatus(tripId, status)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<ApiSuccess>() {

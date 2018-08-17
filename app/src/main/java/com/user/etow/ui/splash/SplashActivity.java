@@ -14,11 +14,15 @@ import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 
 import com.user.etow.R;
+import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
 import com.user.etow.data.prefs.DataStoreManager;
+import com.user.etow.models.Trip;
 import com.user.etow.ui.auth.user_start.UserStartActivity;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
 import com.user.etow.ui.main.MainActivity;
+import com.user.etow.ui.rate_trip.RateTripActivity;
+import com.user.etow.ui.trip_completed.TripCompletedActivity;
 import com.user.etow.ui.trip_process.TripProcessActivity;
 import com.user.etow.utils.Utils;
 
@@ -79,7 +83,7 @@ public class SplashActivity extends BaseMVPDialogActivity implements SplashMVPVi
             public void run() {
                 int idTripProcess = DataStoreManager.getPrefIdTripProcess();
                 if (idTripProcess != 0) {
-                    GlobalFuntion.startActivity(SplashActivity.this, TripProcessActivity.class);
+                    presenter.getTripDetail(SplashActivity.this, idTripProcess);
                 } else {
                     if (!DataStoreManager.getFirstInstallApp()) {
                         DataStoreManager.setFirstInstallApp(true);
@@ -115,6 +119,19 @@ public class SplashActivity extends BaseMVPDialogActivity implements SplashMVPVi
                 settingGPS();
             } else {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+            }
+        }
+    }
+
+    @Override
+    public void getTripDetail(Trip trip) {
+        if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(trip.getStatus())) {
+            GlobalFuntion.startActivity(this, RateTripActivity.class);
+        } else {
+            if (Constant.TRIP_STATUS_JOURNEY_COMPLETED.equals(trip.getStatus())) {
+                GlobalFuntion.startActivity(this, TripCompletedActivity.class);
+            } else {
+                GlobalFuntion.startActivity(SplashActivity.this, TripProcessActivity.class);
             }
         }
     }

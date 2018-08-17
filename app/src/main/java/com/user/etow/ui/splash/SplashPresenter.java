@@ -7,11 +7,15 @@ package com.user.etow.ui.splash;
 
 import android.content.Context;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.user.etow.ETowApplication;
 import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
 import com.user.etow.data.NetworkManager;
 import com.user.etow.models.Setting;
+import com.user.etow.models.Trip;
 import com.user.etow.models.response.ApiResponse;
 import com.user.etow.ui.base.BasePresenter;
 
@@ -32,6 +36,40 @@ public class SplashPresenter extends BasePresenter<SplashMVPView> {
     @Override
     public void initialView(SplashMVPView mvpView) {
         super.initialView(mvpView);
+    }
+
+    public void getTripDetail(Context context, int tripId) {
+        getMvpView().showProgressDialog(true);
+        ETowApplication.get(context).getDatabaseReference().orderByChild("id").equalTo(tripId)
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        getMvpView().showProgressDialog(false);
+                        Trip trip = dataSnapshot.getValue(Trip.class);
+                        if (getMvpView() != null && trip != null) getMvpView().getTripDetail(trip);
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        Trip trip = dataSnapshot.getValue(Trip.class);
+                        if (getMvpView() != null && trip != null) getMvpView().getTripDetail(trip);
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     public void getSetting() {

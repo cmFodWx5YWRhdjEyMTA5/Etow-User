@@ -30,7 +30,7 @@
         android:textSize="@dimen/text_size_normal" />
 
     <com.user.etow.ui.widget.textview.TahomaRegularTextView
-        android:id="@+id/tv_ok"
+        android:id="@+id/tv_ok_thank_you"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/define_dimen_10"

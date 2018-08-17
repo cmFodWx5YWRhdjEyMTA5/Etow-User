@@ -5,12 +5,23 @@ package com.user.etow.ui.rate_trip;
  *  Author DangTin. Create on 2018/05/13
  */
 
+import android.content.Context;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.user.etow.R;
 import com.user.etow.constant.GlobalFuntion;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
@@ -21,7 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class RateTripActivity extends BaseMVPDialogActivity implements RateTripMVPView {
+public class RateTripActivity extends BaseMVPDialogActivity implements RateTripMVPView, OnMapReadyCallback {
 
     @Inject
     RateTripPresenter presenter;
@@ -38,6 +49,8 @@ public class RateTripActivity extends BaseMVPDialogActivity implements RateTripM
     @BindView(R.id.tv_rate_your_trip)
     TextView tvRateYourTrip;
 
+    private GoogleMap mMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +58,11 @@ public class RateTripActivity extends BaseMVPDialogActivity implements RateTripM
         getActivityComponent().inject(this);
         viewUnbind = ButterKnife.bind(this);
         presenter.initialView(this);
+
+        // init map
+        SupportMapFragment mMapFragment = new SupportMapFragment();
+        mMapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_view_map));
+        mMapFragment.getMapAsync(this);
 
         setListener();
     }
@@ -57,6 +75,13 @@ public class RateTripActivity extends BaseMVPDialogActivity implements RateTripM
     @Override
     protected int addContextView() {
         return R.layout.activity_rate_trip;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocationManager mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        GlobalFuntion.getCurrentLocation(this, mLocationManager);
     }
 
     @Override
@@ -75,10 +100,15 @@ public class RateTripActivity extends BaseMVPDialogActivity implements RateTripM
         GlobalFuntion.showMessageError(this, code);
     }
 
-    @OnClick(R.id.tv_ok)
-    public void onClickOk() {
+    @OnClick(R.id.tv_ok_thank_you)
+    public void onClickOkThankYou() {
         layoutThanksService.setVisibility(View.GONE);
         layoutRateService.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     private void setListener() {
@@ -94,5 +124,22 @@ public class RateTripActivity extends BaseMVPDialogActivity implements RateTripM
                 }
             }
         });
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        if (GlobalFuntion.LATITUDE > 0 && GlobalFuntion.LONGITUDE > 0) {
+            // Add a marker in Sydney, Australia, and move the camera.
+            LatLng currentLocation = new LatLng(GlobalFuntion.LATITUDE, GlobalFuntion.LONGITUDE);
+            // create marker
+            MarkerOptions marker = new MarkerOptions().position(currentLocation)
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_black));
+            // adding marker
+            mMap.addMarker(marker);
+            CameraUpdate myLoc = CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
+                    .target(currentLocation).zoom(13).build());
+            mMap.moveCamera(myLoc);
+        }
     }
 }

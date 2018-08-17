@@ -77,4 +77,8 @@ public class NetworkManager {
     public Observable<ApiResponse> getSetting() {
         return mEtowService.getSetting();
     }
+
+    public Observable<ApiSuccess> updatePaymentStatus(int tripId, String status) {
+        return mEtowService.updatePaymentStatus(tripId, status);
+    }
 }

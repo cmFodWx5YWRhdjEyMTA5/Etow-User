@@ -6,9 +6,11 @@ package com.user.etow.ui.trip_process;
  */
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -98,6 +100,13 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
     @Override
     protected int addContextView() {
         return R.layout.activity_trip_process;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocationManager mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        GlobalFuntion.getCurrentLocation(this, mLocationManager);
     }
 
     @Override

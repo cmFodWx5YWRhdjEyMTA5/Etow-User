@@ -7,7 +7,10 @@ package com.user.etow.ui.trip_completed;
 
 import android.app.Dialog;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.LightingColorFilter;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -23,6 +26,7 @@ import com.user.etow.models.Trip;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
 import com.user.etow.ui.pay_card.PayCardActivity;
 import com.user.etow.ui.rate_trip.RateTripActivity;
+import com.user.etow.utils.DateTimeUtils;
 import com.user.etow.utils.Utils;
 
 import javax.inject.Inject;
@@ -53,6 +57,30 @@ public class TripCompletedActivity extends BaseMVPDialogActivity implements Trip
 
     @BindView(R.id.tv_action)
     TextView tvAction;
+
+    @BindView(R.id.tv_pick_up)
+    TextView tvPickUp;
+
+    @BindView(R.id.tv_drop_off)
+    TextView tvDropOff;
+
+    @BindView(R.id.img_vehicle)
+    ImageView imgVehicle;
+
+    @BindView(R.id.tv_vehicle)
+    TextView tvVehicle;
+
+    @BindView(R.id.tv_driver_name)
+    TextView tvDriverName;
+
+    @BindView(R.id.tv_vehicle_number)
+    TextView tvVehicleNumber;
+
+    @BindView(R.id.tv_date_time)
+    TextView tvDateTime;
+
+    @BindView(R.id.tv_price)
+    TextView tvPrice;
 
     private Trip mTrip;
 
@@ -99,10 +127,12 @@ public class TripCompletedActivity extends BaseMVPDialogActivity implements Trip
     @Override
     public void updateStatusTrip(Trip trip) {
         mTrip = trip;
-        if (Constant.TRIP_STATUS_JOURNEY_COMPLETED.equals(trip.getStatus())) {
-            initUi();
-        } else if (Constant.TRIP_STATUS_COMPLETE.equals(trip.getStatus())) {
+        if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(trip.getStatus())) {
             GlobalFuntion.startActivity(this, RateTripActivity.class);
+        } else {
+            if (Constant.TRIP_STATUS_JOURNEY_COMPLETED.equals(trip.getStatus())) {
+                initUi();
+            }
         }
     }
 
@@ -118,15 +148,31 @@ public class TripCompletedActivity extends BaseMVPDialogActivity implements Trip
             tvMesagePayCash.setVisibility(View.GONE);
             tvAction.setText(getString(R.string.pay_now));
         }
+        tvPickUp.setText(mTrip.getPick_up());
+        tvDropOff.setText(mTrip.getDrop_off());
+        if (Constant.TYPE_VEHICLE_NORMAL.equals(mTrip.getVehicle_type())) {
+            imgVehicle.setImageResource(R.drawable.ic_car_normal_black);
+            tvVehicle.setText(getString(R.string.type_vehicle_normal));
+        } else {
+            Drawable myIcon = getResources().getDrawable(R.drawable.ic_vehicle_flatbed_white);
+            ColorFilter filter = new LightingColorFilter(Color.BLACK, Color.BLACK);
+            myIcon.setColorFilter(filter);
+            imgVehicle.setImageDrawable(myIcon);
+            tvVehicle.setText(getString(R.string.type_vehicle_flatbed));
+        }
+        tvDriverName.setText(mTrip.getDriver().getName());
+        tvVehicleNumber.setText(mTrip.getDriver().getVehicle_number());
+        tvDateTime.setText(DateTimeUtils.convertTimeStampToDateFormat5(mTrip.getPickup_date()));
+        tvPrice.setText(mTrip.getPrice() + " " + getString(R.string.unit_price));
     }
 
     @OnClick(R.id.tv_action)
     public void onClickAction() {
         if (Constant.TYPE_PAYMENT_CASH.equals(mTrip.getPayment_type())) {
-            if (Constant.TRIP_STATUS_COMPLETE.equals(mTrip.getStatus())) {
+            if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(mTrip.getPayment_status())) {
                 GlobalFuntion.startActivity(this, RateTripActivity.class);
             } else {
-                presenter.updateTrip(DataStoreManager.getPrefIdTripProcess(), Constant.TRIP_STATUS_COMPLETE, "");
+                presenter.updatePaymentStatus(DataStoreManager.getPrefIdTripProcess(), Constant.PAYMENT_STATUS_PAYMENT_SUCCESS);
             }
         } else {
             GlobalFuntion.startActivity(this, PayCardActivity.class);
@@ -169,5 +215,10 @@ public class TripCompletedActivity extends BaseMVPDialogActivity implements Trip
             }
         });
         dialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

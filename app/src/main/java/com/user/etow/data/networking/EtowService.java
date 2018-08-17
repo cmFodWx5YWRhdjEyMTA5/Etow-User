@@ -131,4 +131,14 @@ public interface EtowService {
 
     @GET("trip/get-setting-time")
     Observable<ApiResponse> getSetting();
+
+    @FormUrlEncoded
+    @POST("trip/update-payment-status")
+    Observable<ApiSuccess> updatePaymentStatus(@Field(KeyAPI.KEY_TRIP_ID) int tripId,
+                                               @Field(KeyAPI.KEY_PAYMENT_STATUS) String status);
+
+    @FormUrlEncoded
+    @POST("user/rate-trip")
+    Observable<ApiSuccess> rateTrip(@Field(KeyAPI.KEY_TRIP_ID) int tripId,
+                                    @Field(KeyAPI.KEY_PAYMENT_STATUS) String status);
 }
