@@ -100,11 +100,7 @@ public class TripProcessPresenter extends BasePresenter<TripProcessMVPView> {
 
                         @Override
                         public void onNext(ApiSuccess apiSuccess) {
-                            if (apiSuccess != null) {
-                                if (Constant.SUCCESS.equalsIgnoreCase(apiSuccess.getStatus())) {
-                                    getMvpView().updateStatusTrip();
-                                }
-                            }
+
                         }
                     });
         }

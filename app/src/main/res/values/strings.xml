@@ -88,6 +88,7 @@
     <string name="please_enter_comment">Please enter comments</string>
     <string name="please_select_payment_method">Please select payment method</string>
     <string name="no_driver_accepted">No driver accepted</string>
+    <string name="message_trip_have_been_rejected">Your trip has been rejected. Please try again.</string>
 
     // Main screen
     <string name="select_vehicle_type">Select vehicle type</string>

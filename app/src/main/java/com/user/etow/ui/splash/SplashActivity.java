@@ -125,7 +125,7 @@ public class SplashActivity extends BaseMVPDialogActivity implements SplashMVPVi
 
     @Override
     public void getTripDetail(Trip trip) {
-        if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(trip.getStatus())) {
+        if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(trip.getPayment_status())) {
             GlobalFuntion.startActivity(this, RateTripActivity.class);
         } else {
             if (Constant.TRIP_STATUS_JOURNEY_COMPLETED.equals(trip.getStatus())) {

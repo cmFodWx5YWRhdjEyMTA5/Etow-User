@@ -24,7 +24,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.user.etow.R;
 import com.user.etow.constant.GlobalFuntion;
+import com.user.etow.data.prefs.DataStoreManager;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
+import com.user.etow.ui.main.MainActivity;
 
 import javax.inject.Inject;
 
@@ -50,6 +52,8 @@ public class RateTripActivity extends BaseMVPDialogActivity implements RateTripM
     TextView tvRateYourTrip;
 
     private GoogleMap mMap;
+    private boolean mIsActiveRateTrip;
+    private int mRate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +110,20 @@ public class RateTripActivity extends BaseMVPDialogActivity implements RateTripM
         layoutRateService.setVisibility(View.VISIBLE);
     }
 
+    @OnClick(R.id.tv_skip)
+    public void onClickSkipRate() {
+        DataStoreManager.setPrefIdTripProcess(0);
+        GlobalFuntion.startActivity(this, MainActivity.class);
+        finishAffinity();
+    }
+
+    @OnClick(R.id.tv_rate_your_trip)
+    public void onClickRateTrip() {
+        if (mIsActiveRateTrip) {
+            presenter.rateTrip(DataStoreManager.getPrefIdTripProcess(), mRate);
+        }
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -118,9 +136,12 @@ public class RateTripActivity extends BaseMVPDialogActivity implements RateTripM
                 if (ratingBar.getRating() > 0) {
                     tvRateYourTrip.setBackgroundResource(R.drawable.bg_black_corner);
                     tvRateYourTrip.setTextColor(getResources().getColor(R.color.white));
+                    mIsActiveRateTrip = true;
+                    mRate = (int) (ratingBar.getRating() * 2);
                 } else {
                     tvRateYourTrip.setBackgroundResource(R.drawable.bg_grey_corner);
                     tvRateYourTrip.setTextColor(getResources().getColor(R.color.textColorAccent));
+                    mIsActiveRateTrip = false;
                 }
             }
         });
@@ -141,5 +162,12 @@ public class RateTripActivity extends BaseMVPDialogActivity implements RateTripM
                     .target(currentLocation).zoom(13).build());
             mMap.moveCamera(myLoc);
         }
+    }
+
+    @Override
+    public void getStatusRateTrip() {
+        DataStoreManager.setPrefIdTripProcess(0);
+        GlobalFuntion.startActivity(this, MainActivity.class);
+        finishAffinity();
     }
 }

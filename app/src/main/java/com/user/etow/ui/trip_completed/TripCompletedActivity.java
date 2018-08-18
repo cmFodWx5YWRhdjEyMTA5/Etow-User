@@ -127,8 +127,9 @@ public class TripCompletedActivity extends BaseMVPDialogActivity implements Trip
     @Override
     public void updateStatusTrip(Trip trip) {
         mTrip = trip;
-        if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(trip.getStatus())) {
+        if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(trip.getPayment_status())) {
             GlobalFuntion.startActivity(this, RateTripActivity.class);
+            finish();
         } else {
             if (Constant.TRIP_STATUS_JOURNEY_COMPLETED.equals(trip.getStatus())) {
                 initUi();
@@ -171,6 +172,7 @@ public class TripCompletedActivity extends BaseMVPDialogActivity implements Trip
         if (Constant.TYPE_PAYMENT_CASH.equals(mTrip.getPayment_type())) {
             if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(mTrip.getPayment_status())) {
                 GlobalFuntion.startActivity(this, RateTripActivity.class);
+                finish();
             } else {
                 presenter.updatePaymentStatus(DataStoreManager.getPrefIdTripProcess(), Constant.PAYMENT_STATUS_PAYMENT_SUCCESS);
             }

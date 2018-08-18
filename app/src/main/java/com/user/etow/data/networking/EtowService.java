@@ -140,5 +140,5 @@ public interface EtowService {
     @FormUrlEncoded
     @POST("user/rate-trip")
     Observable<ApiSuccess> rateTrip(@Field(KeyAPI.KEY_TRIP_ID) int tripId,
-                                    @Field(KeyAPI.KEY_PAYMENT_STATUS) String status);
+                                    @Field(KeyAPI.KEY_RATE) int rate);
 }

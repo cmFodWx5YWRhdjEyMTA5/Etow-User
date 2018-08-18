@@ -12,12 +12,15 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -140,6 +143,12 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
         mTrip = trip;
         if (Constant.TRIP_STATUS_NEW.equals(trip.getStatus())) {
             presenter.checkDriverAvailable();
+        } else if (Constant.TRIP_STATUS_REJECT.equals(trip.getStatus())) {
+            showDialogRejected();
+        } else if (Constant.TRIP_STATUS_CANCEL.equals(trip.getStatus())) {
+            DataStoreManager.setPrefIdTripProcess(0);
+            GlobalFuntion.startActivity(this, MainActivity.class);
+            finishAffinity();
         } else if (Constant.TRIP_STATUS_ACCEPT.equals(trip.getStatus())) {
             layoutDriverAreAway.setVisibility(View.GONE);
             layoutWaitDriver.setVisibility(View.GONE);
@@ -152,6 +161,7 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
             layoutTripOngoing.setVisibility(View.VISIBLE);
         } else if (Constant.TRIP_STATUS_JOURNEY_COMPLETED.equals(trip.getStatus())) {
             GlobalFuntion.startActivity(this, TripCompletedActivity.class);
+            finish();
         }
 
         initData();
@@ -161,6 +171,7 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
         if (GlobalFuntion.mSetting != null) {
             int timeEstimateArrive = Integer.parseInt(GlobalFuntion.mSetting.getEstimateTimeArrive());
             int timeEstimateArrive01 = timeEstimateArrive - Integer.parseInt(GlobalFuntion.mSetting.getTimeBuffer());
+            if (timeEstimateArrive01 < 0) timeEstimateArrive01 = 1;
             int timeEstimateArrive02 = timeEstimateArrive + Integer.parseInt(GlobalFuntion.mSetting.getTimeBuffer());
             tvCurrentEstimateTime.setText(timeEstimateArrive01 + " - " + timeEstimateArrive02 + " " + getString(R.string.unit_time));
             tvTimeDriverReach.setText(timeEstimateArrive01 + " - " + timeEstimateArrive02 + " " + getString(R.string.unit_time));
@@ -168,13 +179,6 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
             tvCurrentEstimateTime.setText("");
             tvTimeDriverReach.setText("");
         }
-    }
-
-    @Override
-    public void updateStatusTrip() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finishAffinity();
     }
 
     @Override
@@ -198,14 +202,6 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
     public void onClickConfirm() {
         layoutDriverAreAway.setVisibility(View.GONE);
         layoutWaitDriver.setVisibility(View.VISIBLE);
-    }
-
-    @OnClick(R.id.layout_trip_ongoing)
-    public void onClickFakeClick() {
-        // Todo Fake paymemt method
-        Bundle bundle = new Bundle();
-        bundle.putString(Constant.TYPE_PAYMENT, Constant.TYPE_PAYMENT_CARD);
-        GlobalFuntion.startActivity(this, TripCompletedActivity.class, bundle);
     }
 
     @OnClick(R.id.tv_cancel_driver_away)
@@ -268,5 +264,21 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
             }
         });
         dialog.show();
+    }
+
+    private void showDialogRejected() {
+        MaterialDialog materialDialog = new MaterialDialog.Builder(this)
+                .content(getString(R.string.message_trip_have_been_rejected))
+                .positiveText(getString(R.string.action_ok))
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        DataStoreManager.setPrefIdTripProcess(0);
+                        GlobalFuntion.startActivity(TripProcessActivity.this, MainActivity.class);
+                        finishAffinity();
+                    }
+                })
+                .cancelable(false)
+                .show();
     }
 }

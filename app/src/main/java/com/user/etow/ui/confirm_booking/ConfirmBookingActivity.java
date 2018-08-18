@@ -177,6 +177,7 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
         if (GlobalFuntion.mSetting != null) {
             int timeEstimateArrive = Integer.parseInt(GlobalFuntion.mSetting.getEstimateTimeArrive());
             int timeEstimateArrive01 = timeEstimateArrive - Integer.parseInt(GlobalFuntion.mSetting.getTimeBuffer());
+            if (timeEstimateArrive01 < 0) timeEstimateArrive01 = 1;
             int timeEstimateArrive02 = timeEstimateArrive + Integer.parseInt(GlobalFuntion.mSetting.getTimeBuffer());
             tvEstimateTimeArrive.setText(timeEstimateArrive01 + " - " + timeEstimateArrive02 + " " + getString(R.string.unit_time));
         } else {
@@ -200,6 +201,7 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
             int timeDistance = Integer.parseInt(GlobalFuntion.mSetting.getTimeDistance());
             int timeDestination = distance * timeDistance;
             int timeDestination01 = timeDestination - Integer.parseInt(GlobalFuntion.mSetting.getTimeBuffer());
+            if (timeDestination01 < 0) timeDestination01 = 1;
             int timeDestination02 = timeDestination + Integer.parseInt(GlobalFuntion.mSetting.getTimeBuffer());
             tvEstimateTimeDestination.setText(timeDestination01 + " - " + timeDestination02 + " " + getString(R.string.unit_time));
         } else {
@@ -219,11 +221,12 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
     public void getStatusCreateTrip(Trip trip) {
         if (Constant.IS_SCHEDULE.equals(mTripBooking.getIs_schedule())) {
             GlobalFuntion.startActivity(this, BookingCompletedActivity.class);
+            finish();
         } else {
             DataStoreManager.setPrefIdTripProcess(trip.getTrip_id());
             GlobalFuntion.startActivity(this, TripProcessActivity.class);
+            finishAffinity();
         }
-        finish();
     }
 
     @OnClick(R.id.layout_cash)

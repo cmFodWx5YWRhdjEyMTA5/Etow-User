@@ -245,7 +245,7 @@ public class BookingTripActivity extends BaseMVPDialogActivity implements Bookin
         } else {
             tvCurrentLocation.setVisibility(View.GONE);
             tvPickUp.setVisibility(View.VISIBLE);
-            tvPickUp.setHint(getString(R.string.pick_up_location_2));
+            tvPickUp.setHint(getString(R.string.current_location));
             tvPickUp.requestFocus();
             GlobalFuntion.showSoftKeyboard(this, tvPickUp);
         }

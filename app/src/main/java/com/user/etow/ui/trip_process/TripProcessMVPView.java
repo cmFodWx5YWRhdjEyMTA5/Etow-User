@@ -13,6 +13,4 @@ interface TripProcessMVPView extends BaseScreenMvpView {
     void getStatusDriverAvailable(boolean isAvailable);
 
     void getTripDetail(Trip trip);
-
-    void updateStatusTrip();
 }
