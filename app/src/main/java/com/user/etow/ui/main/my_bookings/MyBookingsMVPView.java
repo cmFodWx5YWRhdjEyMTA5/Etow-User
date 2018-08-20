@@ -7,12 +7,8 @@ package com.user.etow.ui.main.my_bookings;
  * ******************************************************************************
  */
 
-import com.user.etow.models.Trip;
 import com.user.etow.ui.base.BaseScreenMvpView;
-
-import java.util.List;
 
 interface MyBookingsMVPView extends BaseScreenMvpView {
 
-    void loadListTripCompleted(List<Trip> listTripCompleted);
 }

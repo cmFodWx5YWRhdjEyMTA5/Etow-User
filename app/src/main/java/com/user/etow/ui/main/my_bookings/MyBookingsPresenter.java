@@ -13,6 +13,7 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.user.etow.ETowApplication;
+import com.user.etow.adapter.TripCompletedAdapter;
 import com.user.etow.adapter.TripUpcomingAdapter;
 import com.user.etow.constant.Constant;
 import com.user.etow.data.NetworkManager;
@@ -30,6 +31,7 @@ import retrofit2.Retrofit;
 @PerActivity
 public class MyBookingsPresenter extends BasePresenter<MyBookingsMVPView> {
 
+    ArrayList<Trip> listTripCompleted = new ArrayList<>();
     ArrayList<Trip> listTripUpcoming = new ArrayList<>();
 
     @Inject
@@ -47,18 +49,61 @@ public class MyBookingsPresenter extends BasePresenter<MyBookingsMVPView> {
         super.destroyView();
     }
 
-    public void getListTripCompleted() {
-        List<Trip> list = new ArrayList<>();
-        getMvpView().loadListTripCompleted(list);
+    public void getTripCompleted(Context context, TripCompletedAdapter tripCompletedAdapter) {
+        ETowApplication.get(context).getDatabaseReference().orderByChild("status").equalTo(Constant.TRIP_STATUS_COMPLETE)
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        Trip trip = dataSnapshot.getValue(Trip.class);
+                        listTripCompleted.add(trip);
+                        tripCompletedAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        Trip trip = dataSnapshot.getValue(Trip.class);
+                        if (listTripCompleted != null && listTripCompleted.size() > 0) {
+                            for (int i = 0; i < listTripCompleted.size(); i++) {
+                                if (trip.getId() == listTripCompleted.get(i).getId()) {
+                                    listTripCompleted.set(i, trip);
+                                    break;
+                                }
+                            }
+                        }
+                        tripCompletedAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+                        Trip trip = dataSnapshot.getValue(Trip.class);
+                        if (listTripCompleted != null && listTripCompleted.size() > 0) {
+                            for (int i = 0; i < listTripCompleted.size(); i++) {
+                                if (trip.getId() == listTripCompleted.get(i).getId()) {
+                                    listTripCompleted.remove(i);
+                                    break;
+                                }
+                            }
+                        }
+                        tripCompletedAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     public void getTripSchedules(Context context, TripUpcomingAdapter tripUpcomingAdapter) {
-        getMvpView().showProgressDialog(true);
         ETowApplication.get(context).getDatabaseReference().orderByChild("is_schedule").equalTo(Constant.IS_SCHEDULE)
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        getMvpView().showProgressDialog(false);
                         Trip trip = dataSnapshot.getValue(Trip.class);
                         listTripUpcoming.add(trip);
                         tripUpcomingAdapter.notifyDataSetChanged();
@@ -106,5 +151,9 @@ public class MyBookingsPresenter extends BasePresenter<MyBookingsMVPView> {
 
     public ArrayList<Trip> getListTripUpcoming() {
         return listTripUpcoming;
+    }
+
+    public ArrayList<Trip> getListTripCompleted() {
+        return listTripCompleted;
     }
 }

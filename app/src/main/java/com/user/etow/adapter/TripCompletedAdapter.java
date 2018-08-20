@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.user.etow.R;
 import com.user.etow.adapter.base.BaseRecyclerViewAdapter;
@@ -22,6 +23,7 @@ import com.user.etow.constant.GlobalFuntion;
 import com.user.etow.injection.ActivityContext;
 import com.user.etow.models.Trip;
 import com.user.etow.ui.trip_detail.TripDetailActivity;
+import com.user.etow.utils.DateTimeUtils;
 
 import java.util.List;
 
@@ -37,8 +39,9 @@ public class TripCompletedAdapter extends RecyclerView.Adapter<TripCompletedAdap
     private RecyclerView mRecyclerView;
 
     @Inject
-    public TripCompletedAdapter(@ActivityContext Context context) {
+    public TripCompletedAdapter(@ActivityContext Context context, List<Trip> listTrip) {
         this.context = context;
+        this.listTripCompleted = listTrip;
     }
 
     @Override
@@ -57,11 +60,6 @@ public class TripCompletedAdapter extends RecyclerView.Adapter<TripCompletedAdap
         return null == listTripCompleted ? 0 : listTripCompleted.size();
     }
 
-    public void setListData(List<Trip> list) {
-        this.listTripCompleted = list;
-        notifyDataSetChanged();
-    }
-
     public void injectInto(RecyclerView recyclerView) {
         mRecyclerView = recyclerView;
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
@@ -78,6 +76,12 @@ public class TripCompletedAdapter extends RecyclerView.Adapter<TripCompletedAdap
 
     public static class TripCompletedViewHolder extends BaseRecyclerViewAdapter.BaseViewHolder<Trip> {
 
+        @BindView(R.id.tv_pick_up)
+        TextView tvPickUp;
+
+        @BindView(R.id.tv_date_time)
+        TextView tvDateTime;
+
         @BindView(R.id.layout_item)
         LinearLayout layoutItem;
 
@@ -93,6 +97,9 @@ public class TripCompletedAdapter extends RecyclerView.Adapter<TripCompletedAdap
         @Override
         public void bindData(Context context, Trip trip, int position) {
             if (trip != null) {
+                tvPickUp.setText(trip.getPick_up());
+                tvDateTime.setText(DateTimeUtils.convertTimeStampToDateFormat6(trip.getPickup_date()));
+
                 layoutItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

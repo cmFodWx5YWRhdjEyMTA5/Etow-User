@@ -25,8 +25,10 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.user.etow.R;
 import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
+import com.user.etow.data.prefs.DataStoreManager;
 import com.user.etow.messages.SelectAvatarSuccess;
 import com.user.etow.models.Image;
+import com.user.etow.models.Trip;
 import com.user.etow.ui.auth.sign_in.SignInActivity;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
 import com.user.etow.ui.main.get_in_touch.GetInTouchFragment;
@@ -35,6 +37,9 @@ import com.user.etow.ui.main.my_account.MyAccountFragment;
 import com.user.etow.ui.main.my_bookings.MyBookingsFragment;
 import com.user.etow.ui.main.social_links.SocialLinksFragment;
 import com.user.etow.ui.main.term_and_condition.TermAndConditionFragment;
+import com.user.etow.ui.rate_trip.RateTripActivity;
+import com.user.etow.ui.trip_completed.TripCompletedActivity;
+import com.user.etow.ui.trip_process.TripProcessActivity;
 import com.user.etow.ui.widget.image.ImagePicker;
 import com.user.etow.utils.Utils;
 
@@ -80,6 +85,7 @@ public class MainActivity extends BaseMVPDialogActivity implements MainMVPView {
 
         getDataIntent();
         setListenerDrawer();
+        presenter.getScheduleTrip(this);
     }
 
     private void getDataIntent() {
@@ -260,6 +266,23 @@ public class MainActivity extends BaseMVPDialogActivity implements MainMVPView {
     public void logout() {
         GlobalFuntion.startActivity(this, SignInActivity.class);
         finishAffinity();
+    }
+
+    @Override
+    public void getDetailTrip(Trip trip) {
+        if (trip.getUser().getId() == DataStoreManager.getUser().getId()
+                && !Constant.TRIP_STATUS_COMPLETE.equals(trip.getStatus())) {
+            DataStoreManager.setPrefIdTripProcess(trip.getId());
+            if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(trip.getPayment_status())) {
+                GlobalFuntion.startActivity(this, RateTripActivity.class);
+            } else {
+                if (Constant.TRIP_STATUS_JOURNEY_COMPLETED.equals(trip.getStatus())) {
+                    GlobalFuntion.startActivity(this, TripCompletedActivity.class);
+                } else {
+                    GlobalFuntion.startActivity(this, TripProcessActivity.class);
+                }
+            }
+        }
     }
 
     public boolean isTabCompleted() {

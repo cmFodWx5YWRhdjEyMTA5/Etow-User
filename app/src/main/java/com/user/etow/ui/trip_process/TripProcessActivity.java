@@ -135,7 +135,7 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
     public void getStatusDriverAvailable(ArrayList<Driver> listDriver) {
         if (listDriver != null && listDriver.size() > 0) {
             for (int i = 0; i < listDriver.size(); i++) {
-                if (Constant.IS_DRIVER_FREE.equals(listDriver.get(i).getIs_free())) {
+                if (Constant.IS_DRIVER_FREE == listDriver.get(i).getIs_free()) {
                     mIsDriverAvailable = true;
                     break;
                 }

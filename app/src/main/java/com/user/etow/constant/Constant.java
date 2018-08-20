@@ -43,10 +43,12 @@ public interface Constant {
     String IS_SCHEDULE = "1";
     String IS_NOT_SCHEDULE = "0";
 
+    String SCHEDULE_TRIP_STATUS_COMPLETED = "8_1";
+
     String TYPE_DRIVER = "1";
     String TYPE_USER = "2";
 
-    String IS_DRIVER_FREE = "1";
+    int IS_DRIVER_FREE = 1;
 
     // Key Intent
     String TYPE_PAYMENT = "TYPE_PAYMENT";

@@ -20,6 +20,7 @@ public class DateTimeUtils {
     private static final String DEFAULT_FORMAT_DATE_3 = "hh:mm a";
     private static final String DEFAULT_FORMAT_DATE_4 = "E dd MMM yyyy, hh:mm a";
     private static final String DEFAULT_FORMAT_DATE_5 = "hh:mm a, dd-MMM-yyyy";
+    private static final String DEFAULT_FORMAT_DATE_6 = "EEEE dd MMM yyyy hh:mm a";
 
     public static boolean isDateBefore(Date currentDate, Date pivotDate) {
         if (currentDate == null || pivotDate == null) {
@@ -248,6 +249,22 @@ public class DateTimeUtils {
                 Float floatTimestamp = Float.parseFloat(strTimeStamp);
                 Long timestamp = (long) (floatTimestamp * 1000);
                 SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_FORMAT_DATE_5);
+                Date date = (new Date(timestamp));
+                result = sdf.format(date);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
+    public static String convertTimeStampToDateFormat6(String strTimeStamp) {
+        String result = "";
+        if (strTimeStamp != null) {
+            try {
+                Float floatTimestamp = Float.parseFloat(strTimeStamp);
+                Long timestamp = (long) (floatTimestamp * 1000);
+                SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_FORMAT_DATE_6);
                 Date date = (new Date(timestamp));
                 result = sdf.format(date);
             } catch (Exception e) {

@@ -19,11 +19,8 @@ import com.user.etow.R;
 import com.user.etow.adapter.TripCompletedAdapter;
 import com.user.etow.adapter.TripUpcomingAdapter;
 import com.user.etow.constant.GlobalFuntion;
-import com.user.etow.models.Trip;
 import com.user.etow.ui.base.BaseMVPFragmentWithDialog;
 import com.user.etow.ui.main.MainActivity;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -73,13 +70,13 @@ public class MyBookingsFragment extends BaseMVPFragmentWithDialog implements MyB
         mIsTabCompleted = mMainActivity.isTabCompleted();
         initUi();
 
-        tripCompletedAdapter = new TripCompletedAdapter(getActivity());
+        tripCompletedAdapter = new TripCompletedAdapter(getActivity(), presenter.getListTripCompleted());
         tripCompletedAdapter.injectInto(rcvCompleted);
 
         tripUpcomingAdapter = new TripUpcomingAdapter(getActivity(), presenter.getListTripUpcoming());
         tripUpcomingAdapter.injectInto(rcvUpcoming);
 
-        presenter.getListTripCompleted();
+        presenter.getTripCompleted(getActivity(), tripCompletedAdapter);
         presenter.getTripSchedules(getActivity(), tripUpcomingAdapter);
     }
 
@@ -148,17 +145,5 @@ public class MyBookingsFragment extends BaseMVPFragmentWithDialog implements MyB
             rcvCompleted.setVisibility(View.GONE);
             rcvUpcoming.setVisibility(View.VISIBLE);
         }
-    }
-
-    @Override
-    public void loadListTripCompleted(List<Trip> listTripCompleted) {
-        listTripCompleted.add(new Trip());
-        listTripCompleted.add(new Trip());
-        listTripCompleted.add(new Trip());
-        listTripCompleted.add(new Trip());
-        listTripCompleted.add(new Trip());
-        listTripCompleted.add(new Trip());
-
-        tripCompletedAdapter.setListData(listTripCompleted);
     }
 }
