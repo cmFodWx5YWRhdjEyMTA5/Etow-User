@@ -135,6 +135,7 @@ public interface EtowService {
     @FormUrlEncoded
     @POST("trip/update-payment-status")
     Observable<ApiSuccess> updatePaymentStatus(@Field(KeyAPI.KEY_TRIP_ID) int tripId,
+                                               @Field(KeyAPI.KEY_PAYMENT_TYPE) String type,
                                                @Field(KeyAPI.KEY_PAYMENT_STATUS) String status);
 
     @FormUrlEncoded

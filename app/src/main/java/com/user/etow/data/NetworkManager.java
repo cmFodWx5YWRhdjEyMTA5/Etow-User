@@ -78,8 +78,8 @@ public class NetworkManager {
         return mEtowService.getSetting();
     }
 
-    public Observable<ApiSuccess> updatePaymentStatus(int tripId, String status) {
-        return mEtowService.updatePaymentStatus(tripId, status);
+    public Observable<ApiSuccess> updatePaymentStatus(int tripId, String type, String status) {
+        return mEtowService.updatePaymentStatus(tripId, type, status);
     }
 
     public Observable<ApiSuccess> rateTrip(int tripId, int rate) {

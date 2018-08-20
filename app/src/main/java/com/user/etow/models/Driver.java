@@ -14,6 +14,7 @@ public class Driver implements Serializable {
     private String avatar;
     private String vehicle_number;
     private DriverInfor drivers;
+    private String is_free;
 
     public int getId() {
         return id;
@@ -77,6 +78,14 @@ public class Driver implements Serializable {
 
     public void setDrivers(DriverInfor drivers) {
         this.drivers = drivers;
+    }
+
+    public String getIs_free() {
+        return is_free;
+    }
+
+    public void setIs_free(String is_free) {
+        this.is_free = is_free;
     }
 
     public String toJSon(){

@@ -7,7 +7,6 @@ package com.user.etow.ui.trip_process;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
@@ -34,11 +33,14 @@ import com.user.etow.R;
 import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
 import com.user.etow.data.prefs.DataStoreManager;
+import com.user.etow.models.Driver;
 import com.user.etow.models.Trip;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
 import com.user.etow.ui.main.MainActivity;
 import com.user.etow.ui.trip_completed.TripCompletedActivity;
 import com.user.etow.utils.Utils;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -78,6 +80,7 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
 
     private GoogleMap mMap;
     private Trip mTrip;
+    private boolean mIsDriverAvailable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,8 +132,17 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
     }
 
     @Override
-    public void getStatusDriverAvailable(boolean isAvailable) {
-        if (!isAvailable) {
+    public void getStatusDriverAvailable(ArrayList<Driver> listDriver) {
+        if (listDriver != null && listDriver.size() > 0) {
+            for (int i = 0; i < listDriver.size(); i++) {
+                if (Constant.IS_DRIVER_FREE.equals(listDriver.get(i).getIs_free())) {
+                    mIsDriverAvailable = true;
+                    break;
+                }
+            }
+        }
+
+        if (!mIsDriverAvailable) {
             layoutDriverAreAway.setVisibility(View.VISIBLE);
         } else {
             layoutWaitDriver.setVisibility(View.VISIBLE);
@@ -142,6 +154,7 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
     public void getTripDetail(Trip trip) {
         mTrip = trip;
         if (Constant.TRIP_STATUS_NEW.equals(trip.getStatus())) {
+            presenter.initFirebase();
             presenter.checkDriverAvailable();
         } else if (Constant.TRIP_STATUS_REJECT.equals(trip.getStatus())) {
             showDialogRejected();

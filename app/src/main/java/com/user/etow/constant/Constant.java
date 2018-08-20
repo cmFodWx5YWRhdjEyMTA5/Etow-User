@@ -7,8 +7,6 @@ package com.user.etow.constant;
 
 public interface Constant {
 
-    String API_KEY_MAP = "AIzaSyAGxMbSP677FOW8AyfzXLeqtJMCr12uu5I";
-
     String SUCCESS = "success";
     String ERROR = "error";
 
@@ -44,6 +42,11 @@ public interface Constant {
 
     String IS_SCHEDULE = "1";
     String IS_NOT_SCHEDULE = "0";
+
+    String TYPE_DRIVER = "1";
+    String TYPE_USER = "2";
+
+    String IS_DRIVER_FREE = "1";
 
     // Key Intent
     String TYPE_PAYMENT = "TYPE_PAYMENT";

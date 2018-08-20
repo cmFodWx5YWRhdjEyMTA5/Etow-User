@@ -69,12 +69,12 @@ public class TripCompletedPresenter extends BasePresenter<TripCompletedMVPView> 
                 });
     }
 
-    public void updatePaymentStatus(int tripId, String status) {
+    public void updatePaymentStatus(int tripId, String type, String status) {
         if (!isConnectToInternet()) {
             notifyNoNetwork();
         } else {
             getMvpView().showProgressDialog(true);
-            mNetworkManager.updatePaymentStatus(tripId, status)
+            mNetworkManager.updatePaymentStatus(tripId, type, status)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<ApiSuccess>() {

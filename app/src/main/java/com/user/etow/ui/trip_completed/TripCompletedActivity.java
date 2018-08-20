@@ -174,7 +174,8 @@ public class TripCompletedActivity extends BaseMVPDialogActivity implements Trip
                 GlobalFuntion.startActivity(this, RateTripActivity.class);
                 finish();
             } else {
-                presenter.updatePaymentStatus(DataStoreManager.getPrefIdTripProcess(), Constant.PAYMENT_STATUS_PAYMENT_SUCCESS);
+                presenter.updatePaymentStatus(DataStoreManager.getPrefIdTripProcess(), Constant.TYPE_PAYMENT_CASH,
+                        Constant.PAYMENT_STATUS_PAYMENT_SUCCESS);
             }
         } else {
             GlobalFuntion.startActivity(this, PayCardActivity.class);

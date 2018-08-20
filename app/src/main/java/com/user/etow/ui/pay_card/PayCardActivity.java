@@ -12,10 +12,14 @@ import android.widget.Spinner;
 
 import com.user.etow.R;
 import com.user.etow.adapter.CountryPayCardAdapter;
+import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
+import com.user.etow.data.prefs.DataStoreManager;
 import com.user.etow.models.CountryCode;
+import com.user.etow.models.Trip;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
 import com.user.etow.ui.pay_card_result.PayCardResultActivity;
+import com.user.etow.ui.rate_trip.RateTripActivity;
 
 import java.util.ArrayList;
 
@@ -44,6 +48,7 @@ public class PayCardActivity extends BaseMVPDialogActivity implements PayCardMVP
         presenter.initialView(this);
 
         initUi();
+        presenter.getTripDetail(this, DataStoreManager.getPrefIdTripProcess());
     }
 
     @Override
@@ -92,6 +97,17 @@ public class PayCardActivity extends BaseMVPDialogActivity implements PayCardMVP
 
     @OnClick(R.id.tv_continue)
     public void onClickContinue() {
-        GlobalFuntion.startActivity(this, PayCardResultActivity.class);
+        presenter.updatePaymentStatus(DataStoreManager.getPrefIdTripProcess(), Constant.TYPE_PAYMENT_CARD,
+                Constant.PAYMENT_STATUS_PAYMENT_FAIL);
+    }
+
+    @Override
+    public void updateStatusTrip(Trip trip) {
+        if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(trip.getPayment_status())) {
+            GlobalFuntion.startActivity(this, RateTripActivity.class);
+            finish();
+        } else if (Constant.PAYMENT_STATUS_PAYMENT_FAIL.equals(trip.getPayment_status())) {
+            GlobalFuntion.startActivity(this, PayCardResultActivity.class);
+        }
     }
 }
