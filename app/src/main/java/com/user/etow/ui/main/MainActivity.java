@@ -270,16 +270,18 @@ public class MainActivity extends BaseMVPDialogActivity implements MainMVPView {
 
     @Override
     public void getDetailTrip(Trip trip) {
-        if (trip.getUser().getId() == DataStoreManager.getUser().getId()
-                && !Constant.TRIP_STATUS_COMPLETE.equals(trip.getStatus())) {
-            DataStoreManager.setPrefIdTripProcess(trip.getId());
-            if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(trip.getPayment_status())) {
-                GlobalFuntion.startActivity(this, RateTripActivity.class);
-            } else {
-                if (Constant.TRIP_STATUS_JOURNEY_COMPLETED.equals(trip.getStatus())) {
-                    GlobalFuntion.startActivity(this, TripCompletedActivity.class);
+        if (trip.getUser().getId() == DataStoreManager.getUser().getId()) {
+            if (Constant.TRIP_STATUS_ACCEPT.equals(trip.getStatus()) || Constant.TRIP_STATUS_ARRIVED.equals(trip.getStatus())
+                    || Constant.TRIP_STATUS_ON_GOING.equals(trip.getStatus()) || Constant.TRIP_STATUS_JOURNEY_COMPLETED.equals(trip.getStatus())) {
+                DataStoreManager.setPrefIdTripProcess(trip.getId());
+                if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(trip.getPayment_status())) {
+                    GlobalFuntion.startActivity(this, RateTripActivity.class);
                 } else {
-                    GlobalFuntion.startActivity(this, TripProcessActivity.class);
+                    if (Constant.TRIP_STATUS_JOURNEY_COMPLETED.equals(trip.getStatus())) {
+                        GlobalFuntion.startActivity(this, TripCompletedActivity.class);
+                    } else {
+                        GlobalFuntion.startActivity(this, TripProcessActivity.class);
+                    }
                 }
             }
         }
