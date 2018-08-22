@@ -91,7 +91,7 @@ public class MyAccountFragment extends BaseMVPFragmentWithDialog implements MyAc
 
     private void initData() {
         if (!StringUtil.isEmpty(DataStoreManager.getUser().getAvatar())) {
-            GlideUtils.loadUrl(DataStoreManager.getUser().getAvatar(), imgAvatar);
+            GlideUtils.loadUrlAvatar(DataStoreManager.getUser().getAvatar(), imgAvatar);
         } else {
             imgAvatar.setImageResource(R.drawable.ic_avatar_default);
         }
@@ -118,8 +118,11 @@ public class MyAccountFragment extends BaseMVPFragmentWithDialog implements MyAc
         } else if (StringUtil.isEmpty(strPassword)) {
             showAlert(getString(R.string.please_enter_password));
         } else {
-            presenter.updateProfile(strFullName, strPhone, strEmail, strPassword,
-                    Utils.convertBitmapToBase64(mImage.getBitmap()));
+            String strAvatar = "";
+            if (mImage != null && mImage.getBitmap() != null) {
+                strAvatar =  Utils.convertBitmapToBase64(mImage.getBitmap());
+            }
+            presenter.updateProfile(strFullName, strPhone, strEmail, strPassword, strAvatar);
         }
     }
 

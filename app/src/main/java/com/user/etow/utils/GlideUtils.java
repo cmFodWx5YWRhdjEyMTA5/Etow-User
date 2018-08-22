@@ -9,6 +9,7 @@ import android.util.Base64;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.user.etow.R;
 
 import java.io.File;
 
@@ -21,6 +22,17 @@ public class GlideUtils {
         Glide.with(imageView.getContext())
                 .load(url)
                 .dontAnimate()
+                .into(imageView);
+    }
+
+    public static void loadUrlAvatar(String url, ImageView imageView) {
+        if (StringUtil.isEmpty(url)) {
+            return;
+        }
+        Glide.with(imageView.getContext())
+                .load(url)
+                .dontAnimate()
+                .error(R.drawable.ic_avatar_default)
                 .into(imageView);
     }
 
