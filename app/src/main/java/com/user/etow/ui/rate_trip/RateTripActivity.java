@@ -5,9 +5,12 @@ package com.user.etow.ui.rate_trip;
  *  Author DangTin. Create on 2018/05/13
  */
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -162,6 +165,17 @@ public class RateTripActivity extends BaseMVPDialogActivity implements RateTripM
                     .target(currentLocation).zoom(13).build());
             mMap.moveCamera(myLoc);
         }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
     }
 
     @Override

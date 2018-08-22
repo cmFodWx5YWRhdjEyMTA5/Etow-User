@@ -112,7 +112,7 @@ public class TripUpcomingAdapter extends RecyclerView.Adapter<TripUpcomingAdapte
                 } else if (Constant.TRIP_STATUS_REJECT.equals(trip.getStatus())) {
                     tvStatus.setText(context.getString(R.string.no_driver_available));
                     tvStatus.setTextColor(context.getResources().getColor(R.color.button_red));
-                } else {
+                } else if (Constant.TRIP_STATUS_ACCEPT.equals(trip.getStatus())) {
                     tvStatus.setText(context.getString(R.string.confirmed));
                     tvStatus.setTextColor(context.getResources().getColor(R.color.button_green));
                 }
@@ -120,7 +120,7 @@ public class TripUpcomingAdapter extends RecyclerView.Adapter<TripUpcomingAdapte
                 layoutItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (!Constant.TRIP_STATUS_NEW.equals(trip.getStatus()) && !Constant.TRIP_STATUS_REJECT.equals(trip.getStatus()) ) {
+                        if (!Constant.TRIP_STATUS_NEW.equals(trip.getStatus()) && !Constant.TRIP_STATUS_REJECT.equals(trip.getStatus())) {
                             Bundle bundle = new Bundle();
                             bundle.putBoolean(Constant.IS_TRIP_COMPLETED, false);
                             bundle.putSerializable(Constant.OBJECT_TRIP, trip);

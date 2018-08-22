@@ -154,7 +154,7 @@ public class TripDetailActivity extends BaseMVPDialogActivity implements TripDet
             } else if (Constant.TRIP_STATUS_REJECT.equals(mTrip.getStatus())) {
                 tvStatus.setText(getString(R.string.no_driver_available));
                 tvStatus.setTextColor(getResources().getColor(R.color.button_red));
-            } else {
+            } else if (Constant.TRIP_STATUS_ACCEPT.equals(mTrip.getStatus())) {
                 tvStatus.setText(getString(R.string.confirmed));
                 tvStatus.setTextColor(getResources().getColor(R.color.button_green));
             }

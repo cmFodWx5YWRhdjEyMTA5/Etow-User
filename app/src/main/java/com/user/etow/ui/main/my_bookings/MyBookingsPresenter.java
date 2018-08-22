@@ -17,12 +17,12 @@ import com.user.etow.adapter.TripCompletedAdapter;
 import com.user.etow.adapter.TripUpcomingAdapter;
 import com.user.etow.constant.Constant;
 import com.user.etow.data.NetworkManager;
+import com.user.etow.data.prefs.DataStoreManager;
 import com.user.etow.injection.PerActivity;
 import com.user.etow.models.Trip;
 import com.user.etow.ui.base.BasePresenter;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -50,23 +50,27 @@ public class MyBookingsPresenter extends BasePresenter<MyBookingsMVPView> {
     }
 
     public void getTripCompleted(Context context, TripCompletedAdapter tripCompletedAdapter) {
-        ETowApplication.get(context).getDatabaseReference().orderByChild("status").equalTo(Constant.TRIP_STATUS_COMPLETE)
+        ETowApplication.get(context).getDatabaseReference().orderByChild("user_id").equalTo(DataStoreManager.getUser().getId() + "")
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         Trip trip = dataSnapshot.getValue(Trip.class);
-                        listTripCompleted.add(trip);
+                        if (Constant.TRIP_STATUS_COMPLETE.equals(trip.getStatus())) {
+                            listTripCompleted.add(trip);
+                        }
                         tripCompletedAdapter.notifyDataSetChanged();
                     }
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                         Trip trip = dataSnapshot.getValue(Trip.class);
-                        if (listTripCompleted != null && listTripCompleted.size() > 0) {
-                            for (int i = 0; i < listTripCompleted.size(); i++) {
-                                if (trip.getId() == listTripCompleted.get(i).getId()) {
-                                    listTripCompleted.set(i, trip);
-                                    break;
+                        if (!Constant.TRIP_STATUS_COMPLETE.equals(trip.getStatus())) {
+                            if (listTripCompleted != null && listTripCompleted.size() > 0) {
+                                for (int i = 0; i < listTripCompleted.size(); i++) {
+                                    if (trip.getId() == listTripCompleted.get(i).getId()) {
+                                        listTripCompleted.remove(i);
+                                        break;
+                                    }
                                 }
                             }
                         }
@@ -100,23 +104,33 @@ public class MyBookingsPresenter extends BasePresenter<MyBookingsMVPView> {
     }
 
     public void getTripSchedules(Context context, TripUpcomingAdapter tripUpcomingAdapter) {
-        ETowApplication.get(context).getDatabaseReference().orderByChild("is_schedule").equalTo(Constant.IS_SCHEDULE)
+        ETowApplication.get(context).getDatabaseReference().orderByChild("user_id").equalTo(DataStoreManager.getUser().getId() + "")
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         Trip trip = dataSnapshot.getValue(Trip.class);
-                        listTripUpcoming.add(trip);
+                        if (Constant.IS_SCHEDULE.equals(trip.getIs_schedule())) {
+                            if (Constant.TRIP_STATUS_NEW.equals(trip.getStatus()) || Constant.TRIP_STATUS_REJECT.equals(trip.getStatus())
+                                    || Constant.TRIP_STATUS_ACCEPT.equals(trip.getStatus())) {
+                                listTripUpcoming.add(trip);
+                            }
+                        }
                         tripUpcomingAdapter.notifyDataSetChanged();
                     }
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                         Trip trip = dataSnapshot.getValue(Trip.class);
-                        if (listTripUpcoming != null && listTripUpcoming.size() > 0) {
-                            for (int i = 0; i < listTripUpcoming.size(); i++) {
-                                if (trip.getId() == listTripUpcoming.get(i).getId()) {
-                                    listTripUpcoming.set(i, trip);
-                                    break;
+                        if (Constant.IS_SCHEDULE.equals(trip.getIs_schedule())) {
+                            if (!Constant.TRIP_STATUS_NEW.equals(trip.getStatus()) && !Constant.TRIP_STATUS_REJECT.equals(trip.getStatus())
+                                    && !Constant.TRIP_STATUS_ACCEPT.equals(trip.getStatus())) {
+                                if (listTripUpcoming != null && listTripUpcoming.size() > 0) {
+                                    for (int i = 0; i < listTripUpcoming.size(); i++) {
+                                        if (trip.getId() == listTripUpcoming.get(i).getId()) {
+                                            listTripUpcoming.remove(i);
+                                            break;
+                                        }
+                                    }
                                 }
                             }
                         }

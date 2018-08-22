@@ -32,6 +32,7 @@
     <string name="action_no">No</string>
     <string name="action_close">Close</string>
     <string name="action_done">Done</string>
+    <string name="action_reload">Reload</string>
 
     // dialog
     <string name="waiting_message">Please wait...</string>

@@ -27,6 +27,7 @@ public class Trip implements Serializable {
     private String current_latitude;
     private String current_longitude;
     private String note;
+    private String user_id;
 
     public int getId() {
         return id;
@@ -194,6 +195,14 @@ public class Trip implements Serializable {
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public String getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 
     public String toJSon() {

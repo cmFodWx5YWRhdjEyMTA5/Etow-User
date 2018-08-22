@@ -6,12 +6,19 @@ package com.user.etow.ui.splash;
  */
 
 import android.Manifest;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.user.etow.R;
 import com.user.etow.constant.Constant;
@@ -105,7 +112,7 @@ public class SplashActivity extends BaseMVPDialogActivity implements SplashMVPVi
     private void settingGPS() {
         LocationManager mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            GlobalFuntion.showDialogNoGPS(this);
+            showDialogSettingGps();
         } else if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             GlobalFuntion.getCurrentLocation(this, mLocationManager);
             goToActivity();
@@ -134,5 +141,46 @@ public class SplashActivity extends BaseMVPDialogActivity implements SplashMVPVi
                 GlobalFuntion.startActivity(SplashActivity.this, TripProcessActivity.class);
             }
         }
+    }
+
+    public void showDialogSettingGps() {
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.layout_dialog_setting_gps);
+        Window window = dialog.getWindow();
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        dialog.setCancelable(false);
+
+        // Get view
+        final TextView tvCancel = dialog.findViewById(R.id.tv_cancel);
+        final TextView tvReload = dialog.findViewById(R.id.tv_reload);
+        final TextView tvOk = dialog.findViewById(R.id.tv_ok);
+
+        // Get listener
+        tvReload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                finish();
+                startActivity(getIntent());
+            }
+        });
+
+        tvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+            }
+        });
+
+        tvCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                finish();
+            }
+        });
+        // show dialog
+        dialog.show();
     }
 }

@@ -5,13 +5,16 @@ package com.user.etow.ui.trip_process;
  *  Author DangTin. Create on 2018/05/13
  */
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -209,6 +212,17 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
                     .target(currentLocation).zoom(13).build());
             mMap.moveCamera(myLoc);
         }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
     }
 
     @OnClick(R.id.tv_confirm)

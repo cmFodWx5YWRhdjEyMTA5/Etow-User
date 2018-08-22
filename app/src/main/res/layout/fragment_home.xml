@@ -27,7 +27,7 @@
             android:layout_height="@dimen/define_dimen_45"
             android:layout_marginEnd="@dimen/define_dimen_14"
             android:layout_marginStart="@dimen/define_dimen_14"
-            android:layout_marginTop="@dimen/define_dimen_50"
+            android:layout_marginTop="@dimen/define_dimen_60"
             android:background="@drawable/bg_white_corner_border_grey_radius_8"
             android:visibility="visible">
 

@@ -76,18 +76,22 @@ public class MainPresenter extends BasePresenter<MainMVPView> {
     }
 
     public void getScheduleTrip(Context context) {
-        ETowApplication.get(context).getDatabaseReference().orderByChild("is_schedule").equalTo(Constant.IS_SCHEDULE)
+        ETowApplication.get(context).getDatabaseReference().orderByChild("user_id").equalTo(DataStoreManager.getUser().getId() + "")
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                         Trip trip = dataSnapshot.getValue(Trip.class);
-                        if(getMvpView() != null && trip != null) getMvpView().getDetailTrip(trip);
+                        if (getMvpView() != null && trip != null && Constant.IS_SCHEDULE.equals(trip.getIs_schedule())) {
+                            getMvpView().getDetailTrip(trip);
+                        }
                     }
 
                     @Override
                     public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                         Trip trip = dataSnapshot.getValue(Trip.class);
-                        if(getMvpView() != null && trip != null) getMvpView().getDetailTrip(trip);
+                        if (getMvpView() != null && trip != null && Constant.IS_SCHEDULE.equals(trip.getIs_schedule())) {
+                            getMvpView().getDetailTrip(trip);
+                        }
                     }
 
                     @Override
