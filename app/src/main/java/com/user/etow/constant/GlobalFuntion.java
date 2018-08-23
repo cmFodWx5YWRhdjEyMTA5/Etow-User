@@ -115,11 +115,11 @@ public class GlobalFuntion {
 
     public static void showMessageError(Activity activity, int code) {
         switch (code) {
-            case Constant.CODE_HTTP_203:
+            case Constant.CODE_HTTP_303:
                 Toast.makeText(activity, activity.getString(R.string.msg_otp_incorrect), Toast.LENGTH_SHORT).show();
                 break;
 
-            case Constant.CODE_HTTP_204:
+            case Constant.CODE_HTTP_304:
                 Toast.makeText(activity, activity.getString(R.string.msg_can_not_get_otp_code), Toast.LENGTH_SHORT).show();
                 break;
 

@@ -14,8 +14,8 @@ public interface Constant {
     int JSON_PARSER_CODE = -10;
     int OTHER_CODE = -20;
 
-    int CODE_HTTP_203 = 203;
-    int CODE_HTTP_204 = 204;
+    int CODE_HTTP_303 = 303;
+    int CODE_HTTP_304 = 304;
     int CODE_HTTP_300 = 300;
     int CODE_HTTP_401 = 401;
     int CODE_HTTP_409 = 409;
