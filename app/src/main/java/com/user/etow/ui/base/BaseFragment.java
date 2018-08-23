@@ -66,7 +66,7 @@ public abstract class BaseFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ETowApplication.get(getActivity()).getComponent().inject(this);
-        // activityScopeComponent = activityScopeComponentCache.restoreComponent(savedInstanceState);
+        activityScopeComponent = activityScopeComponentCache.restoreComponent(savedInstanceState);
     }
 
     @Override

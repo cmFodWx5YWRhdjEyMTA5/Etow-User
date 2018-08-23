@@ -43,7 +43,6 @@ public class ActivityScopeComponentCache {
         return stateKey;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Nullable
     public ActivityScopeComponent restoreComponent(@Nullable Bundle outState) {
         if (outState == null) {
@@ -53,9 +52,14 @@ public class ActivityScopeComponentCache {
         if (stateKey < 0) {
             return null;
         }
-        return Optional.ofNullable(componentHashMap.remove(stateKey))
-                .map(ActivityComponentWrapper::getComponent)
-                .orElse(null);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            return Optional.ofNullable(componentHashMap.remove(stateKey))
+                    .map(ActivityComponentWrapper::getComponent)
+                    .orElse(null);
+        } else {
+            return null;
+        }
     }
 
     private void gcComponent() {
