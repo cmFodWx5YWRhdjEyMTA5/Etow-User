@@ -189,6 +189,10 @@
     <string name="type_vehicle_flatbed">Flatbed</string>
     <string name="unit_price">AED</string>
     <string name="unit_time">mins</string>
+    <string name="otp_register_request_phone_error">Phone number input not correct format</string>
+    <string name="otp_register_request_send_many_time">Send request OTP too many time</string>
+    <string name="otp_register_request_sent_phone">Get OTP successful, please check your phone</string>
+    <string name="otp_register_code_wrong">Your code have issues, please try again</string>
 
     // msg request api
     <string name="msg_otp_incorrect">Otp incorrect.</string>

@@ -6,8 +6,11 @@ package com.user.etow.ui.auth.verify_mobile_number;
  */
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.CheckBox;
@@ -16,6 +19,16 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseTooManyRequestsException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.user.etow.R;
 import com.user.etow.adapter.CountryCodeAdapter;
 import com.user.etow.constant.Constant;
@@ -27,6 +40,7 @@ import com.user.etow.ui.base.BaseMVPDialogActivity;
 import com.user.etow.utils.StringUtil;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -54,6 +68,9 @@ public class VerifyMobileNumberActivity extends BaseMVPDialogActivity implements
     private CountryCodeAdapter countryCodeAdapter;
     private CountryCode mCountryCode;
     private boolean mIsUpdate;
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks;
+    private String mVerificationId;
+    private String mPhoneNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +82,7 @@ public class VerifyMobileNumberActivity extends BaseMVPDialogActivity implements
 
         getDataIntent();
         initUi();
+        createCallback();
     }
 
     private void getDataIntent() {
@@ -174,7 +192,8 @@ public class VerifyMobileNumberActivity extends BaseMVPDialogActivity implements
         } else if (!GlobalFuntion.checkMobileNumber(this, strMobileNumber, mCountryCode.getCode())) {
             showAlert(getString(R.string.msg_mobile_number_invalid));
         } else {
-            presenter.getOTP(mCountryCode.getDialCode() + strMobileNumber);
+            // presenter.getOTP(mCountryCode.getDialCode() + strMobileNumber);
+            onClickSendAuthorizationCode(mCountryCode.getDialCode() + strMobileNumber);
         }
     }
 
@@ -184,15 +203,55 @@ public class VerifyMobileNumberActivity extends BaseMVPDialogActivity implements
     }
 
     @Override
+    public void finishActivity() {
+        finish();
+    }
+
+    public void onClickSendAuthorizationCode(String phoneNumber) {
+        mPhoneNumber = phoneNumber;
+        showProgressDialog(true);
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phoneNumber,        // Phone number to verify
+                30,                 // Timeout duration
+                TimeUnit.SECONDS,   // Unit of timeout
+                this,               // Activity (for callback binding)
+                callbacks);
+    }
+
+    private void createCallback() {
+        callbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(PhoneAuthCredential credential) {
+                showProgressDialog(false);
+                // signInWithPhoneAuthCredential(credential);
+            }
+
+            @Override
+            public void onVerificationFailed(FirebaseException e) {
+                showProgressDialog(false);
+                if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                    showAlert(getString(R.string.otp_register_request_phone_error));
+                } else if (e instanceof FirebaseTooManyRequestsException) {
+                    showAlert(getString(R.string.otp_register_request_send_many_time));
+                }
+            }
+
+            @Override
+            public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
+                // Save verification ID and resending token so we can use them later
+                showProgressDialog(false);
+                mVerificationId = verificationId;
+                showAlert(getString(R.string.otp_register_request_sent_phone));
+                getStatusCodeOTP(mPhoneNumber);
+            }
+        };
+    }
+
     public void getStatusCodeOTP(String phone) {
         Bundle bundle = new Bundle();
         bundle.putBoolean(Constant.IS_UPDATE, mIsUpdate);
         bundle.putString(Constant.PHONE_NUMBER, phone);
+        bundle.putString(Constant.VERIFICATION_ID, mVerificationId);
         GlobalFuntion.startActivity(this, EnterOTPActivity.class, bundle);
-    }
-
-    @Override
-    public void finishActivity() {
-        finish();
     }
 }

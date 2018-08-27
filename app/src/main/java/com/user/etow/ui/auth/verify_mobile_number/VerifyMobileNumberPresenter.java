@@ -5,10 +5,8 @@ package com.user.etow.ui.auth.verify_mobile_number;
  *  Author DangTin. Create on 2018/05/13
  */
 
-import com.user.etow.constant.Constant;
 import com.user.etow.data.NetworkManager;
 import com.user.etow.messages.EditPhoneNumberSuccess;
-import com.user.etow.models.response.ApiSuccess;
 import com.user.etow.ui.base.BasePresenter;
 
 import org.greenrobot.eventbus.EventBus;
@@ -18,9 +16,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import javax.inject.Inject;
 
 import retrofit2.Retrofit;
-import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class VerifyMobileNumberPresenter extends BasePresenter<VerifyMobileNumberMVPView> {
 
@@ -43,7 +38,7 @@ public class VerifyMobileNumberPresenter extends BasePresenter<VerifyMobileNumbe
         EventBus.getDefault().unregister(this);
     }
 
-    public void getOTP(String phone) {
+    /*public void getOTP(String phone) {
         if (!isConnectToInternet()) {
             notifyNoNetwork();
         } else {
@@ -73,7 +68,7 @@ public class VerifyMobileNumberPresenter extends BasePresenter<VerifyMobileNumbe
                         }
                     });
         }
-    }
+    }*/
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEditPhoneNumberSuccess(EditPhoneNumberSuccess editPhoneNumberSuccess) {

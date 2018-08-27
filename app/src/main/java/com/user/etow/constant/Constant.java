@@ -56,6 +56,7 @@ public interface Constant {
     String OBJECT_TRIP = "OBJECT_TRIP";
     String IS_SCHEDULE_TRIP = "IS_SCHEDULE_TRIP";
     String PHONE_NUMBER = "PHONE_NUMBER";
+    String VERIFICATION_ID = "mVerificationId";
     String IS_UPDATE = "IS_UPDATE";
     String SCHEDULE_DATE = "SCHEDULE_DATE";
     String IS_VEHICLE_NORMAL = "IS_VEHICLE_NORMAL";

@@ -6,11 +6,23 @@ package com.user.etow.ui.auth.enter_otp;
  */
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseException;
+import com.google.firebase.FirebaseTooManyRequestsException;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.PhoneAuthCredential;
+import com.google.firebase.auth.PhoneAuthProvider;
 import com.user.etow.R;
 import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
@@ -20,6 +32,8 @@ import com.user.etow.ui.base.BaseMVPDialogActivity;
 import com.user.etow.utils.StringUtil;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -44,6 +58,8 @@ public class EnterOTPActivity extends BaseMVPDialogActivity implements EnterOTPM
     private boolean mIsActiveDone;
     private String mPhoneNumber;
     private boolean mIsUpdate;
+    private String mVerificationId;
+    private PhoneAuthProvider.OnVerificationStateChangedCallbacks callbacks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +73,14 @@ public class EnterOTPActivity extends BaseMVPDialogActivity implements EnterOTPM
 
         tvMessage.setText(getString(R.string.have_sent_sms) + " " + mPhoneNumber);
         setListener();
+        createCallback();
     }
 
     private void getDataIntent() {
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             mPhoneNumber = bundle.getString(Constant.PHONE_NUMBER);
+            mVerificationId = bundle.getString(Constant.VERIFICATION_ID);
             mIsUpdate = bundle.getBoolean(Constant.IS_UPDATE);
         }
     }
@@ -123,29 +141,88 @@ public class EnterOTPActivity extends BaseMVPDialogActivity implements EnterOTPM
     @OnClick(R.id.tv_done)
     public void onClickDone() {
         if (mIsActiveDone) {
-            presenter.verifyOTP(edtOtp.getText().toString().trim(), mPhoneNumber);
+            // presenter.verifyOTP(edtOtp.getText().toString().trim(), mPhoneNumber);
+            showProgressDialog(true);
+            PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, edtOtp.getText().toString().trim());
+            signInWithPhoneAuthCredential(credential);
         }
     }
 
     @OnClick(R.id.tv_not_get_code)
     public void onClickDidNotGetTheCode() {
-        presenter.getOTP(mPhoneNumber);
+        // presenter.getOTP(mPhoneNumber);
+        onClickSendAuthorizationCode(mPhoneNumber);
     }
 
-    @Override
-    public void getStatusVerifyOTP(String phone) {
+    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        showProgressDialog(false);
+                        if (task.isSuccessful()) {
+                            FirebaseUser user = task.getResult().getUser();
+                            Log.e("------------", "-----Phone: " + user.getPhoneNumber());
+                            getStatusVerifyOTP(user.getPhoneNumber());
+                        } else {
+                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
+                                showAlert(getString(R.string.msg_otp_incorrect));
+                            } else {
+                                showAlert(getString(R.string.otp_register_code_wrong));
+                            }
+                        }
+                    }
+                });
+    }
+
+    public void getStatusVerifyOTP(String phoneNumber) {
         if (mIsUpdate) {
-            EventBus.getDefault().post(new EditPhoneNumberSuccess(mPhoneNumber));
+            EventBus.getDefault().post(new EditPhoneNumberSuccess(phoneNumber));
             finish();
         } else {
             Bundle bundle = new Bundle();
-            bundle.putString(Constant.PHONE_NUMBER, mPhoneNumber);
+            bundle.putString(Constant.PHONE_NUMBER, phoneNumber);
             GlobalFuntion.startActivity(this, SignUpActivity.class, bundle);
         }
     }
 
-    @Override
-    public void getStatusCodeOTP() {
-        showAlert(getString(R.string.get_otp_successful));
+    public void onClickSendAuthorizationCode(String phoneNumber) {
+        mPhoneNumber = phoneNumber;
+        showProgressDialog(true);
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phoneNumber,        // Phone number to verify
+                30,                 // Timeout duration
+                TimeUnit.SECONDS,   // Unit of timeout
+                this,               // Activity (for callback binding)
+                callbacks);
+    }
+
+    private void createCallback() {
+        callbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(PhoneAuthCredential credential) {
+                showProgressDialog(false);
+                // signInWithPhoneAuthCredential(credential);
+            }
+
+            @Override
+            public void onVerificationFailed(FirebaseException e) {
+                showProgressDialog(false);
+                if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                    showAlert(getString(R.string.otp_register_request_phone_error));
+                } else if (e instanceof FirebaseTooManyRequestsException) {
+                    showAlert(getString(R.string.otp_register_request_send_many_time));
+                }
+            }
+
+            @Override
+            public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
+                // Save verification ID and resending token so we can use them later
+                showProgressDialog(false);
+                mVerificationId = verificationId;
+                showAlert(getString(R.string.otp_register_request_sent_phone));
+            }
+        };
     }
 }

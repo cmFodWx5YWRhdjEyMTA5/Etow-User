@@ -5,17 +5,12 @@ package com.user.etow.ui.auth.enter_otp;
  *  Author DangTin. Create on 2018/05/13
  */
 
-import com.user.etow.constant.Constant;
 import com.user.etow.data.NetworkManager;
-import com.user.etow.models.response.ApiSuccess;
 import com.user.etow.ui.base.BasePresenter;
 
 import javax.inject.Inject;
 
 import retrofit2.Retrofit;
-import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class EnterOTPPresenter extends BasePresenter<EnterOTPMVPView> {
 
@@ -29,7 +24,7 @@ public class EnterOTPPresenter extends BasePresenter<EnterOTPMVPView> {
         super.initialView(mvpView);
     }
 
-    public void verifyOTP(String otp, String phone) {
+    /*public void verifyOTP(String otp, String phone) {
         if (!isConnectToInternet()) {
             notifyNoNetwork();
         } else {
@@ -59,9 +54,9 @@ public class EnterOTPPresenter extends BasePresenter<EnterOTPMVPView> {
                         }
                     });
         }
-    }
+    }*/
 
-    public void getOTP(String phone) {
+    /*public void getOTP(String phone) {
         if (!isConnectToInternet()) {
             notifyNoNetwork();
         } else {
@@ -91,5 +86,5 @@ public class EnterOTPPresenter extends BasePresenter<EnterOTPMVPView> {
                         }
                     });
         }
-    }
+    }*/
 }

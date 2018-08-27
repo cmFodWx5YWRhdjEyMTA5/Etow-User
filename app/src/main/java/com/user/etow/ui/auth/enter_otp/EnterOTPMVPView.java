@@ -9,7 +9,4 @@ import com.user.etow.ui.base.BaseScreenMvpView;
 
 interface EnterOTPMVPView extends BaseScreenMvpView {
 
-    void getStatusVerifyOTP(String phone);
-
-    void getStatusCodeOTP();
 }
