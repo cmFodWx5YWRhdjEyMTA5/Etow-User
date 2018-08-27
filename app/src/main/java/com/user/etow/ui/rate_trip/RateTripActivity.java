@@ -115,9 +115,7 @@ public class RateTripActivity extends BaseMVPDialogActivity implements RateTripM
 
     @OnClick(R.id.tv_skip)
     public void onClickSkipRate() {
-        DataStoreManager.setPrefIdTripProcess(0);
-        GlobalFuntion.startActivity(this, MainActivity.class);
-        finishAffinity();
+        presenter.rateTrip(DataStoreManager.getPrefIdTripProcess(), 0);
     }
 
     @OnClick(R.id.tv_rate_your_trip)

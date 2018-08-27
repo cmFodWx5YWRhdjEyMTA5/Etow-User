@@ -129,7 +129,7 @@ public class EnterOTPActivity extends BaseMVPDialogActivity implements EnterOTPM
 
     @OnClick(R.id.tv_not_get_code)
     public void onClickDidNotGetTheCode() {
-        onBackPressed();
+        presenter.getOTP(mPhoneNumber);
     }
 
     @Override
@@ -142,5 +142,10 @@ public class EnterOTPActivity extends BaseMVPDialogActivity implements EnterOTPM
             bundle.putString(Constant.PHONE_NUMBER, mPhoneNumber);
             GlobalFuntion.startActivity(this, SignUpActivity.class, bundle);
         }
+    }
+
+    @Override
+    public void getStatusCodeOTP() {
+        showAlert(getString(R.string.get_otp_successful));
     }
 }

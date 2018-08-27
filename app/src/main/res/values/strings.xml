@@ -132,13 +132,15 @@
     <string name="estimated_cost">Estimated cost</string>
     <string name="payment_method">Payment method</string>
     <string name="to">to</string>
+    <string name="get_otp_successful">Get OTP successful</string>
 
     // Trip process
     <string name="drivers_are_away">Hey, it seems drivers are away !</string>
     <string name="current_estimated_time">Current estimated time</string>
     <string name="confirm">Confirm</string>
     <string name="please_wait">Please wait !</string>
-    <string name="please_wait_driver">Please wait while we look for available Drivers...</string>
+    <string name="please_wait_driver">Please wait while we look for</string>
+    <string name="available_drivers">available Drivers...</string>
     <string name="message_confirm_cancel_trip">Are you sure you want to cancel this order ?</string>
     <string name="your_booking_accepted">Your booking accepted !</string>
     <string name="message_driver_will_reach">The driver will reach you within</string>
@@ -177,6 +179,7 @@
     <string name="please_select_date">Please select date booking</string>
     <string name="please_select_time">Please select time booking</string>
     <string name="unble_trace_location">Unble to trace your location</string>
+    <string name="unble_trace_driver_location">Unble to trace driver location</string>
     <string name="message_turn_on_gps">Please turn on your GPS</string>
     <string name="choose_image">Please choose image</string>
     <string name="schedule_booking_invalid">Schedule booking invalid</string>

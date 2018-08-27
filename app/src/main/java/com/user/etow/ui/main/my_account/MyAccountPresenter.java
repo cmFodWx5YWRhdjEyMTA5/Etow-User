@@ -94,6 +94,6 @@ public class MyAccountPresenter extends BasePresenter<MyAccountMVPView> {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onSelectAvatarSuccess(SelectAvatarSuccess selectAvatarSuccess) {
-        getMvpView().updateAvatar(selectAvatarSuccess.getImage());
+        getMvpView().updateAvatar();
     }
 }

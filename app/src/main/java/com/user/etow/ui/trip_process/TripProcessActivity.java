@@ -31,19 +31,28 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.user.etow.R;
 import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
 import com.user.etow.data.prefs.DataStoreManager;
+import com.user.etow.direction.DirectionFinder;
+import com.user.etow.direction.DirectionFinderListener;
+import com.user.etow.direction.Route;
 import com.user.etow.models.Driver;
 import com.user.etow.models.Trip;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
 import com.user.etow.ui.main.MainActivity;
 import com.user.etow.ui.trip_completed.TripCompletedActivity;
+import com.user.etow.utils.StringUtil;
 import com.user.etow.utils.Utils;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -52,7 +61,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class TripProcessActivity extends BaseMVPDialogActivity implements TripProcessMVPView,
-        OnMapReadyCallback {
+        OnMapReadyCallback, DirectionFinderListener {
 
     @Inject
     TripProcessPresenter presenter;
@@ -85,6 +94,14 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
     private Trip mTrip;
     private boolean mIsDriverAvailable;
 
+    private List<Marker> originMarkers = new ArrayList<>();
+    private List<Marker> destinationMarkers = new ArrayList<>();
+    private List<Polyline> polylinePaths = new ArrayList<>();
+
+    private ArrayList<LatLng> mListPoints = new ArrayList<LatLng>();
+    private Polyline mPolyline;
+    private boolean mIsLoadMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,8 +114,6 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
         SupportMapFragment mMapFragment = new SupportMapFragment();
         mMapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_view_map));
         mMapFragment.getMapAsync(this);
-
-        presenter.getTripDetail(this, DataStoreManager.getPrefIdTripProcess());
     }
 
     @Override
@@ -159,6 +174,7 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
         if (Constant.TRIP_STATUS_NEW.equals(trip.getStatus())) {
             presenter.initFirebase();
             presenter.checkDriverAvailable();
+            loadMapCurrentLocaetion();
         } else if (Constant.TRIP_STATUS_REJECT.equals(trip.getStatus())) {
             showDialogRejected();
         } else if (Constant.TRIP_STATUS_CANCEL.equals(trip.getStatus())) {
@@ -169,18 +185,53 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
             layoutDriverAreAway.setVisibility(View.GONE);
             layoutWaitDriver.setVisibility(View.GONE);
             layoutBookingAccepted.setVisibility(View.VISIBLE);
+            mMap.clear();
+            LatLng latLng = new LatLng(Double.parseDouble(trip.getCurrent_latitude()),
+                    Double.parseDouble(trip.getCurrent_longitude()));
+            showMarkerOnMap(latLng);
+            mListPoints.add(latLng);
+            redrawLine();
         } else if (Constant.TRIP_STATUS_ARRIVED.equals(trip.getStatus())) {
             layoutBookingAccepted.setVisibility(View.GONE);
             layoutDriverArrived.setVisibility(View.VISIBLE);
+            if(Constant.IS_SCHEDULE.equals(trip.getStatus())) {
+                mMap.clear();
+                LatLng latLng = new LatLng(Double.parseDouble(trip.getCurrent_latitude()),
+                        Double.parseDouble(trip.getCurrent_longitude()));
+                showMarkerOnMap(latLng);
+                mListPoints.add(latLng);
+                redrawLine();
+            }
         } else if (Constant.TRIP_STATUS_ON_GOING.equals(trip.getStatus())) {
             layoutDriverArrived.setVisibility(View.GONE);
             layoutTripOngoing.setVisibility(View.VISIBLE);
+            if(!mIsLoadMap){
+                loadMap(trip);
+                mListPoints = new ArrayList<>();
+            }
+            // Draw road on map
+            LatLng latLng = new LatLng(Double.parseDouble(trip.getCurrent_latitude()),
+                    Double.parseDouble(trip.getCurrent_longitude()));
+            mListPoints.add(latLng);
+            redrawLine();
         } else if (Constant.TRIP_STATUS_JOURNEY_COMPLETED.equals(trip.getStatus())) {
             GlobalFuntion.startActivity(this, TripCompletedActivity.class);
             finish();
         }
 
         initData();
+    }
+
+    private void loadMap(Trip trip) {
+        mMap.clear();
+        String strCurrentLocation = GlobalFuntion.getCompleteAddressString(this, GlobalFuntion.LATITUDE, GlobalFuntion.LONGITUDE);
+        String strDropOffLocation = trip.getDrop_off();
+        if (StringUtil.isEmpty(strCurrentLocation)) {
+            showAlert(getString(R.string.unble_trace_location));
+        } else {
+            sendRequestDirection(strCurrentLocation, strDropOffLocation, false);
+        }
+        mIsLoadMap = true;
     }
 
     private void initData() {
@@ -200,6 +251,17 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+        loadMapCurrentLocaetion();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        mMap.setMyLocationEnabled(true);
+
+        presenter.getTripDetail(this, DataStoreManager.getPrefIdTripProcess());
+    }
+
+    private void loadMapCurrentLocaetion() {
         if (GlobalFuntion.LATITUDE > 0 && GlobalFuntion.LONGITUDE > 0) {
             // Add a marker in Sydney, Australia, and move the camera.
             LatLng currentLocation = new LatLng(GlobalFuntion.LATITUDE, GlobalFuntion.LONGITUDE);
@@ -212,17 +274,6 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
                     .target(currentLocation).zoom(13).build());
             mMap.moveCamera(myLoc);
         }
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        mMap.setMyLocationEnabled(true);
     }
 
     @OnClick(R.id.tv_confirm)
@@ -307,5 +358,87 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
                 })
                 .cancelable(false)
                 .show();
+    }
+
+    private void sendRequestDirection(String origin, String destination, boolean fixCode) {
+        try {
+            new DirectionFinder(this, origin, destination, fixCode).execute();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onDirectionFinderStart() {
+        if (originMarkers != null) {
+            for (Marker marker : originMarkers) {
+                marker.remove();
+            }
+        }
+
+        if (destinationMarkers != null) {
+            for (Marker marker : destinationMarkers) {
+                marker.remove();
+            }
+        }
+
+        if (polylinePaths != null) {
+            for (Polyline polyline : polylinePaths) {
+                polyline.remove();
+            }
+        }
+    }
+
+    @Override
+    public void onDirectionFinderSuccess(List<Route> routes) {
+        polylinePaths = new ArrayList<>();
+        originMarkers = new ArrayList<>();
+        destinationMarkers = new ArrayList<>();
+
+        for (Route route : routes) {
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(route.startLocation, 16));
+            // ((TextView) findViewById(R.id.tvDuration)).setText(route.duration.text);
+            // ((TextView) findViewById(R.id.tvDistance)).setText(route.distance.text);
+            originMarkers.add(mMap.addMarker(new MarkerOptions()
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_black))
+                    .title(route.startAddress)
+                    .position(route.startLocation)));
+            destinationMarkers.add(mMap.addMarker(new MarkerOptions()
+                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_black))
+                    .title(route.endAddress)
+                    .position(route.endLocation)));
+
+            PolylineOptions polylineOptions = new PolylineOptions().
+                    geodesic(true).
+                    color(Color.BLACK).
+                    width(10);
+
+            for (int i = 0; i < route.points.size(); i++)
+                polylineOptions.add(route.points.get(i));
+
+            polylinePaths.add(mMap.addPolyline(polylineOptions));
+        }
+    }
+
+    private void redrawLine() {
+        // googleMap.clear();  //clears all Markers and Polylines
+        PolylineOptions options = new PolylineOptions().width(10)
+                .color(getResources().getColor(R.color.colorRouteLine)).geodesic(true);
+        for (int i = 0; i < mListPoints.size(); i++) {
+            LatLng point = mListPoints.get(i);
+            options.add(point);
+        }
+        mPolyline = mMap.addPolyline(options); //add Polyline
+    }
+
+    private void showMarkerOnMap(LatLng latLng) {
+        // create marker
+        MarkerOptions marker = new MarkerOptions().position(latLng)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_location_black));
+        // adding marker
+        mMap.addMarker(marker);
+        CameraUpdate myLoc = CameraUpdateFactory.newCameraPosition(new CameraPosition.Builder()
+                .target(latLng).zoom(13).build());
+        mMap.moveCamera(myLoc);
     }
 }

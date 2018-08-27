@@ -127,7 +127,7 @@ public class TripCompletedActivity extends BaseMVPDialogActivity implements Trip
     @Override
     public void updateStatusTrip(Trip trip) {
         mTrip = trip;
-        if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(trip.getPayment_status())) {
+        if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(trip.getPayment_status()) && mTrip.getIs_rate() == 0) {
             GlobalFuntion.startActivity(this, RateTripActivity.class);
             finish();
         } else {
@@ -170,7 +170,7 @@ public class TripCompletedActivity extends BaseMVPDialogActivity implements Trip
     @OnClick(R.id.tv_action)
     public void onClickAction() {
         if (Constant.TYPE_PAYMENT_CASH.equals(mTrip.getPayment_type())) {
-            if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(mTrip.getPayment_status())) {
+            if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(mTrip.getPayment_status()) && mTrip.getIs_rate() == 0) {
                 GlobalFuntion.startActivity(this, RateTripActivity.class);
                 finish();
             } else {
@@ -179,6 +179,7 @@ public class TripCompletedActivity extends BaseMVPDialogActivity implements Trip
             }
         } else {
             GlobalFuntion.startActivity(this, PayCardActivity.class);
+            finish();
         }
     }
 

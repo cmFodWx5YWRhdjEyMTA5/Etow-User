@@ -7,7 +7,6 @@ package com.user.etow.ui.main.my_account;
  * ******************************************************************************
  */
 
-import com.user.etow.models.Image;
 import com.user.etow.ui.base.BaseScreenMvpView;
 
 interface MyAccountMVPView extends BaseScreenMvpView {
@@ -16,5 +15,5 @@ interface MyAccountMVPView extends BaseScreenMvpView {
 
     void updatePhoneNumber(String phone);
 
-    void updateAvatar(Image image);
+    void updateAvatar();
 }

@@ -28,6 +28,8 @@ public class Trip implements Serializable {
     private String current_longitude;
     private String note;
     private String user_id;
+    private int is_rate;
+    private String distance;
 
     public int getId() {
         return id;
@@ -203,6 +205,22 @@ public class Trip implements Serializable {
 
     public void setUser_id(String user_id) {
         this.user_id = user_id;
+    }
+
+    public int getIs_rate() {
+        return is_rate;
+    }
+
+    public void setIs_rate(int is_rate) {
+        this.is_rate = is_rate;
+    }
+
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
     }
 
     public String toJSon() {

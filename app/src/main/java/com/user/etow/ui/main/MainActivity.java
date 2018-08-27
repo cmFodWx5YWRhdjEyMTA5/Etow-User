@@ -8,6 +8,7 @@ package com.user.etow.ui.main;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -70,6 +71,7 @@ public class MainActivity extends BaseMVPDialogActivity implements MainMVPView {
 
     private boolean mTabCompleted = true;
     private boolean mCheckGoToUpcomingTrip;
+    private Image mImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -244,8 +246,10 @@ public class MainActivity extends BaseMVPDialogActivity implements MainMVPView {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == GlobalFuntion.PICK_IMAGE_AVATAR) {
-            Image image = ImagePicker.getImageFromResult(this, resultCode, data);
-            EventBus.getDefault().post(new SelectAvatarSuccess(image));
+            mImage = ImagePicker.getImageFromResult(this, resultCode, data);
+            if (mImage != null) {
+                EventBus.getDefault().post(new SelectAvatarSuccess());
+            }
         }
     }
 
@@ -273,7 +277,7 @@ public class MainActivity extends BaseMVPDialogActivity implements MainMVPView {
         if (Constant.TRIP_STATUS_ARRIVED.equals(trip.getStatus()) || Constant.TRIP_STATUS_ON_GOING.equals(trip.getStatus())
                 || Constant.TRIP_STATUS_JOURNEY_COMPLETED.equals(trip.getStatus())) {
             DataStoreManager.setPrefIdTripProcess(trip.getId());
-            if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(trip.getPayment_status())) {
+            if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(trip.getPayment_status()) && trip.getIs_rate() == 0) {
                 GlobalFuntion.startActivity(this, RateTripActivity.class);
             } else {
                 if (Constant.TRIP_STATUS_JOURNEY_COMPLETED.equals(trip.getStatus())) {
@@ -282,10 +286,15 @@ public class MainActivity extends BaseMVPDialogActivity implements MainMVPView {
                     GlobalFuntion.startActivity(this, TripProcessActivity.class);
                 }
             }
+            finish();
         }
     }
 
     public boolean isTabCompleted() {
         return mTabCompleted;
+    }
+
+    public Image getImage() {
+        return mImage;
     }
 }

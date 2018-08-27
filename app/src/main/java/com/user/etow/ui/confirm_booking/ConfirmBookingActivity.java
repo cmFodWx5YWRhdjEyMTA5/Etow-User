@@ -19,11 +19,17 @@ import com.user.etow.R;
 import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
 import com.user.etow.data.prefs.DataStoreManager;
+import com.user.etow.direction.DirectionFinder;
+import com.user.etow.direction.DirectionFinderListener;
+import com.user.etow.direction.Route;
 import com.user.etow.models.Trip;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
 import com.user.etow.ui.booking_completed.BookingCompletedActivity;
 import com.user.etow.ui.trip_process.TripProcessActivity;
 import com.user.etow.utils.DateTimeUtils;
+
+import java.io.UnsupportedEncodingException;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -31,7 +37,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ConfirmBookingActivity extends BaseMVPDialogActivity implements ConfirmBookingMVPView {
+public class ConfirmBookingActivity extends BaseMVPDialogActivity implements ConfirmBookingMVPView,
+        DirectionFinderListener {
 
     @Inject
     ConfirmBookingPresenter presenter;
@@ -183,32 +190,13 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
         } else {
             tvEstimateTimeArrive.setText("");
         }
-        //Get estimate trip
-        getEstimateTrip();
+        //Get time and distance trip
+        sendRequestDirection(mTripBooking.getPick_up(), mTripBooking.getDrop_off(), true);
     }
 
     @OnClick(R.id.img_back)
     public void onClickBack() {
         onBackPressed();
-    }
-
-    private void getEstimateTrip() {
-        int distance = GlobalFuntion.getDistanceFromLocation(Double.parseDouble(mTripBooking.getPickup_latitude()),
-                Double.parseDouble(mTripBooking.getPickup_longitude()),
-                Double.parseDouble(mTripBooking.getDropoff_latitude()),
-                Double.parseDouble(mTripBooking.getDropoff_longitude()));
-        if (GlobalFuntion.mSetting != null) {
-            int timeDistance = Integer.parseInt(GlobalFuntion.mSetting.getTimeDistance());
-            int timeDestination = distance * timeDistance;
-            int timeDestination01 = timeDestination - Integer.parseInt(GlobalFuntion.mSetting.getTimeBuffer());
-            if (timeDestination01 < 0) timeDestination01 = 1;
-            int timeDestination02 = timeDestination + Integer.parseInt(GlobalFuntion.mSetting.getTimeBuffer());
-            tvEstimateTimeDestination.setText(timeDestination01 + " - " + timeDestination02 + " " + getString(R.string.unit_time));
-        } else {
-            tvEstimateTimeDestination.setText("");
-        }
-        // Get cost trip
-        presenter.getEstimateCost(distance + "");
     }
 
     @Override
@@ -288,6 +276,39 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
             presenter.createTrip(mTripBooking);
         } else {
             showAlert(getString(R.string.please_select_payment_method));
+        }
+    }
+
+    private void sendRequestDirection(String origin, String destination, boolean fixCode) {
+        try {
+            new DirectionFinder(this, origin, destination, fixCode).execute();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onDirectionFinderStart() {
+        showProgressDialog(true);
+    }
+
+    @Override
+    public void onDirectionFinderSuccess(List<Route> routes) {
+        for (Route route : routes) {
+            int distance = route.distance.value / 1000;
+            mTripBooking.setDistance(distance + "");
+            if (GlobalFuntion.mSetting != null) {
+                int timeDistance = Integer.parseInt(GlobalFuntion.mSetting.getTimeDistance());
+                int timeDestination = distance * timeDistance;
+                int timeDestination01 = timeDestination - Integer.parseInt(GlobalFuntion.mSetting.getTimeBuffer());
+                if (timeDestination01 < 0) timeDestination01 = 1;
+                int timeDestination02 = timeDestination + Integer.parseInt(GlobalFuntion.mSetting.getTimeBuffer());
+                tvEstimateTimeDestination.setText(timeDestination01 + " - " + timeDestination02 + " " + getString(R.string.unit_time));
+            } else {
+                tvEstimateTimeDestination.setText("");
+            }
+            // Get cost trip
+            presenter.getEstimateCost(distance + "");
         }
     }
 }

@@ -103,11 +103,12 @@ public class PayCardActivity extends BaseMVPDialogActivity implements PayCardMVP
 
     @Override
     public void updateStatusTrip(Trip trip) {
-        if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(trip.getPayment_status())) {
+        if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(trip.getPayment_status()) && trip.getIs_rate() == 0) {
             GlobalFuntion.startActivity(this, RateTripActivity.class);
             finish();
         } else if (Constant.PAYMENT_STATUS_PAYMENT_FAIL.equals(trip.getPayment_status())) {
             GlobalFuntion.startActivity(this, PayCardResultActivity.class);
+            finish();
         }
     }
 }

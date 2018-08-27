@@ -132,6 +132,15 @@ public class MyBookingsPresenter extends BasePresenter<MyBookingsMVPView> {
                                         }
                                     }
                                 }
+                            } else {
+                                if (listTripUpcoming != null && listTripUpcoming.size() > 0) {
+                                    for (int i = 0; i < listTripUpcoming.size(); i++) {
+                                        if (trip.getId() == listTripUpcoming.get(i).getId()) {
+                                            listTripUpcoming.set(i, trip);
+                                            break;
+                                        }
+                                    }
+                                }
                             }
                         }
                         tripUpcomingAdapter.notifyDataSetChanged();

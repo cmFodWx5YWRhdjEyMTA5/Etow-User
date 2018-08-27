@@ -264,8 +264,6 @@ public class GlobalFuntion {
                 LONGITUDE = location.getLongitude();
                 Log.e("Latitude current", LATITUDE + "");
                 Log.e("Longitude current", LONGITUDE + "");
-            } else {
-                Toast.makeText(activity, activity.getString(R.string.unble_trace_location), Toast.LENGTH_SHORT).show();
             }
         }
     }

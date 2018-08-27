@@ -7,6 +7,7 @@ package com.user.etow.ui.main.my_account;
  * ******************************************************************************
  */
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -16,17 +17,19 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.user.etow.R;
 import com.user.etow.constant.Constant;
 import com.user.etow.constant.GlobalFuntion;
 import com.user.etow.data.prefs.DataStoreManager;
-import com.user.etow.models.Image;
 import com.user.etow.ui.auth.verify_mobile_number.VerifyMobileNumberActivity;
 import com.user.etow.ui.base.BaseMVPFragmentWithDialog;
 import com.user.etow.ui.main.MainActivity;
 import com.user.etow.utils.GlideUtils;
 import com.user.etow.utils.StringUtil;
 import com.user.etow.utils.Utils;
+
+import java.io.ByteArrayOutputStream;
 
 import javax.inject.Inject;
 
@@ -51,15 +54,16 @@ public class MyAccountFragment extends BaseMVPFragmentWithDialog implements MyAc
     @BindView(R.id.edt_password)
     EditText edtPassword;
 
-    @BindView(R.id.img_avatar)
     ImageView imgAvatar;
 
-    private Image mImage;
+    MainActivity mMainActivity;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_my_account, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_my_account, container, false);
+        imgAvatar = rootView.findViewById(R.id.img_avatar);
+        return rootView;
     }
 
     @Override
@@ -69,7 +73,8 @@ public class MyAccountFragment extends BaseMVPFragmentWithDialog implements MyAc
         getActivityComponent().inject(this);
         viewUnbind = ButterKnife.bind(this, view);
         presenter.initialView(this);
-        ((MainActivity) getActivity()).showAndHiddenItemToolbar(getString(R.string.my_account));
+        mMainActivity = (MainActivity) getActivity();
+        mMainActivity.showAndHiddenItemToolbar(getString(R.string.my_account));
 
         initData();
     }
@@ -119,8 +124,8 @@ public class MyAccountFragment extends BaseMVPFragmentWithDialog implements MyAc
             showAlert(getString(R.string.please_enter_password));
         } else {
             String strAvatar = "";
-            if (mImage != null && mImage.getBitmap() != null) {
-                strAvatar =  Utils.convertBitmapToBase64(mImage.getBitmap());
+            if (mMainActivity.getImage() != null) {
+                strAvatar = Utils.convertBitmapToBase64(mMainActivity.getImage().getBitmap());
             }
             presenter.updateProfile(strFullName, strPhone, strEmail, strPassword, strAvatar);
         }
@@ -142,10 +147,13 @@ public class MyAccountFragment extends BaseMVPFragmentWithDialog implements MyAc
     }
 
     @Override
-    public void updateAvatar(Image image) {
-        mImage = image;
-        if (mImage != null && mImage.getBitmap() != null) {
-            imgAvatar.setImageBitmap(mImage.getBitmap());
-        }
+    public void updateAvatar() {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        mMainActivity.getImage().getBitmap().compress(Bitmap.CompressFormat.PNG, 100, stream);
+        Glide.with(this)
+                .load(stream.toByteArray())
+                .asBitmap()
+                .error(R.drawable.ic_avatar_default)
+                .into(imgAvatar);
     }
 }

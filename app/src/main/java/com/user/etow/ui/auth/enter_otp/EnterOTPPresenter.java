@@ -60,4 +60,36 @@ public class EnterOTPPresenter extends BasePresenter<EnterOTPMVPView> {
                     });
         }
     }
+
+    public void getOTP(String phone) {
+        if (!isConnectToInternet()) {
+            notifyNoNetwork();
+        } else {
+            getMvpView().showProgressDialog(true);
+            mNetworkManager.getOTP(phone)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<ApiSuccess>() {
+                        @Override
+                        public void onCompleted() {
+                            getMvpView().showProgressDialog(false);
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            getMvpView().showProgressDialog(false);
+                            getMvpView().onErrorCallApi(getErrorFromHttp(e).getCode());
+                        }
+
+                        @Override
+                        public void onNext(ApiSuccess apiSuccess) {
+                            if (apiSuccess != null) {
+                                if (Constant.SUCCESS.equalsIgnoreCase(apiSuccess.getStatus())) {
+                                    getMvpView().getStatusCodeOTP();
+                                }
+                            }
+                        }
+                    });
+        }
+    }
 }

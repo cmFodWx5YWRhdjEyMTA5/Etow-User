@@ -12,7 +12,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Handler;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.view.View;
@@ -51,8 +50,6 @@ public class SplashActivity extends BaseMVPDialogActivity implements SplashMVPVi
         presenter.initialView(this);
         // init font text
         Utils.getTahomaRegularTypeFace(SplashActivity.this);
-        // Request permissions
-        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         // Get setting app
         presenter.getSetting();
     }
@@ -84,29 +81,23 @@ public class SplashActivity extends BaseMVPDialogActivity implements SplashMVPVi
     }
 
     private void goToActivity() {
-        Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                int idTripProcess = DataStoreManager.getPrefIdTripProcess();
-                if (idTripProcess != 0) {
-                    presenter.getTripDetail(SplashActivity.this, idTripProcess);
+        int idTripProcess = DataStoreManager.getPrefIdTripProcess();
+        if (idTripProcess != 0) {
+            presenter.getTripDetail(SplashActivity.this, idTripProcess);
+        } else {
+            if (!DataStoreManager.getFirstInstallApp()) {
+                DataStoreManager.setFirstInstallApp(true);
+                DataStoreManager.removeUser();
+                GlobalFuntion.startActivity(SplashActivity.this, UserStartActivity.class);
+            } else {
+                if (DataStoreManager.getIsLogin()) {
+                    GlobalFuntion.startActivity(SplashActivity.this, MainActivity.class);
                 } else {
-                    if (!DataStoreManager.getFirstInstallApp()) {
-                        DataStoreManager.setFirstInstallApp(true);
-                        DataStoreManager.removeUser();
-                        GlobalFuntion.startActivity(SplashActivity.this, UserStartActivity.class);
-                    } else {
-                        if (DataStoreManager.getIsLogin()) {
-                            GlobalFuntion.startActivity(SplashActivity.this, MainActivity.class);
-                        } else {
-                            GlobalFuntion.startActivity(SplashActivity.this, UserStartActivity.class);
-                        }
-                    }
+                    GlobalFuntion.startActivity(SplashActivity.this, UserStartActivity.class);
                 }
-                finish();
             }
-        }, 1000);
+            finish();
+        }
     }
 
     private void settingGPS() {
@@ -132,7 +123,7 @@ public class SplashActivity extends BaseMVPDialogActivity implements SplashMVPVi
 
     @Override
     public void getTripDetail(Trip trip) {
-        if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(trip.getPayment_status())) {
+        if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(trip.getPayment_status()) && trip.getIs_rate() == 0) {
             GlobalFuntion.startActivity(this, RateTripActivity.class);
         } else {
             if (Constant.TRIP_STATUS_JOURNEY_COMPLETED.equals(trip.getStatus())) {
@@ -141,6 +132,13 @@ public class SplashActivity extends BaseMVPDialogActivity implements SplashMVPVi
                 GlobalFuntion.startActivity(SplashActivity.this, TripProcessActivity.class);
             }
         }
+        finish();
+    }
+
+    @Override
+    public void getSettingApp() {
+        // Request permissions
+        ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
     }
 
     public void showDialogSettingGps() {

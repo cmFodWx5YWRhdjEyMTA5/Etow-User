@@ -29,6 +29,7 @@
                 android:id="@+id/img_avatar"
                 android:layout_width="@dimen/define_dimen_150"
                 android:layout_height="@dimen/define_dimen_150"
+                android:scaleType="centerCrop"
                 android:src="@drawable/ic_avatar_default" />
 
             <ImageView
@@ -107,7 +108,7 @@
             android:layout_marginTop="@dimen/define_dimen_8"
             android:background="@drawable/bg_white_corner_border_grey_radius_8"
             android:hint="@string/please_enter_password"
-            android:imeOptions="actionNext"
+            android:imeOptions="actionDone"
             android:inputType="textPassword"
             android:maxLength="100"
             android:padding="@dimen/define_dimen_12"
