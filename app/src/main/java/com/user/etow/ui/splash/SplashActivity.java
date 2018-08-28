@@ -10,10 +10,14 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -32,6 +36,8 @@ import com.user.etow.ui.trip_completed.TripCompletedActivity;
 import com.user.etow.ui.trip_process.TripProcessActivity;
 import com.user.etow.utils.Utils;
 
+import java.util.Locale;
+
 import javax.inject.Inject;
 
 import butterknife.ButterKnife;
@@ -48,6 +54,7 @@ public class SplashActivity extends BaseMVPDialogActivity implements SplashMVPVi
         getActivityComponent().inject(this);
         viewUnbind = ButterKnife.bind(this);
         presenter.initialView(this);
+        setLocale("en");
         // init font text
         Utils.getTahomaRegularTypeFace(SplashActivity.this);
         // Get setting app
@@ -78,6 +85,18 @@ public class SplashActivity extends BaseMVPDialogActivity implements SplashMVPVi
     @Override
     public void onErrorCallApi(int code) {
         GlobalFuntion.showMessageError(this, code);
+    }
+
+    public void setLocale(String lang) {
+        Locale myLocale = new Locale(lang);
+        Resources res = getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        Configuration conf = res.getConfiguration();
+        conf.locale = myLocale;
+        if (Build.VERSION.SDK_INT >= 17) {
+            conf.setLayoutDirection(myLocale);
+        }
+        res.updateConfiguration(conf, dm);
     }
 
     private void goToActivity() {

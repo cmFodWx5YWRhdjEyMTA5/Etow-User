@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class DateTimeUtils {
 
@@ -22,52 +23,10 @@ public class DateTimeUtils {
     private static final String DEFAULT_FORMAT_DATE_5 = "hh:mm a, dd-MMM-yyyy";
     private static final String DEFAULT_FORMAT_DATE_6 = "EEEE dd MMM yyyy hh:mm a";
 
-    public static boolean isDateBefore(Date currentDate, Date pivotDate) {
-        if (currentDate == null || pivotDate == null) {
-            throw new ParameterException("date can not be null");
-        }
-        return currentDate.compareTo(pivotDate) < 0;
-    }
-
-    public static boolean isDateEqual(Date currentDate, Date pivotDate) {
-        if (currentDate == null || pivotDate == null) {
-            throw new ParameterException("date can not be null");
-        }
-        return currentDate.compareTo(pivotDate) == 0;
-    }
-
-    public static boolean isDateAfter(Date currentDate, Date pivotDate) {
-        if (currentDate == null || pivotDate == null) {
-            throw new ParameterException("date can not be null");
-        }
-        return currentDate.compareTo(pivotDate) > 0;
-    }
-
-    public static boolean isDateBefore(Date currentDate, long pivotDate) {
-        if (currentDate == null) {
-            throw new ParameterException("date can not be null");
-        }
-        return currentDate.getTime() < pivotDate;
-    }
-
-    public static boolean isDateEqual(Date currentDate, long pivotDate) {
-        if (currentDate == null) {
-            throw new ParameterException("date can not be null");
-        }
-        return currentDate.getTime() == pivotDate;
-    }
-
-    public static boolean isDateAfter(Date currentDate, long pivotDate) {
-        if (currentDate == null) {
-            throw new ParameterException("date can not be null");
-        }
-        return currentDate.getTime() > pivotDate;
-    }
-
     public static int convertMonthToNumber(String monthName) {
         Calendar cal = Calendar.getInstance();
         try {
-            cal.setTime(new SimpleDateFormat("MMM").parse(monthName));
+            cal.setTime(new SimpleDateFormat("MMM", Locale.ENGLISH).parse(monthName));
             return cal.get(Calendar.MONTH) + 1;
         } catch (ParseException e) {
             e.printStackTrace();
@@ -77,7 +36,7 @@ public class DateTimeUtils {
 
     public static String getDateToday() {
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat(DEFAULT_FORMAT_DATE);
+        SimpleDateFormat df = new SimpleDateFormat(DEFAULT_FORMAT_DATE, Locale.ENGLISH);
         return df.format(c.getTime());
     }
 
@@ -140,8 +99,8 @@ public class DateTimeUtils {
     public static String parseDateFormat1(String time) {
         String inputPattern = "yyyy-MM-dd";
         String outputPattern = "E dd MMM yyyy";
-        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
-        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern, Locale.ENGLISH);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern, Locale.ENGLISH);
 
         Date date = null;
         String str = null;
@@ -158,8 +117,8 @@ public class DateTimeUtils {
     public static String parseTimeFormat1(String time) {
         String inputPattern = "HH:mm";
         String outputPattern = "hh:mm a";
-        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern);
-        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern);
+        SimpleDateFormat inputFormat = new SimpleDateFormat(inputPattern, Locale.ENGLISH);
+        SimpleDateFormat outputFormat = new SimpleDateFormat(outputPattern, Locale.ENGLISH);
 
         Date date = null;
         String str = null;
@@ -183,7 +142,7 @@ public class DateTimeUtils {
         String result = "";
         if (strDate != null) {
             try {
-                SimpleDateFormat format = new SimpleDateFormat(DEFAULT_FORMAT_DATE_4);
+                SimpleDateFormat format = new SimpleDateFormat(DEFAULT_FORMAT_DATE_4, Locale.ENGLISH);
                 Date date = format.parse(strDate);
                 Long timestamp = date.getTime() / 1000;
                 result = String.valueOf(timestamp);
@@ -200,7 +159,7 @@ public class DateTimeUtils {
             try {
                 Float floatTimestamp = Float.parseFloat(strTimeStamp);
                 Long timestamp = (long) (floatTimestamp * 1000);
-                SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_FORMAT_DATE_2);
+                SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_FORMAT_DATE_2, Locale.ENGLISH);
                 Date date = (new Date(timestamp));
                 result = sdf.format(date);
             } catch (Exception e) {
@@ -216,7 +175,7 @@ public class DateTimeUtils {
             try {
                 Float floatTimestamp = Float.parseFloat(strTimeStamp);
                 Long timestamp = (long) (floatTimestamp * 1000);
-                SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_FORMAT_DATE_3);
+                SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_FORMAT_DATE_3, Locale.ENGLISH);
                 Date date = (new Date(timestamp));
                 result = sdf.format(date);
             } catch (Exception e) {
@@ -232,7 +191,7 @@ public class DateTimeUtils {
             try {
                 Float floatTimestamp = Float.parseFloat(strTimeStamp);
                 Long timestamp = (long) (floatTimestamp * 1000);
-                SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_FORMAT_DATE_4);
+                SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_FORMAT_DATE_4, Locale.ENGLISH);
                 Date date = (new Date(timestamp));
                 result = sdf.format(date);
             } catch (Exception e) {
@@ -248,7 +207,7 @@ public class DateTimeUtils {
             try {
                 Float floatTimestamp = Float.parseFloat(strTimeStamp);
                 Long timestamp = (long) (floatTimestamp * 1000);
-                SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_FORMAT_DATE_5);
+                SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_FORMAT_DATE_5, Locale.ENGLISH);
                 Date date = (new Date(timestamp));
                 result = sdf.format(date);
             } catch (Exception e) {
@@ -264,7 +223,7 @@ public class DateTimeUtils {
             try {
                 Float floatTimestamp = Float.parseFloat(strTimeStamp);
                 Long timestamp = (long) (floatTimestamp * 1000);
-                SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_FORMAT_DATE_6);
+                SimpleDateFormat sdf = new SimpleDateFormat(DEFAULT_FORMAT_DATE_6, Locale.ENGLISH);
                 Date date = (new Date(timestamp));
                 result = sdf.format(date);
             } catch (Exception e) {
