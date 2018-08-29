@@ -53,6 +53,7 @@ import com.user.etow.utils.Utils;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.inject.Inject;
 
@@ -194,7 +195,7 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
         } else if (Constant.TRIP_STATUS_ARRIVED.equals(trip.getStatus())) {
             layoutBookingAccepted.setVisibility(View.GONE);
             layoutDriverArrived.setVisibility(View.VISIBLE);
-            if(Constant.IS_SCHEDULE.equals(trip.getStatus())) {
+            if (Constant.IS_SCHEDULE.equals(trip.getStatus())) {
                 mMap.clear();
                 LatLng latLng = new LatLng(Double.parseDouble(trip.getCurrent_latitude()),
                         Double.parseDouble(trip.getCurrent_longitude()));
@@ -205,7 +206,7 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
         } else if (Constant.TRIP_STATUS_ON_GOING.equals(trip.getStatus())) {
             layoutDriverArrived.setVisibility(View.GONE);
             layoutTripOngoing.setVisibility(View.VISIBLE);
-            if(!mIsLoadMap){
+            if (!mIsLoadMap) {
                 loadMap(trip);
                 mListPoints = new ArrayList<>();
             }
@@ -229,23 +230,23 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
         if (StringUtil.isEmpty(strCurrentLocation)) {
             showAlert(getString(R.string.unble_trace_location));
         } else {
-            sendRequestDirection(strCurrentLocation, strDropOffLocation, false);
+            sendRequestDirection(strCurrentLocation, strDropOffLocation);
         }
         mIsLoadMap = true;
     }
 
     private void initData() {
-        if (GlobalFuntion.mSetting != null) {
-            int timeEstimateArrive = Integer.parseInt(GlobalFuntion.mSetting.getEstimateTimeArrive());
-            int timeEstimateArrive01 = timeEstimateArrive - Integer.parseInt(GlobalFuntion.mSetting.getTimeBuffer());
-            if (timeEstimateArrive01 < 0) timeEstimateArrive01 = 1;
-            int timeEstimateArrive02 = timeEstimateArrive + Integer.parseInt(GlobalFuntion.mSetting.getTimeBuffer());
-            tvCurrentEstimateTime.setText(timeEstimateArrive01 + " - " + timeEstimateArrive02 + " " + getString(R.string.unit_time));
-            tvTimeDriverReach.setText(timeEstimateArrive01 + " - " + timeEstimateArrive02 + " " + getString(R.string.unit_time));
-        } else {
-            tvCurrentEstimateTime.setText("");
-            tvTimeDriverReach.setText("");
-        }
+        // Set up estimate time arrive.
+        int minFrom = 1;
+        int maxFrom = 10;
+        int minTo = 15;
+        int maxTo = 25;
+        Random randomFrom = new Random();
+        Random randomTo = new Random();
+        int fromTime = randomFrom.nextInt(maxFrom - minFrom + 1) + minFrom;
+        int toTime = randomTo.nextInt(maxTo - minTo + 1) + minTo;
+        tvCurrentEstimateTime.setText(fromTime + " - " + toTime + " " + getString(R.string.unit_time));
+        tvTimeDriverReach.setText(fromTime + " - " + toTime + " " + getString(R.string.unit_time));
     }
 
     @Override
@@ -360,9 +361,9 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
                 .show();
     }
 
-    private void sendRequestDirection(String origin, String destination, boolean fixCode) {
+    private void sendRequestDirection(String origin, String destination) {
         try {
-            new DirectionFinder(this, origin, destination, fixCode).execute();
+            new DirectionFinder(this, origin, destination).execute();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

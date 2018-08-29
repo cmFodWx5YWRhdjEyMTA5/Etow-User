@@ -30,6 +30,7 @@ import com.user.etow.utils.DateTimeUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.util.List;
+import java.util.Random;
 
 import javax.inject.Inject;
 
@@ -181,17 +182,18 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
             mTripBooking.setPickup_date(DateTimeUtils.getCurrentTimeStamp());
         }
         tvDateTime.setText(DateTimeUtils.convertTimeStampToDateFormat5(mTripBooking.getPickup_date()));
-        if (GlobalFuntion.mSetting != null) {
-            int timeEstimateArrive = Integer.parseInt(GlobalFuntion.mSetting.getEstimateTimeArrive());
-            int timeEstimateArrive01 = timeEstimateArrive - Integer.parseInt(GlobalFuntion.mSetting.getTimeBuffer());
-            if (timeEstimateArrive01 < 0) timeEstimateArrive01 = 1;
-            int timeEstimateArrive02 = timeEstimateArrive + Integer.parseInt(GlobalFuntion.mSetting.getTimeBuffer());
-            tvEstimateTimeArrive.setText(timeEstimateArrive01 + " - " + timeEstimateArrive02 + " " + getString(R.string.unit_time));
-        } else {
-            tvEstimateTimeArrive.setText("");
-        }
+        // Set up estimate time arrive.
+        int minFrom = 1;
+        int maxFrom = 10;
+        int minTo = 15;
+        int maxTo = 25;
+        Random randomFrom = new Random();
+        Random randomTo = new Random();
+        int fromTime = randomFrom.nextInt(maxFrom - minFrom + 1) + minFrom;
+        int toTime = randomTo.nextInt(maxTo - minTo + 1) + minTo;
+        tvEstimateTimeArrive.setText(fromTime + " - " + toTime + " " + getString(R.string.unit_time));
         //Get time and distance trip
-        sendRequestDirection(mTripBooking.getPick_up(), mTripBooking.getDrop_off(), true);
+        sendRequestDirection(mTripBooking.getPick_up(), mTripBooking.getDrop_off());
     }
 
     @OnClick(R.id.img_back)
@@ -279,9 +281,9 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
         }
     }
 
-    private void sendRequestDirection(String origin, String destination, boolean fixCode) {
+    private void sendRequestDirection(String origin, String destination) {
         try {
-            new DirectionFinder(this, origin, destination, fixCode).execute();
+            new DirectionFinder(this, origin, destination).execute();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }

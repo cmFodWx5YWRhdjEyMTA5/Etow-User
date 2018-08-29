@@ -120,6 +120,8 @@ public class BookingTripActivity extends BaseMVPDialogActivity implements Bookin
         SupportMapFragment mMapFragment = new SupportMapFragment();
         mMapFragment = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_view_map));
         mMapFragment.getMapAsync(this);
+
+        selectCurrenLocation();
     }
 
     private void getDataIntent() {
@@ -267,24 +269,14 @@ public class BookingTripActivity extends BaseMVPDialogActivity implements Bookin
     }
 
     private void selectCurrenLocation() {
-        LocationManager mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        GlobalFuntion.getCurrentLocation(this, mLocationManager);
-
         mTripBooking.setPickup_latitude(GlobalFuntion.LATITUDE + "");
         mTripBooking.setPickup_longitude(GlobalFuntion.LONGITUDE + "");
         String currentAddress = GlobalFuntion.getCompleteAddressString(this, GlobalFuntion.LATITUDE,
                 GlobalFuntion.LONGITUDE);
-        mTripBooking.setPick_up(currentAddress);
         if (StringUtil.isEmpty(currentAddress)) {
             showAlert(getString(R.string.unble_trace_location));
         } else {
-            if (StringUtil.isEmpty(mTripBooking.getDrop_off()) ||
-                    StringUtil.isEmpty(mTripBooking.getDropoff_latitude()) ||
-                    StringUtil.isEmpty(mTripBooking.getDropoff_longitude())) {
-                // Not do anything
-            } else {
-                goToConfirmBooking();
-            }
+            mTripBooking.setPick_up(currentAddress);
         }
     }
 
@@ -325,14 +317,6 @@ public class BookingTripActivity extends BaseMVPDialogActivity implements Bookin
                         mTripBooking.setPickup_latitude(latLng.latitude + "");
                         mTripBooking.setPickup_longitude(latLng.longitude + "");
                         mTripBooking.setPick_up(tvPickUp.getText().toString().trim());
-
-                        if (StringUtil.isEmpty(mTripBooking.getDrop_off()) ||
-                                StringUtil.isEmpty(mTripBooking.getDropoff_latitude()) ||
-                                StringUtil.isEmpty(mTripBooking.getDropoff_longitude())) {
-                            // Not do anything
-                        } else {
-                            goToConfirmBooking();
-                        }
                     } else {
                         showAlert(getString(R.string.error_select_pick_up_location));
                     }
@@ -464,6 +448,7 @@ public class BookingTripActivity extends BaseMVPDialogActivity implements Bookin
     @OnClick(R.id.img_clear_pick_up)
     public void onClickClearPickUp() {
         tvPickUp.setText("");
+        selectCurrenLocation();
     }
 
     @OnClick(R.id.img_clear_drop_off)
