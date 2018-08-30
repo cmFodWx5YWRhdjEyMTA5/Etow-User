@@ -18,6 +18,9 @@ public class Setting implements Serializable {
     @SerializedName("time_estimate_arrive")
     private String estimateTimeArrive;
 
+    @SerializedName("distance_request")
+    private String distanceRequest;
+
     public Setting() {
     }
 
@@ -51,5 +54,13 @@ public class Setting implements Serializable {
 
     public void setEstimateTimeArrive(String estimateTimeArrive) {
         this.estimateTimeArrive = estimateTimeArrive;
+    }
+
+    public String getDistanceRequest() {
+        return distanceRequest;
+    }
+
+    public void setDistanceRequest(String distanceRequest) {
+        this.distanceRequest = distanceRequest;
     }
 }

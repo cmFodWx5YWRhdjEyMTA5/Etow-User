@@ -105,6 +105,7 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
     private Trip mTripBooking;
     private boolean mIsActiveConfirmButton;
     private boolean mIsPaymentCash = true;
+    private String mEstimateTimeArrived;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,7 +192,8 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
         Random randomTo = new Random();
         int fromTime = randomFrom.nextInt(maxFrom - minFrom + 1) + minFrom;
         int toTime = randomTo.nextInt(maxTo - minTo + 1) + minTo;
-        tvEstimateTimeArrive.setText(fromTime + " - " + toTime + " " + getString(R.string.unit_time));
+        mEstimateTimeArrived = fromTime + " - " + toTime + " " + getString(R.string.unit_time);
+        tvEstimateTimeArrive.setText(mEstimateTimeArrived);
         //Get time and distance trip
         sendRequestDirection(mTripBooking.getPick_up(), mTripBooking.getDrop_off());
     }
@@ -214,6 +216,7 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
             finish();
         } else {
             DataStoreManager.setPrefIdTripProcess(trip.getTrip_id());
+            DataStoreManager.setEstimateTimeArrived(mEstimateTimeArrived);
             GlobalFuntion.startActivity(this, TripProcessActivity.class);
             finishAffinity();
         }
@@ -299,16 +302,13 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
         for (Route route : routes) {
             int distance = route.distance.value / 1000;
             mTripBooking.setDistance(distance + "");
-            if (GlobalFuntion.mSetting != null) {
-                int timeDistance = Integer.parseInt(GlobalFuntion.mSetting.getTimeDistance());
-                int timeDestination = distance * timeDistance;
-                int timeDestination01 = timeDestination - Integer.parseInt(GlobalFuntion.mSetting.getTimeBuffer());
-                if (timeDestination01 < 0) timeDestination01 = 1;
-                int timeDestination02 = timeDestination + Integer.parseInt(GlobalFuntion.mSetting.getTimeBuffer());
-                tvEstimateTimeDestination.setText(timeDestination01 + " - " + timeDestination02 + " " + getString(R.string.unit_time));
-            } else {
-                tvEstimateTimeDestination.setText("");
-            }
+
+            int timeDestination = route.duration.value / 60;
+            int timeDestination01 = timeDestination - Integer.parseInt(GlobalFuntion.mSetting.getTimeBuffer());
+            if (timeDestination01 < 0) timeDestination01 = 1;
+            int timeDestination02 = timeDestination + Integer.parseInt(GlobalFuntion.mSetting.getTimeBuffer());
+            tvEstimateTimeDestination.setText(timeDestination01 + " - " + timeDestination02 + " " + getString(R.string.unit_time));
+
             // Get cost trip
             presenter.getEstimateCost(distance + "");
         }

@@ -85,4 +85,8 @@ public class NetworkManager {
     public Observable<ApiSuccess> rateTrip(int tripId, int rate) {
         return mEtowService.rateTrip(tripId, rate);
     }
+
+    public Observable<ApiSuccess> updateLocationTrip(int tripId, double latitude, double longitude) {
+        return mEtowService.updateLocationTrip(tripId, latitude, longitude);
+    }
 }

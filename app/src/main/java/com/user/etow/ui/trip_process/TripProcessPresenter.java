@@ -53,12 +53,12 @@ public class TripProcessPresenter extends BasePresenter<TripProcessMVPView> {
     }
 
     public void checkDriverAvailable() {
-        getMvpView().showProgressDialog(true);
+        if (getMvpView() != null) getMvpView().showProgressDialog(true);
         mDatabaseReference.orderByChild("type").equalTo(Constant.TYPE_DRIVER)
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        getMvpView().showProgressDialog(false);
+                        if (getMvpView() != null) getMvpView().showProgressDialog(false);
                         Driver driver = dataSnapshot.getValue(Driver.class);
                         if (driver != null) mListDriver.add(driver);
                         getMvpView().getStatusDriverAvailable(mListDriver);

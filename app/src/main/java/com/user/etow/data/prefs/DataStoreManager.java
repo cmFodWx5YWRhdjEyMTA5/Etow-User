@@ -17,6 +17,7 @@ public class DataStoreManager {
     public static final String PREF_IS_LOGIN = "PREF_IS_LOGIN";
     public static final String PREF_USER_INFOR = "PREF_USER_INFOR";
     public static final String PREF_ID_TRIP_PROCESS = "PREF_ID_TRIP_PROCESS";
+    public static final String PREF_ESTIMATE_TIME_ARRIVED = "PREF_ESTIMATE_TIME_ARRIVED";
 
     private static DataStoreManager instance;
     private MySharedPreferences sharedPreferences;
@@ -91,5 +92,14 @@ public class DataStoreManager {
 
     public static int getPrefIdTripProcess() {
         return DataStoreManager.getInstance().sharedPreferences.getIntValue(PREF_ID_TRIP_PROCESS);
+    }
+
+    // set estimate time arrived
+    public static void setEstimateTimeArrived(String time) {
+        DataStoreManager.getInstance().sharedPreferences.putStringValue(PREF_ESTIMATE_TIME_ARRIVED, time);
+    }
+
+    public static String getEstimateTimeArrived() {
+        return DataStoreManager.getInstance().sharedPreferences.getStringValue(PREF_ESTIMATE_TIME_ARRIVED, "");
     }
 }

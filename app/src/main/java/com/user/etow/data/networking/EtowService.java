@@ -142,4 +142,11 @@ public interface EtowService {
     @POST("user/rate-trip")
     Observable<ApiSuccess> rateTrip(@Field(KeyAPI.KEY_TRIP_ID) int tripId,
                                     @Field(KeyAPI.KEY_RATE) int rate);
+
+    @FormUrlEncoded
+    @POST("trip/update-location")
+    Observable<ApiSuccess> updateLocationTrip(@Field(KeyAPI.KEY_TRIP_ID) int tripId,
+                                              @Field(KeyAPI.KEY_CURRENT_LATITUDE) double latitude,
+                                              @Field(KeyAPI.KEY_CURRENT_LONGITUDE) double longitude);
+
 }

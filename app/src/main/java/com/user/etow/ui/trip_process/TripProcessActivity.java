@@ -152,6 +152,12 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
 
     @Override
     public void getStatusDriverAvailable(ArrayList<Driver> listDriver) {
+        int distanceRequest = 0;
+        if (GlobalFuntion.mSetting != null) {
+            if (!StringUtil.isEmpty(GlobalFuntion.mSetting.getDistanceRequest())) {
+                distanceRequest = Integer.parseInt(GlobalFuntion.mSetting.getDistanceRequest());
+            }
+        }
         if (listDriver != null && listDriver.size() > 0) {
             for (int i = 0; i < listDriver.size(); i++) {
                 if (Constant.IS_DRIVER_FREE == listDriver.get(i).getIs_free()) {
@@ -169,6 +175,10 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
         layoutBookingAccepted.setVisibility(View.GONE);
     }
 
+    private void calculatorDistance(double latitude, double longitude) {
+
+    }
+
     @Override
     public void getTripDetail(Trip trip) {
         mTrip = trip;
@@ -180,6 +190,7 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
             showDialogRejected();
         } else if (Constant.TRIP_STATUS_CANCEL.equals(trip.getStatus())) {
             DataStoreManager.setPrefIdTripProcess(0);
+            DataStoreManager.setEstimateTimeArrived("");
             GlobalFuntion.startActivity(this, MainActivity.class);
             finishAffinity();
         } else if (Constant.TRIP_STATUS_ACCEPT.equals(trip.getStatus())) {
@@ -237,16 +248,22 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
 
     private void initData() {
         // Set up estimate time arrive.
-        int minFrom = 1;
-        int maxFrom = 10;
-        int minTo = 15;
-        int maxTo = 25;
-        Random randomFrom = new Random();
-        Random randomTo = new Random();
-        int fromTime = randomFrom.nextInt(maxFrom - minFrom + 1) + minFrom;
-        int toTime = randomTo.nextInt(maxTo - minTo + 1) + minTo;
-        tvCurrentEstimateTime.setText(fromTime + " - " + toTime + " " + getString(R.string.unit_time));
-        tvTimeDriverReach.setText(fromTime + " - " + toTime + " " + getString(R.string.unit_time));
+        String estimateTimeArrived = "";
+        if (!StringUtil.isEmpty(DataStoreManager.getEstimateTimeArrived())) {
+            estimateTimeArrived = DataStoreManager.getEstimateTimeArrived();
+        } else {
+            int minFrom = 1;
+            int maxFrom = 10;
+            int minTo = 15;
+            int maxTo = 25;
+            Random randomFrom = new Random();
+            Random randomTo = new Random();
+            int fromTime = randomFrom.nextInt(maxFrom - minFrom + 1) + minFrom;
+            int toTime = randomTo.nextInt(maxTo - minTo + 1) + minTo;
+            estimateTimeArrived = fromTime + " - " + toTime + " " + getString(R.string.unit_time);
+        }
+        tvCurrentEstimateTime.setText(estimateTimeArrived);
+        tvTimeDriverReach.setText(estimateTimeArrived);
     }
 
     @Override
@@ -353,6 +370,7 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         DataStoreManager.setPrefIdTripProcess(0);
+                        DataStoreManager.setEstimateTimeArrived("");
                         GlobalFuntion.startActivity(TripProcessActivity.this, MainActivity.class);
                         finishAffinity();
                     }

@@ -179,6 +179,7 @@ public class RateTripActivity extends BaseMVPDialogActivity implements RateTripM
     @Override
     public void getStatusRateTrip() {
         DataStoreManager.setPrefIdTripProcess(0);
+        DataStoreManager.setEstimateTimeArrived("");
         GlobalFuntion.startActivity(this, MainActivity.class);
         finishAffinity();
     }
