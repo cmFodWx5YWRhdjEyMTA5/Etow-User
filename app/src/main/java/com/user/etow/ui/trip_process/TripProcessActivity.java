@@ -152,12 +152,12 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
 
     @Override
     public void getStatusDriverAvailable(ArrayList<Driver> listDriver) {
-        int distanceRequest = 0;
+        /*int distanceRequest = 0;
         if (GlobalFuntion.mSetting != null) {
             if (!StringUtil.isEmpty(GlobalFuntion.mSetting.getDistanceRequest())) {
                 distanceRequest = Integer.parseInt(GlobalFuntion.mSetting.getDistanceRequest());
             }
-        }
+        }*/
         if (listDriver != null && listDriver.size() > 0) {
             for (int i = 0; i < listDriver.size(); i++) {
                 if (Constant.IS_DRIVER_FREE == listDriver.get(i).getIs_free()) {
@@ -173,10 +173,6 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
             layoutWaitDriver.setVisibility(View.VISIBLE);
         }
         layoutBookingAccepted.setVisibility(View.GONE);
-    }
-
-    private void calculatorDistance(double latitude, double longitude) {
-
     }
 
     @Override

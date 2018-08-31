@@ -176,7 +176,7 @@ public class MainActivity extends BaseMVPDialogActivity implements MainMVPView {
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        finish();
+                        finishAffinity();
                     }
                 })
                 .negativeText(getString(R.string.action_cancel))
