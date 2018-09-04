@@ -89,7 +89,7 @@ public class PayCardResultActivity extends BaseMVPDialogActivity implements PayC
             layoutPaySuccess.setVisibility(View.VISIBLE);
         }
 
-        if (Constant.TRIP_STATUS_COMPLETE.equals(trip.getStatus())) {
+        if (Constant.TRIP_STATUS_COMPLETE == trip.getStatus()) {
             GlobalFuntion.startActivity(this, RateTripActivity.class);
             finish();
         }

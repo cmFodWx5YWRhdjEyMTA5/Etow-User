@@ -131,7 +131,7 @@ public class TripCompletedActivity extends BaseMVPDialogActivity implements Trip
             GlobalFuntion.startActivity(this, RateTripActivity.class);
             finish();
         } else {
-            if (Constant.TRIP_STATUS_JOURNEY_COMPLETED.equals(trip.getStatus())) {
+            if (Constant.TRIP_STATUS_JOURNEY_COMPLETED == trip.getStatus()) {
                 initUi();
             }
         }

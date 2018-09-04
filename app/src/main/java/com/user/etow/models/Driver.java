@@ -15,8 +15,11 @@ public class Driver implements Serializable {
     private String vehicle_number;
     private DriverInfor drivers;
     private int is_free;
-    private String current_latitude;
-    private String current_longitude;
+    private String latitude;
+    private String longitude;
+
+    public Driver() {
+    }
 
     public int getId() {
         return id;
@@ -90,20 +93,20 @@ public class Driver implements Serializable {
         this.is_free = is_free;
     }
 
-    public String getCurrent_latitude() {
-        return current_latitude;
+    public String getLatitude() {
+        return latitude;
     }
 
-    public void setCurrent_latitude(String current_latitude) {
-        this.current_latitude = current_latitude;
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
     }
 
-    public String getCurrent_longitude() {
-        return current_longitude;
+    public String getLongitude() {
+        return longitude;
     }
 
-    public void setCurrent_longitude(String current_longitude) {
-        this.current_longitude = current_longitude;
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
     public String toJSon(){

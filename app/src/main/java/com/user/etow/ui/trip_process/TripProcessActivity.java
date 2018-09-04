@@ -178,18 +178,18 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
     @Override
     public void getTripDetail(Trip trip) {
         mTrip = trip;
-        if (Constant.TRIP_STATUS_NEW.equals(trip.getStatus())) {
+        if (Constant.TRIP_STATUS_NEW == trip.getStatus()) {
             presenter.initFirebase();
             presenter.checkDriverAvailable();
             loadMapCurrentLocaetion();
-        } else if (Constant.TRIP_STATUS_REJECT.equals(trip.getStatus())) {
+        } else if (Constant.TRIP_STATUS_REJECT == trip.getStatus()) {
             showDialogRejected();
-        } else if (Constant.TRIP_STATUS_CANCEL.equals(trip.getStatus())) {
+        } else if (Constant.TRIP_STATUS_CANCEL == trip.getStatus()) {
             DataStoreManager.setPrefIdTripProcess(0);
             DataStoreManager.setEstimateTimeArrived("");
             GlobalFuntion.startActivity(this, MainActivity.class);
             finishAffinity();
-        } else if (Constant.TRIP_STATUS_ACCEPT.equals(trip.getStatus())) {
+        } else if (Constant.TRIP_STATUS_ACCEPT == trip.getStatus()) {
             layoutDriverAreAway.setVisibility(View.GONE);
             layoutWaitDriver.setVisibility(View.GONE);
             layoutBookingAccepted.setVisibility(View.VISIBLE);
@@ -199,10 +199,10 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
             showMarkerOnMap(latLng);
             mListPoints.add(latLng);
             redrawLine();
-        } else if (Constant.TRIP_STATUS_ARRIVED.equals(trip.getStatus())) {
+        } else if (Constant.TRIP_STATUS_ARRIVED == trip.getStatus()) {
             layoutBookingAccepted.setVisibility(View.GONE);
             layoutDriverArrived.setVisibility(View.VISIBLE);
-            if (Constant.IS_SCHEDULE.equals(trip.getStatus())) {
+            if (Constant.IS_SCHEDULE == trip.getStatus()) {
                 mMap.clear();
                 LatLng latLng = new LatLng(Double.parseDouble(trip.getCurrent_latitude()),
                         Double.parseDouble(trip.getCurrent_longitude()));
@@ -210,7 +210,7 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
                 mListPoints.add(latLng);
                 redrawLine();
             }
-        } else if (Constant.TRIP_STATUS_ON_GOING.equals(trip.getStatus())) {
+        } else if (Constant.TRIP_STATUS_ON_GOING == trip.getStatus()) {
             layoutDriverArrived.setVisibility(View.GONE);
             layoutTripOngoing.setVisibility(View.VISIBLE);
             if (!mIsLoadMap) {
@@ -222,7 +222,7 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
                     Double.parseDouble(trip.getCurrent_longitude()));
             mListPoints.add(latLng);
             redrawLine();
-        } else if (Constant.TRIP_STATUS_JOURNEY_COMPLETED.equals(trip.getStatus())) {
+        } else if (Constant.TRIP_STATUS_JOURNEY_COMPLETED == trip.getStatus()) {
             GlobalFuntion.startActivity(this, TripCompletedActivity.class);
             finish();
         }
@@ -298,7 +298,7 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
 
     @OnClick(R.id.tv_cancel_driver_away)
     public void onClickCancelDriverAway() {
-        presenter.updateTrip(DataStoreManager.getPrefIdTripProcess(), Constant.TRIP_STATUS_CANCEL,
+        presenter.updateTrip(DataStoreManager.getPrefIdTripProcess(), Constant.TRIP_STATUS_CANCEL + "",
                 getString(R.string.no_driver_accepted));
     }
 
@@ -316,7 +316,7 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
 
     @OnClick(R.id.tv_yes_cancel)
     public void onClickYesCancel() {
-        presenter.updateTrip(DataStoreManager.getPrefIdTripProcess(), Constant.TRIP_STATUS_CANCEL,
+        presenter.updateTrip(DataStoreManager.getPrefIdTripProcess(), Constant.TRIP_STATUS_CANCEL + "",
                 getString(R.string.no_driver_accepted));
     }
 

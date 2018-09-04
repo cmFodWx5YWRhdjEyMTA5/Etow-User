@@ -106,13 +106,13 @@ public class TripUpcomingAdapter extends RecyclerView.Adapter<TripUpcomingAdapte
                 tvPickUp.setText(trip.getPick_up());
                 tvDate.setText(DateTimeUtils.convertTimeStampToDateFormat2(trip.getPickup_date()));
                 tvTime.setText(DateTimeUtils.convertTimeStampToDateFormat3(trip.getPickup_date()));
-                if (Constant.TRIP_STATUS_NEW.equals(trip.getStatus())) {
+                if (Constant.TRIP_STATUS_NEW == trip.getStatus()) {
                     tvStatus.setText(context.getString(R.string.pending));
                     tvStatus.setTextColor(context.getResources().getColor(R.color.orange));
-                } else if (Constant.TRIP_STATUS_REJECT.equals(trip.getStatus())) {
+                } else if (Constant.TRIP_STATUS_REJECT == trip.getStatus()) {
                     tvStatus.setText(context.getString(R.string.no_driver_available));
                     tvStatus.setTextColor(context.getResources().getColor(R.color.button_red));
-                } else if (Constant.TRIP_STATUS_ACCEPT.equals(trip.getStatus())) {
+                } else if (Constant.TRIP_STATUS_ACCEPT == trip.getStatus()) {
                     tvStatus.setText(context.getString(R.string.confirmed));
                     tvStatus.setTextColor(context.getResources().getColor(R.color.button_green));
                 }
@@ -120,7 +120,7 @@ public class TripUpcomingAdapter extends RecyclerView.Adapter<TripUpcomingAdapte
                 layoutItem.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (!Constant.TRIP_STATUS_NEW.equals(trip.getStatus()) && !Constant.TRIP_STATUS_REJECT.equals(trip.getStatus())) {
+                        if (Constant.TRIP_STATUS_NEW != trip.getStatus() && Constant.TRIP_STATUS_REJECT != trip.getStatus()) {
                             Bundle bundle = new Bundle();
                             bundle.putBoolean(Constant.IS_TRIP_COMPLETED, false);
                             bundle.putSerializable(Constant.OBJECT_TRIP, trip);

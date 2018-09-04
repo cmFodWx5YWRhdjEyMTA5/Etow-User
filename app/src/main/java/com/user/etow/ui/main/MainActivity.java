@@ -274,13 +274,13 @@ public class MainActivity extends BaseMVPDialogActivity implements MainMVPView {
 
     @Override
     public void getDetailTrip(Trip trip) {
-        if (Constant.TRIP_STATUS_ARRIVED.equals(trip.getStatus()) || Constant.TRIP_STATUS_ON_GOING.equals(trip.getStatus())
-                || Constant.TRIP_STATUS_JOURNEY_COMPLETED.equals(trip.getStatus())) {
+        if (Constant.TRIP_STATUS_ARRIVED == trip.getStatus() || Constant.TRIP_STATUS_ON_GOING == trip.getStatus()
+                || Constant.TRIP_STATUS_JOURNEY_COMPLETED == trip.getStatus()) {
             DataStoreManager.setPrefIdTripProcess(trip.getId());
             if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(trip.getPayment_status()) && trip.getIs_rate() == 0) {
                 GlobalFuntion.startActivity(this, RateTripActivity.class);
             } else {
-                if (Constant.TRIP_STATUS_JOURNEY_COMPLETED.equals(trip.getStatus())) {
+                if (Constant.TRIP_STATUS_JOURNEY_COMPLETED == trip.getStatus()) {
                     GlobalFuntion.startActivity(this, TripCompletedActivity.class);
                 } else {
                     GlobalFuntion.startActivity(this, TripProcessActivity.class);

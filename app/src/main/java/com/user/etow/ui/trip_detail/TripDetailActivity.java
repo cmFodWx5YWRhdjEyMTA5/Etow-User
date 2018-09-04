@@ -148,13 +148,13 @@ public class TripDetailActivity extends BaseMVPDialogActivity implements TripDet
         } else {
             tvLabelDateTime.setText(getString(R.string.scheduled_date_and_time));
             layoutBookingStatus.setVisibility(View.VISIBLE);
-            if (Constant.TRIP_STATUS_NEW.equals(mTrip.getStatus())) {
+            if (Constant.TRIP_STATUS_NEW == mTrip.getStatus()) {
                 tvStatus.setText(getString(R.string.pending));
                 tvStatus.setTextColor(getResources().getColor(R.color.orange));
-            } else if (Constant.TRIP_STATUS_REJECT.equals(mTrip.getStatus())) {
+            } else if (Constant.TRIP_STATUS_REJECT == mTrip.getStatus()) {
                 tvStatus.setText(getString(R.string.no_driver_available));
                 tvStatus.setTextColor(getResources().getColor(R.color.button_red));
-            } else if (Constant.TRIP_STATUS_ACCEPT.equals(mTrip.getStatus())) {
+            } else if (Constant.TRIP_STATUS_ACCEPT == mTrip.getStatus()) {
                 tvStatus.setText(getString(R.string.confirmed));
                 tvStatus.setTextColor(getResources().getColor(R.color.button_green));
             }

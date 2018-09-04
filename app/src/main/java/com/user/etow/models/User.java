@@ -6,18 +6,21 @@ import java.io.Serializable;
 
 public class User implements Serializable {
 
-    private int id;
+    private double id;
     private String full_name;
     private String email;
     private String phone;
     private String token;
     private String avatar;
 
-    public int getId() {
+    public User() {
+    }
+
+    public double getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(double id) {
         this.id = id;
     }
 

@@ -16,20 +16,22 @@ public class Trip implements Serializable {
     private String dropoff_latitude;
     private String dropoff_longitude;
     private String price;
-    private String status;
+    private int status;
     private String vehicle_type;
     private String payment_type;
     private String payment_status;
     private User user;
     private Driver driver;
-    private String is_schedule;
+    private int is_schedule;
     private String status_schedule;
     private String current_latitude;
     private String current_longitude;
     private String note;
-    private String user_id;
     private int is_rate;
     private String distance;
+
+    public Trip() {
+    }
 
     public int getId() {
         return id;
@@ -111,11 +113,11 @@ public class Trip implements Serializable {
         this.price = price;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -159,11 +161,11 @@ public class Trip implements Serializable {
         this.driver = driver;
     }
 
-    public String getIs_schedule() {
+    public int getIs_schedule() {
         return is_schedule;
     }
 
-    public void setIs_schedule(String is_schedule) {
+    public void setIs_schedule(int is_schedule) {
         this.is_schedule = is_schedule;
     }
 
@@ -197,14 +199,6 @@ public class Trip implements Serializable {
 
     public void setNote(String note) {
         this.note = note;
-    }
-
-    public String getUser_id() {
-        return user_id;
-    }
-
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
     }
 
     public int getIs_rate() {

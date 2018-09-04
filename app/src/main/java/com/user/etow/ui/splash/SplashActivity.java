@@ -145,7 +145,7 @@ public class SplashActivity extends BaseMVPDialogActivity implements SplashMVPVi
         if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(trip.getPayment_status()) && trip.getIs_rate() == 0) {
             GlobalFuntion.startActivity(this, RateTripActivity.class);
         } else {
-            if (Constant.TRIP_STATUS_JOURNEY_COMPLETED.equals(trip.getStatus())) {
+            if (Constant.TRIP_STATUS_JOURNEY_COMPLETED == trip.getStatus()) {
                 GlobalFuntion.startActivity(this, TripCompletedActivity.class);
             } else {
                 GlobalFuntion.startActivity(SplashActivity.this, TripProcessActivity.class);

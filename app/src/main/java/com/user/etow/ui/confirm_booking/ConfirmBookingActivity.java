@@ -155,7 +155,7 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
 
     private void initUi() {
         tvTitleToolbar.setText(getString(R.string.confirm_booking));
-        if (Constant.IS_SCHEDULE.equals(mTripBooking.getIs_schedule())) {
+        if (Constant.IS_SCHEDULE == mTripBooking.getIs_schedule()) {
             tvLabelDateTime.setText(getString(R.string.scheduled_booking_date_and_time));
             layoutEstimateTime.setVisibility(View.GONE);
             viewDivider.setVisibility(View.GONE);
@@ -179,7 +179,7 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
             imgVehicle.setImageDrawable(myIcon);
             tvVehicle.setText(getString(R.string.type_vehicle_flatbed));
         }
-        if (!Constant.IS_SCHEDULE.equals(mTripBooking.getIs_schedule())) {
+        if (Constant.IS_SCHEDULE != mTripBooking.getIs_schedule()) {
             mTripBooking.setPickup_date(DateTimeUtils.getCurrentTimeStamp());
         }
         tvDateTime.setText(DateTimeUtils.convertTimeStampToDateFormat5(mTripBooking.getPickup_date()));
@@ -211,7 +211,7 @@ public class ConfirmBookingActivity extends BaseMVPDialogActivity implements Con
 
     @Override
     public void getStatusCreateTrip(Trip trip) {
-        if (Constant.IS_SCHEDULE.equals(mTripBooking.getIs_schedule())) {
+        if (Constant.IS_SCHEDULE == mTripBooking.getIs_schedule()) {
             GlobalFuntion.startActivity(this, BookingCompletedActivity.class);
             finish();
         } else {

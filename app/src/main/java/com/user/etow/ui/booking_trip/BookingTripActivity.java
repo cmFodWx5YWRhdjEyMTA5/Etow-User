@@ -105,7 +105,7 @@ public class BookingTripActivity extends BaseMVPDialogActivity implements Bookin
     private Handler mThreadHandler;
     private String mScheduleDate;
     private Trip mTripBooking;
-    private String mIsScheduleTrip;
+    private int mIsScheduleTrip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,14 +132,14 @@ public class BookingTripActivity extends BaseMVPDialogActivity implements Bookin
             mIsVehicleNormal = bundle.getBoolean(Constant.IS_VEHICLE_NORMAL);
             setSelectVehicle(mIsVehicleNormal);
 
-            mIsScheduleTrip = bundle.getString(Constant.IS_SCHEDULE_TRIP);
+            mIsScheduleTrip = bundle.getInt(Constant.IS_SCHEDULE_TRIP);
             mTripBooking.setIs_schedule(mIsScheduleTrip);
 
             if (bundle.getString(Constant.SCHEDULE_DATE) != null) {
                 mScheduleDate = bundle.getString(Constant.SCHEDULE_DATE);
                 mTripBooking.setPickup_date(DateTimeUtils.convertDateToTimeStampFormat4(mScheduleDate));
             }
-            if (Constant.IS_SCHEDULE.equals(mIsScheduleTrip)) {
+            if (Constant.IS_SCHEDULE == mIsScheduleTrip) {
                 layoutDateTimeBooking.setVisibility(View.VISIBLE);
                 tvDateTimeBooking.setText(mScheduleDate);
             } else {
