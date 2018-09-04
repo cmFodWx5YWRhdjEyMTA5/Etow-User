@@ -45,10 +45,7 @@ public interface Constant {
     int IS_SCHEDULE = 1;
     int IS_NOT_SCHEDULE = 0;
 
-    String SCHEDULE_TRIP_STATUS_COMPLETED = "8_1";
-
-    String TYPE_DRIVER = "1";
-    String TYPE_USER = "2";
+    double TYPE_DRIVER = 1;
 
     int IS_DRIVER_FREE = 1;
 

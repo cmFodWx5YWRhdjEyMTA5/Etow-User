@@ -169,7 +169,9 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
 
         if (!mIsDriverAvailable) {
             layoutDriverAreAway.setVisibility(View.VISIBLE);
+            layoutWaitDriver.setVisibility(View.GONE);
         } else {
+            layoutDriverAreAway.setVisibility(View.GONE);
             layoutWaitDriver.setVisibility(View.VISIBLE);
         }
         layoutBookingAccepted.setVisibility(View.GONE);
@@ -247,7 +249,10 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
         String estimateTimeArrived = "";
         if (!StringUtil.isEmpty(DataStoreManager.getEstimateTimeArrived())) {
             estimateTimeArrived = DataStoreManager.getEstimateTimeArrived();
-        } else {
+            tvCurrentEstimateTime.setText(estimateTimeArrived);
+            tvTimeDriverReach.setText(estimateTimeArrived);
+        }
+        /*else {
             int minFrom = 1;
             int maxFrom = 10;
             int minTo = 15;
@@ -257,9 +262,7 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
             int fromTime = randomFrom.nextInt(maxFrom - minFrom + 1) + minFrom;
             int toTime = randomTo.nextInt(maxTo - minTo + 1) + minTo;
             estimateTimeArrived = fromTime + " - " + toTime + " " + getString(R.string.unit_time);
-        }
-        tvCurrentEstimateTime.setText(estimateTimeArrived);
-        tvTimeDriverReach.setText(estimateTimeArrived);
+        }*/
     }
 
     @Override
