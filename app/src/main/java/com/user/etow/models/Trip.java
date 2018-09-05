@@ -3,6 +3,7 @@ package com.user.etow.models;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Trip implements Serializable {
 
@@ -29,6 +30,7 @@ public class Trip implements Serializable {
     private String note;
     private int is_rate;
     private String distance;
+    private List<Driver> driver_available;
 
     public Trip() {
     }
@@ -215,6 +217,14 @@ public class Trip implements Serializable {
 
     public void setDistance(String distance) {
         this.distance = distance;
+    }
+
+    public List<Driver> getDriver_available() {
+        return driver_available;
+    }
+
+    public void setDriver_available(List<Driver> driver_available) {
+        this.driver_available = driver_available;
     }
 
     public String toJSon() {

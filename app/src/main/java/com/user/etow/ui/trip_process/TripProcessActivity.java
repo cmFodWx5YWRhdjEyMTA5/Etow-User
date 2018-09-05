@@ -42,7 +42,6 @@ import com.user.etow.data.prefs.DataStoreManager;
 import com.user.etow.direction.DirectionFinder;
 import com.user.etow.direction.DirectionFinderListener;
 import com.user.etow.direction.Route;
-import com.user.etow.models.Driver;
 import com.user.etow.models.Trip;
 import com.user.etow.ui.base.BaseMVPDialogActivity;
 import com.user.etow.ui.main.MainActivity;
@@ -53,7 +52,6 @@ import com.user.etow.utils.Utils;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import javax.inject.Inject;
 
@@ -93,7 +91,6 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
 
     private GoogleMap mMap;
     private Trip mTrip;
-    private boolean mIsDriverAvailable;
 
     private List<Marker> originMarkers = new ArrayList<>();
     private List<Marker> destinationMarkers = new ArrayList<>();
@@ -151,39 +148,18 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
     }
 
     @Override
-    public void getStatusDriverAvailable(ArrayList<Driver> listDriver) {
-        /*int distanceRequest = 0;
-        if (GlobalFuntion.mSetting != null) {
-            if (!StringUtil.isEmpty(GlobalFuntion.mSetting.getDistanceRequest())) {
-                distanceRequest = Integer.parseInt(GlobalFuntion.mSetting.getDistanceRequest());
-            }
-        }*/
-        if (listDriver != null && listDriver.size() > 0) {
-            for (int i = 0; i < listDriver.size(); i++) {
-                if (Constant.IS_DRIVER_FREE == listDriver.get(i).getIs_free()) {
-                    mIsDriverAvailable = true;
-                    break;
-                }
-            }
-        }
-
-        if (!mIsDriverAvailable) {
-            layoutDriverAreAway.setVisibility(View.VISIBLE);
-            layoutWaitDriver.setVisibility(View.GONE);
-        } else {
-            layoutDriverAreAway.setVisibility(View.GONE);
-            layoutWaitDriver.setVisibility(View.VISIBLE);
-        }
-        layoutBookingAccepted.setVisibility(View.GONE);
-    }
-
-    @Override
     public void getTripDetail(Trip trip) {
         mTrip = trip;
         if (Constant.TRIP_STATUS_NEW == trip.getStatus()) {
-            presenter.initFirebase();
-            presenter.checkDriverAvailable();
             loadMapCurrentLocaetion();
+            if (trip.getDriver_available() != null && trip.getDriver_available().size() > 0) {
+                layoutDriverAreAway.setVisibility(View.GONE);
+                layoutWaitDriver.setVisibility(View.VISIBLE);
+            } else {
+                layoutDriverAreAway.setVisibility(View.VISIBLE);
+                layoutWaitDriver.setVisibility(View.GONE);
+            }
+            layoutBookingAccepted.setVisibility(View.GONE);
         } else if (Constant.TRIP_STATUS_REJECT == trip.getStatus()) {
             showDialogRejected();
         } else if (Constant.TRIP_STATUS_CANCEL == trip.getStatus()) {
@@ -252,17 +228,6 @@ public class TripProcessActivity extends BaseMVPDialogActivity implements TripPr
             tvCurrentEstimateTime.setText(estimateTimeArrived);
             tvTimeDriverReach.setText(estimateTimeArrived);
         }
-        /*else {
-            int minFrom = 1;
-            int maxFrom = 10;
-            int minTo = 15;
-            int maxTo = 25;
-            Random randomFrom = new Random();
-            Random randomTo = new Random();
-            int fromTime = randomFrom.nextInt(maxFrom - minFrom + 1) + minFrom;
-            int toTime = randomTo.nextInt(maxTo - minTo + 1) + minTo;
-            estimateTimeArrived = fromTime + " - " + toTime + " " + getString(R.string.unit_time);
-        }*/
     }
 
     @Override
