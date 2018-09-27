@@ -8,7 +8,6 @@ package com.user.etow.ui.main;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -277,13 +276,15 @@ public class MainActivity extends BaseMVPDialogActivity implements MainMVPView {
         if (Constant.TRIP_STATUS_ARRIVED == trip.getStatus() || Constant.TRIP_STATUS_ON_GOING == trip.getStatus()
                 || Constant.TRIP_STATUS_JOURNEY_COMPLETED == trip.getStatus()) {
             DataStoreManager.setPrefIdTripProcess(trip.getId());
-            if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(trip.getPayment_status()) && trip.getIs_rate() == 0) {
-                GlobalFuntion.startActivity(this, RateTripActivity.class);
-            } else {
-                if (Constant.TRIP_STATUS_JOURNEY_COMPLETED == trip.getStatus()) {
-                    GlobalFuntion.startActivity(this, TripCompletedActivity.class);
+            if (trip.getIs_rate() == 0) {
+                if (Constant.PAYMENT_STATUS_PAYMENT_SUCCESS.equals(trip.getPayment_status())) {
+                    GlobalFuntion.startActivity(this, RateTripActivity.class);
                 } else {
-                    GlobalFuntion.startActivity(this, TripProcessActivity.class);
+                    if (Constant.TRIP_STATUS_JOURNEY_COMPLETED == trip.getStatus()) {
+                        GlobalFuntion.startActivity(this, TripCompletedActivity.class);
+                    } else {
+                        GlobalFuntion.startActivity(this, TripProcessActivity.class);
+                    }
                 }
             }
             finish();
