@@ -16,6 +16,9 @@ import com.user.etow.injection.components.ApplicationComponent;
 import com.user.etow.injection.components.DaggerApplicationComponent;
 import com.user.etow.injection.modules.ApplicationModule;
 
+import io.fabric.sdk.android.Fabric;
+import com.crashlytics.android.Crashlytics;
+
 public class ETowApplication extends Application {
 
     private final Object lock = new Object();
@@ -31,6 +34,7 @@ public class ETowApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         DataStoreManager.init(getApplicationContext());
         FirebaseApp.initializeApp(this);
         initFirebase();
